@@ -14,12 +14,12 @@ public class Driver {
 	private DdsParser parser;
 	private DdsContext parseTree;
 	
-	public Driver(String statement) {
-		this(statement, null);
+	public Driver(String ddsSource) {
+		this(ddsSource, null);
 	}
 		
-	public Driver(String statement, ANTLRErrorListener errorListener) {
-        ANTLRInputStream inputStream = new ANTLRInputStream(statement);
+	public Driver(String ddsSource, ANTLRErrorListener errorListener) {
+        ANTLRInputStream inputStream = new ANTLRInputStream(ddsSource);
         DdsLexer lexer = new DdsLexer(inputStream);
         if ( errorListener != null ) {
         	lexer.removeErrorListeners();
