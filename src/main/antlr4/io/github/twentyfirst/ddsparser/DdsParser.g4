@@ -5,17 +5,13 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   ( SPACE | EOL | comment )* spec RECORD SPACE IDENTIFIER SPACE?
-        ( ( EOL | comment )+ spec field )+ 
-        ( ( EOL | comment )+ spec key )* 
-        ( SPACE | EOL | comment )* EOF ;
+dds :   A_SPEC RECORD IDENTIFIER
+        ( A_SPEC field )+ 
+        ( A_SPEC key )* 
+        EOF ;
 
-field : IDENTIFIER SPACE dataType SPACE TEXT LPAR QUOTE DESCRIPTION QUOTE RPAR SPACE? ;
+field : IDENTIFIER dataType TEXT LPAR QUOTE DESCRIPTION QUOTE RPAR;
 
-dataType : SIZE ( TYPE SPACE SIZE )? ;
+dataType : SIZE ( TYPE? SIZE )? ;
 
-key : KEY SPACE IDENTIFIER SPACE? ;
-
-spec : PREFIX A_SPEC SPACE? ;
-
-comment : PREFIX COMMENT ;
+key : KEY IDENTIFIER ;
