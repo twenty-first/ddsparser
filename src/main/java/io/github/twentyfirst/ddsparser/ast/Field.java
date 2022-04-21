@@ -5,12 +5,14 @@ import io.github.twentyfirst.ddsparser.DdsParser.FieldContext;
 public class Field extends AstNode {
 
 	private String name;
+	private String heading;
 	private String description;
 	
 	public Field(FieldContext context) {
 		super(context);
 		name = context.IDENTIFIER().getText();
-		description = context.DESCRIPTION().getText();
+		heading = context.colhdg().size() > 0 ? context.colhdg(0).DESCRIPTION().getText() : null;
+		description = context.text().size() > 0 ? context.text(0).DESCRIPTION().getText() : null;
 		addChild(new DataType(context.dataType()));
 	}
 	
@@ -22,6 +24,10 @@ public class Field extends AstNode {
 		return description;
 	}
 
+	public String getHeading() {
+		return heading;
+	}
+	
 	public DataType getDataType() {
 		return new ChildrenIterator<DataType>(getChildren(), DataType.class).next();
 	}
