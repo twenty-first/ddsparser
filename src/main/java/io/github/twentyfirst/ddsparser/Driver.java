@@ -4,18 +4,22 @@ import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.twentyfirst.ddsparser.DdsParser.DdsContext;
 import io.github.twentyfirst.ddsparser.ast.Dds;
 
 public class Driver {
 
+	private static Logger log = LoggerFactory.getLogger(Driver.class);
+	
 	private CommonTokenStream tokenStream;
 	private DdsParser parser;
 	private DdsContext parseTree;
 	
 	public Driver(String ddsSource) {
-		this(ddsSource, null);
+		this(ddsSource, new DefaultErrorListener(log));
 	}
 		
 	public Driver(String ddsSource, ANTLRErrorListener errorListener) {
@@ -37,6 +41,9 @@ public class Driver {
     public DdsContext parse() {
     	if ( parseTree == null ) {
             parseTree = parser.dds();
+    	}
+    	if ( parser.getNumberOfSyntaxErrors() > 0 ) {
+    		throw new ParseException("Parse failed");
     	}
         return parseTree;
     }
