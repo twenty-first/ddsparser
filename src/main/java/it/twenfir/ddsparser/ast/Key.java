@@ -1,6 +1,6 @@
-package io.github.twentyfirst.ddsparser.ast;
+package it.twenfir.ddsparser.ast;
 
-import io.github.twentyfirst.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.DdsParser.KeyContext;
 
 public class Key extends AstNode {
 

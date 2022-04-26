@@ -1,11 +1,11 @@
-package io.github.twentyfirst.ddsparser;
+package it.twenfir.ddsparser;
 
-import io.github.twentyfirst.ddsparser.DdsParser.DdsContext;
-import io.github.twentyfirst.ddsparser.DdsParser.FieldContext;
-import io.github.twentyfirst.ddsparser.DdsParser.KeyContext;
-import io.github.twentyfirst.ddsparser.ast.Dds;
-import io.github.twentyfirst.ddsparser.ast.Field;
-import io.github.twentyfirst.ddsparser.ast.Key;
+import it.twenfir.ddsparser.DdsParser.DdsContext;
+import it.twenfir.ddsparser.DdsParser.FieldContext;
+import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.ast.Dds;
+import it.twenfir.ddsparser.ast.Field;
+import it.twenfir.ddsparser.ast.Key;
 
 public class AstBuilder extends DdsParserBaseListener {
 

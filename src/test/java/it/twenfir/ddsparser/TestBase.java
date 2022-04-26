@@ -1,4 +1,4 @@
-package io.github.twentyfirst.ddsparser;
+package it.twenfir.ddsparser;
 
 import org.slf4j.Logger;
 

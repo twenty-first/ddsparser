@@ -1,9 +1,9 @@
-package io.github.twentyfirst.ddsparser;
+package it.twenfir.ddsparser;
 
 import org.slf4j.Logger;
 
-import io.github.twentyfirst.ddsparser.DdsParser.DdsContext;
-import io.github.twentyfirst.ddsparser.ast.Dds;
+import it.twenfir.ddsparser.DdsParser.DdsContext;
+import it.twenfir.ddsparser.ast.Dds;
 
 public class Helper {
 

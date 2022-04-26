@@ -1,4 +1,4 @@
-package io.github.twentyfirst.ddsparser.ast;
+package it.twenfir.ddsparser.ast;
 
 public interface AstVisitor<ValueT> {
 

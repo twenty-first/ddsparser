@@ -1,4 +1,4 @@
-package io.github.twentyfirst.ddsparser;
+package it.twenfir.ddsparser;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Lexer;

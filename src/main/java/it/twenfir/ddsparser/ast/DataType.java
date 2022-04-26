@@ -1,6 +1,6 @@
-package io.github.twentyfirst.ddsparser.ast;
+package it.twenfir.ddsparser.ast;
 
-import io.github.twentyfirst.ddsparser.DdsParser.DataTypeContext;
+import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 
 public class DataType extends AstNode {
 

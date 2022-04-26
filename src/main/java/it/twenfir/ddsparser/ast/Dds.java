@@ -1,8 +1,9 @@
-package io.github.twentyfirst.ddsparser.ast;
+package it.twenfir.ddsparser.ast;
 
 import java.util.Iterator;
 
-import io.github.twentyfirst.ddsparser.DdsParser.DdsContext;
+import it.twenfir.ddsparser.DdsParser.DdsContext;
+
 
 public class Dds extends AstNode {
 

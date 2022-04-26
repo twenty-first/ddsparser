@@ -1,4 +1,4 @@
-package io.github.twentyfirst.ddsparser;
+package it.twenfir.ddsparser;
 
 public class ParseException extends RuntimeException {
 

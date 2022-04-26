@@ -1,6 +1,6 @@
-package io.github.twentyfirst.ddsparser.ast;
+package it.twenfir.ddsparser.ast;
 
-import io.github.twentyfirst.ddsparser.DdsParser.FieldContext;
+import it.twenfir.ddsparser.DdsParser.FieldContext;
 
 public class Field extends AstNode {
 

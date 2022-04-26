@@ -1,4 +1,4 @@
-package io.github.twentyfirst.ddsparser;
+package it.twenfir.ddsparser;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -7,8 +7,8 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.github.twentyfirst.ddsparser.DdsParser.DdsContext;
-import io.github.twentyfirst.ddsparser.ast.Dds;
+import it.twenfir.ddsparser.DdsParser.DdsContext;
+import it.twenfir.ddsparser.ast.Dds;
 
 public class Driver {
 
