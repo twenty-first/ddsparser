@@ -1,5 +1,7 @@
 package it.twenfir.ddsparser.ast;
 
+import it.twenfir.antlr.ast.AstNode;
+import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 
 public class DataType extends AstNode {

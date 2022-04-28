@@ -2,6 +2,8 @@ package it.twenfir.ddsparser.ast;
 
 import java.util.Iterator;
 
+import it.twenfir.antlr.ast.AstNode;
+import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 
 

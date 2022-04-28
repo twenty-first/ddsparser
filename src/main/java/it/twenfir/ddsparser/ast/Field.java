@@ -1,5 +1,8 @@
 package it.twenfir.ddsparser.ast;
 
+import it.twenfir.antlr.ast.AstNode;
+import it.twenfir.antlr.ast.AstVisitor;
+import it.twenfir.antlr.ast.ChildrenIterator;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 
 public class Field extends AstNode {
