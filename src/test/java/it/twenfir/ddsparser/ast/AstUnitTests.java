@@ -1,4 +1,4 @@
-package it.twenfir.ddsparser;
+package it.twenfir.ddsparser.ast;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,8 +10,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import it.twenfir.ddsparser.ast.Dds;
-import it.twenfir.ddsparser.ast.Field;
+import it.twenfir.ddsparser.ParseException;
+import it.twenfir.ddsparser.TestBase;
 
 public class AstUnitTests extends TestBase {
 

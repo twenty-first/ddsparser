@@ -2,15 +2,15 @@ package it.twenfir.ddsparser.ast;
 
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
-import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.antlr.ast.Location;
 
 public class Key extends AstNode {
 
 	private String fieldName;
 	
-	public Key(KeyContext context) {
-		super(context);
-		fieldName = context.IDENTIFIER().getText();
+	public Key(Location location, String fieldName) {
+		super(location);
+		this.fieldName = fieldName;
 	}
 
 	public String getFieldName() {

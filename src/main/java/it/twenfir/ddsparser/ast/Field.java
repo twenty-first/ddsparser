@@ -3,7 +3,7 @@ package it.twenfir.ddsparser.ast;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.ChildrenIterator;
-import it.twenfir.ddsparser.DdsParser.FieldContext;
+import it.twenfir.antlr.ast.Location;
 
 public class Field extends AstNode {
 
@@ -11,12 +11,11 @@ public class Field extends AstNode {
 	private String heading;
 	private String description;
 	
-	public Field(FieldContext context) {
-		super(context);
-		name = context.IDENTIFIER().getText();
-		heading = context.colhdg().size() > 0 ? context.colhdg(0).DESCRIPTION().getText() : null;
-		description = context.text().size() > 0 ? context.text(0).DESCRIPTION().getText() : null;
-		addChild(new DataType(context.dataType()));
+	public Field(Location location, String name, String heading, String description) {
+		super(location);
+		this.name = name;
+		this.heading = heading;
+		this.description = description;
 	}
 	
     public String getName() {
