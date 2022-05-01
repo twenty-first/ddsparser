@@ -3,7 +3,6 @@ package it.twenfir.ddsparser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,11 +48,12 @@ public class Driver {
     }
 
     public Dds makeAst() {
-        ParseTreeWalker walker = new ParseTreeWalker();
+//        ParseTreeWalker walker = new ParseTreeWalker();
         DdsContext tree = parse();
         AstBuilder builder = new AstBuilder();
-        walker.walk(builder, tree);
-        return builder.getDds();
-
+//        walker.walk(builder, tree);
+//        return builder.getDds();
+		Dds dds = builder.visitDds(tree);
+		return dds;
     }
 }
