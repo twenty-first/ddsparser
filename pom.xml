@@ -7,36 +7,37 @@
     <parent>
         <groupId>it.twenfir</groupId>
         <artifactId>twenfir-bom</artifactId>
-        <version>0.0.1-SNAPSHOT</version>    
+        <version>0.0.1</version>    
     </parent>
 
+    <groupId>it.twenfir</groupId>
     <artifactId>ddsparser</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>ddsparser</name>
-    <description>
-        An ANTLR4 parser for IBM's Data Description Specifications
-    </description>
+    <description>An ANTLR4 parser for IBM's Data Description Specifications</description>
     <url>https://github.com/twenty-first/ddsparser</url>
     <inceptionYear>2022</inceptionYear>
     <organization>
-        <name>TwentyFirst</name>
+        <name>Twenty-First</name>
         <url>https://github.com/twenty-first</url>
-    </organization>    
+    </organization>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
+
     <developers>
         <developer>
             <name>Nicola Musatti</name>
             <email>nicola.musatti@gmail.com</email>
-            <organization>TwentyFirst</organization>
+            <organization>Twenty-First</organization>
             <organizationUrl>https://github.com/twenty-first</organizationUrl>
         </developer>
     </developers>
-    
-    <scm>
-        <connection>scm:git:git@github.com:twenty-first/ddsparser.git</connection>
-        <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
-        <url>https://github.com/twenty-first/ddsparser.git</url>
-    </scm>
     
     <dependencies>
         <dependency>
@@ -52,7 +53,7 @@
         <dependency>
             <groupId>it.twenfir</groupId>
             <artifactId>twenfir-antlr</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
          <dependency>
             <groupId>org.antlr</groupId>
@@ -75,152 +76,43 @@
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>false</skipTests>
-                </configuration>
-            </plugin>
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <finalName>uber-${project.artifactId}-${project.version}</finalName>
-                </configuration>
-            </plugin>
-            -->
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
-            <id>allow-snapshots</id>
-            <activation><activeByDefault>true</activeByDefault></activation>
-            <repositories>
-                <repository>
-                    <id>ddsparser</id>
-                    <url>https://maven.pkg.github.com/twenty-first/ddsparser</url>
-                    <releases><enabled>false</enabled></releases>
-                    <snapshots><enabled>true</enabled></snapshots>
-                </repository>
-            </repositories>
-        </profile>
-        <profile>
-            <id>deploy</id>
+            <id>release</id>
             <build>
-                <plugins>            
-            <!-- deployment -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                        <configuration>
-                              <keyname>com.github.twentyfirst.ddsparser</keyname>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>1.7</version>
-                <configuration>
-                    <verbose>false</verbose>
-                    <addSvnKeyWords>true</addSvnKeyWords>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>first</id>
-                        <goals>
-                            <goal>update-file-header</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                        <configuration>
-                            <licenseName>lgpl_v2_1</licenseName>
-                            <roots>
-                                <root>src/main/java</root>
-                                <root>src/test</root>
-                            </roots>
-                            <includes>
-                                <include>*.java</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.2</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            -->
-            <!-- end deployment -->
-                 </plugins>
-              </build>
-           </profile>
+                <plugins>
+                    <plugin>
+                        <groupId>org.antlr</groupId>
+                        <artifactId>antlr4-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>    
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
+    
+    <scm>
+        <connection>scm:git:git@github.com:twenty-first/ddsparser.git</connection>
+        <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
+        <url>https://github.com/twenty-first/ddsparser.git</url>
+    </scm>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ddsparser</id>
-            <name>GitHub Twenty First Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/twenty-first/ddsparser</url>
-        </snapshotRepository>
-        <repository>
-            <id>ddsparser</id>
-            <name>GitHub Twenty First Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/twenty-first/ddsparser</url>
-        </repository>
-    </distributionManagement>
 </project>
