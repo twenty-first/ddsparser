@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import it.twenfir.ddsparser.ParseException;
+import it.twenfir.antlr.exception.ParseException;
 import it.twenfir.ddsparser.TestBase;
 
 public class AstUnitTests extends TestBase {

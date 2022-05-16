@@ -13,18 +13,18 @@ public class Helper {
 		this.log = log;
 	}
 	
-	private Driver driver(String src) {
-		return new Driver(src);
+	private DssParserDriver driver(String src) {
+		return new DssParserDriver(src);
 	}
 	
 	public DdsContext parse(String src) {
-		Driver d = driver(src);
+		DssParserDriver d = driver(src);
 		DdsContext dc = d.parse();
 		return dc;
 	}
 
 	public Dds ast(String src) {
-		Driver d = driver(src);
+		DssParserDriver d = driver(src);
 		Dds dds = d.makeAst();
 		return dds;
 	}
