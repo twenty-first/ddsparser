@@ -12,16 +12,20 @@ import it.twenfir.antlr.parser.ParserDriverBase;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 import it.twenfir.ddsparser.ast.Dds;
 
-public class DssParserDriver extends ParserDriverBase {
+public class DdsParserDriver extends ParserDriverBase {
 
-	private static Logger log = LoggerFactory.getLogger(DssParserDriver.class);
+	private static Logger log = LoggerFactory.getLogger(DdsParserDriver.class);
 	
 	private CommonTokenStream tokenStream;
 	private DdsParser parser;
 	private DdsContext parseTree;
 	
-	public DssParserDriver(String ddsSource) {
-		super("dssparser", log);
+	public DdsParserDriver(String ddsSource) {
+		this(ddsSource, "input");
+	}
+	
+	public DdsParserDriver(String ddsSource, String fileName) {
+		super("dssparser", fileName, false, log);
         ANTLRInputStream inputStream = new ANTLRInputStream(ddsSource);
         DdsLexer lexer = new DdsLexer(inputStream);
     	lexer.removeErrorListeners();
