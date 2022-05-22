@@ -3,6 +3,7 @@ package it.twenfir.ddsparser.ast;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
@@ -50,5 +51,29 @@ public class AstUnitTests extends TestBase {
 		iter.next();
 		Field f = iter.next();
 		assertEquals("ZONED", f.getHeading());
+	}
+
+	@Test
+	public void textColhdgTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A                                      COLHDG('ZONED')";
+
+		Dds ast = helper.ast(src);
+		Iterator<Field> iter = ast.getFields();
+		Field f = iter.next();
+		assertTrue(f.getDescription() != null && f.getHeading() != null);
+	}
+
+	@Test
+	public void uniqueTest() throws ParseException {
+		String src = 
+				"     A                                      UNIQUE\n" + 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')";
+
+		Dds ast = helper.ast(src);
+		assertTrue(ast.isUnique());
 	}
 }

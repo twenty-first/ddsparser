@@ -26,7 +26,7 @@ public class VisitorUnitTests {
         DataType t = new DataType(null, null, null, null);
         Field f = new Field(null, null, null, null);
         f.addChild(t);
-        Dds d = new Dds(null, null);
+        Dds d = new Dds(null, null, false);
         d.addChild(f);
         d.addChild(k);
         int i = visitor.visit(d);

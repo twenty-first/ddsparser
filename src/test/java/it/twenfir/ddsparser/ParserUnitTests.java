@@ -47,6 +47,26 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void textColhdgTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A                                      COLHDG('ZONED')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void uniqueTest() throws ParseException {
+		String src = 
+				"     A                                      UNIQUE\n" + 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void errorTest() {
 		String src = 
 				"     A          R BADDDS\n" + 

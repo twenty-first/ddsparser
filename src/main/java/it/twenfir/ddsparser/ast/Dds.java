@@ -10,14 +10,20 @@ import it.twenfir.antlr.ast.Location;
 public class Dds extends AstNode {
 
 	private String recordFormat;
+	private boolean unique;
 	
-	public Dds(Location location, String recordFormat) {
+	public Dds(Location location, String recordFormat, boolean unique) {
 		super(location);
 		this.recordFormat = recordFormat;
+		this.unique = unique;
 	}
 
 	public String getRecordFormat() {
 		return recordFormat;
+	}
+	
+	public boolean isUnique() {
+		return unique;
 	}
 	
 	public Iterator<Field> getFields() {

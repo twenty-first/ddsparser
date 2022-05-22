@@ -5,12 +5,13 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   A_SPEC RECORD IDENTIFIER
+dds :   ( A_SPEC UNIQUE )?
+        A_SPEC RECORD IDENTIFIER
         ( A_SPEC field )+ 
         ( A_SPEC key )* 
         EOF ;
 
-field : IDENTIFIER dataType ( text | colhdg )+ ;
+field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg ) )+ ;
 
 dataType : SIZE ( TYPE? SIZE )? ;
 

@@ -12,7 +12,8 @@ SP_EOL      : EOL_F -> channel(HIDDEN), popMode;
 
 mode Def;
 
-D_SPACE     : ' '+ -> channel(HIDDEN);
+EMPTY_DEF   : '                                      ' -> channel(HIDDEN), mode(Func);
+D_SPACE     : ' ' -> channel(HIDDEN);
 RECORD      : 'R' ;
 KEY         : 'K' ;
 IDENTIFIER  : [A-Z0-9$]+ -> mode(Type);
@@ -25,6 +26,13 @@ TYPE        : [ALPSTZ];
 TY_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 TY_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
 TY_EOL      : EOL_F -> channel(HIDDEN), popMode;
+
+mode Func ;
+FN_SPACE    : ' '+ -> channel(HIDDEN);
+UNIQUE      : UNIQUE_F ;
+FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
+FN_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
+FN_EOL      : EOL_F -> channel(HIDDEN), popMode;
 
 mode Text;
 
@@ -42,3 +50,4 @@ fragment ANY_F      : ~[\r\n] ;
 fragment EOL_F      : '\r'? '\n' ;
 fragment TEXT_F     : 'TEXT' ;
 fragment COLHDG_F   : 'COLHDG' ;
+fragment UNIQUE_F   : 'UNIQUE' ;
