@@ -11,12 +11,14 @@ dds :   ( A_SPEC UNIQUE )?
         ( A_SPEC key )* 
         EOF ;
 
-field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg ) )+ ;
+field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg ) )* ;
 
-dataType : SIZE ( TYPE? SIZE )? ;
+dataType : SIZE TYPE? SIZE? ;
 
-text : TEXT LPAR QUOTE DESCRIPTION QUOTE RPAR ;
+text : TEXT LPAR QUOTE description QUOTE RPAR ;
 
-colhdg : COLHDG LPAR QUOTE DESCRIPTION QUOTE RPAR ;
+colhdg : COLHDG LPAR QUOTE description QUOTE RPAR ;
+
+description : ( DESC_START A_SPEC )* DESCRIPTION ;
 
 key : KEY IDENTIFIER ;

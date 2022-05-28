@@ -1,19 +1,32 @@
 package it.twenfir.ddsparser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import it.twenfir.antlr.ast.AstHelper;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.Location;
+import it.twenfir.ddsparser.DdsParser.ColhdgContext;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
+import it.twenfir.ddsparser.DdsParser.DescriptionContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
+import it.twenfir.ddsparser.ast.Description;
 import it.twenfir.ddsparser.ast.Field;
+import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Key;
+import it.twenfir.ddsparser.ast.Text;
 
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
+	private Pattern endDescRe = Pattern.compile("\\+|-");
+	
 	@Override
 	public Dds visitDds(DdsContext ctx) {
 		Location location = AstHelper.location(ctx);
@@ -28,9 +41,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Field visitField(FieldContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String name = ctx.IDENTIFIER().getText();
-		String heading = ctx.colhdg().size() > 0 ? ctx.colhdg(0).DESCRIPTION().getText() : null;
-		String description = ctx.text().size() > 0 ? ctx.text(0).DESCRIPTION().getText() : null;
-		Field field = new Field(location, name, heading, description);
+		Field field = new Field(location, name);
 		AstHelper.visitChildren(this, ctx, field);
 		return field;
 	}
@@ -44,6 +55,42 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		DataType dataType = new DataType(location, type, size, precision);
 		AstHelper.visitChildren(this, ctx, dataType);
 		return dataType;
+	}
+
+	@Override
+	public AstNode visitText(TextContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Text text = new Text(location);
+		AstHelper.visitChildren(this, ctx, text);
+		return text;
+	}
+
+	@Override
+	public AstNode visitColhdg(ColhdgContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Heading heading = new Heading(location);
+		AstHelper.visitChildren(this, ctx, heading);
+		return heading;
+	}
+
+	@Override
+	public AstNode visitDescription(DescriptionContext ctx) {
+		Location location = AstHelper.location(ctx);
+		StringBuilder sb = new StringBuilder();
+		for ( TerminalNode ds : ctx.DESC_START() ) {
+			Matcher m = endDescRe.matcher(ds.getText());
+			int i = -1;
+			while ( m.find() ) {
+				i = m.start();
+			}
+			String s = ds.getText().charAt(i) == '-' && ds.getText().charAt(i-1) == ' ' ?
+					ds.getText().substring(0, i - 1) : ds.getText().substring(0, i);
+			sb.append(s);
+		}
+		sb.append(ctx.DESCRIPTION().getText());
+		Description description = new Description(location, sb.toString());
+		AstHelper.visitChildren(this, ctx, description);
+		return description;
 	}
 
 	@Override

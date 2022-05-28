@@ -70,7 +70,7 @@ public class ParserUnitTests extends TestBase {
 	public void errorTest() {
 		String src = 
 				"     A          R BADDDS\n" + 
-				"     A            STRING        10";
+				"     A            STRING        ";
 		
 		assertThrows(ParseException.class, () -> helper.parse(src));
 	}

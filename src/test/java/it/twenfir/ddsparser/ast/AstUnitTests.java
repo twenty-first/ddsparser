@@ -50,7 +50,7 @@ public class AstUnitTests extends TestBase {
 		Iterator<Field> iter = ast.getFields();
 		iter.next();
 		Field f = iter.next();
-		assertEquals("ZONED", f.getHeading());
+		assertEquals("ZONED", f.getHeading().getDescription().getDescription());
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		Iterator<Field> iter = ast.getFields();
 		Field f = iter.next();
-		assertTrue(f.getDescription() != null && f.getHeading() != null);
+		assertTrue(f.getText().getDescription() != null && f.getHeading() != null);
 	}
 
 	@Test

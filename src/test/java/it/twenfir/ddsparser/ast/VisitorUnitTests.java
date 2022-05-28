@@ -24,7 +24,7 @@ public class VisitorUnitTests {
 
         Key k = new Key(null, null);
         DataType t = new DataType(null, null, null, null);
-        Field f = new Field(null, null, null, null);
+        Field f = new Field(null, null);
         f.addChild(t);
         Dds d = new Dds(null, null, false);
         d.addChild(f);

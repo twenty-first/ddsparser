@@ -1,5 +1,7 @@
 package it.twenfir.ddsparser.ast;
 
+import java.util.Iterator;
+
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.ChildrenIterator;
@@ -8,26 +10,24 @@ import it.twenfir.antlr.ast.Location;
 public class Field extends AstNode {
 
 	private String name;
-	private String heading;
-	private String description;
 	
-	public Field(Location location, String name, String heading, String description) {
+	public Field(Location location, String name) {
 		super(location);
 		this.name = name;
-		this.heading = heading;
-		this.description = description;
 	}
 	
     public String getName() {
 		return name;
 	}
 
-	public String getDescription() {
-		return description;
+	public Text getText() {
+		Iterator<Text> iter = new ChildrenIterator<Text>(getChildren(), Text.class);
+		return iter.hasNext() ? iter.next() : null;
 	}
 
-	public String getHeading() {
-		return heading;
+	public Heading getHeading() {
+		Iterator<Heading> iter = new ChildrenIterator<Heading>(getChildren(), Heading.class);
+		return iter.hasNext() ? iter.next() : null;
 	}
 	
 	public DataType getDataType() {
