@@ -1,5 +1,6 @@
 package it.twenfir.ddsparser;
 
+import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
@@ -21,20 +22,30 @@ public class DdsParserDriver extends ParserDriverBase {
 	private DdsContext parseTree;
 	
 	public DdsParserDriver(String ddsSource) {
-		this(ddsSource, "input");
+		this(ddsSource, "input", null);
 	}
-	
+
 	public DdsParserDriver(String ddsSource, String fileName) {
+		this(ddsSource, fileName, null);
+	}
+
+	public DdsParserDriver(String ddsSource, String fileName, ANTLRErrorListener listener) {
 		super("dssparser", fileName, false, log);
         ANTLRInputStream inputStream = new ANTLRInputStream(ddsSource);
         DdsLexer lexer = new DdsLexer(inputStream);
     	lexer.removeErrorListeners();
     	lexer.addErrorListener(this);
+    	if ( listener != null ) {
+    		lexer.addErrorListener(listener);
+    	}
         LoggingTokenSource source = new LoggingTokenSource(lexer);
         tokenStream = new CommonTokenStream(source);
         parser = new DdsParser(tokenStream);
     	parser.removeErrorListeners();
     	parser.addErrorListener(this);
+    	if ( listener != null ) {
+    		parser.addErrorListener(listener);
+    	}
 	}
 	
     public DdsContext parse() {
