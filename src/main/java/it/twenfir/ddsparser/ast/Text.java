@@ -2,7 +2,6 @@ package it.twenfir.ddsparser.ast;
 
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
-import it.twenfir.antlr.ast.ChildrenIterator;
 import it.twenfir.antlr.ast.Location;
 
 public class Text extends AstNode {
@@ -12,7 +11,7 @@ public class Text extends AstNode {
 	}
 
 	public Description getDescription() {
-		return new ChildrenIterator<Description>(getChildren(), Description.class).next();
+		return getChild(Description.class);
 
 	}
 
