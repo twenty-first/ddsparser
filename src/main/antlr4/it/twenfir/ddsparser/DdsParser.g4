@@ -15,10 +15,10 @@ field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg ) )* ;
 
 dataType : SIZE TYPE? SIZE? ;
 
-text : TEXT LPAR QUOTE description QUOTE RPAR ;
+text : TEXT LPAR description RPAR ;
 
-colhdg : COLHDG LPAR QUOTE description QUOTE RPAR ;
+colhdg : COLHDG LPAR description RPAR ;
 
-description : ( DESC_START A_SPEC )* DESCRIPTION ;
+description : QUOTE ( DESC_START A_SPEC )* DESCRIPTION QUOTE ;
 
-key : KEY IDENTIFIER ;
+key : KEY IDENTIFIER DESCEND?;

@@ -22,7 +22,7 @@ public class VisitorUnitTests {
              
         };
 
-        Key k = new Key(null, null);
+        Key k = new Key(null, null, false);
         DataType t = new DataType(null, null, null, null);
         Field f = new Field(null, null);
         f.addChild(t);

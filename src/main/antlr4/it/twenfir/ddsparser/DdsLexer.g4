@@ -25,6 +25,7 @@ SIZE        : [0-9]+;
 TYPE        : [ALPSTZ];
 TY_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 TY_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
+DESCEND     : 'DESCEND';
 TY_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Func ;

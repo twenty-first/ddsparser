@@ -67,6 +67,16 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void textDescendingKeyTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A          K STRING                    DESCEND";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void errorTest() {
 		String src = 
 				"     A          R BADDDS\n" + 

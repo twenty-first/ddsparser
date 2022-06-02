@@ -76,4 +76,27 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		assertTrue(ast.isUnique());
 	}
+
+	@Test
+	public void textDescendingKeyTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A          K STRING                    DESCEND";
+
+		Dds ast = helper.ast(src);
+		Key k = ast.getKeys().next();
+		assertTrue(k.isDescending());
+	}
+
+	@Test
+	public void splitDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING +\n" +
+				"     A                                           FIELD')";
+
+		Dds ast = helper.ast(src);
+		assertEquals("STRING FIELD", ast.getFields().next().getText().getDescription().getDescription());
+	}
 }

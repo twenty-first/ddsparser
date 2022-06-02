@@ -7,14 +7,20 @@ import it.twenfir.antlr.ast.Location;
 public class Key extends AstNode {
 
 	private String fieldName;
+	private boolean descending;
 	
-	public Key(Location location, String fieldName) {
+	public Key(Location location, String fieldName, boolean descending) {
 		super(location);
 		this.fieldName = fieldName;
+		this.descending = descending;
 	}
 
 	public String getFieldName() {
 		return fieldName;
+	}
+	
+	public boolean isDescending() {
+		return descending;
 	}
 	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
