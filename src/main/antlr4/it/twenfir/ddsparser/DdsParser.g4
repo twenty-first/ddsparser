@@ -11,13 +11,15 @@ dds :   ( A_SPEC UNIQUE )?
         ( A_SPEC key )* 
         EOF ;
 
-field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg ) )* ;
+field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg | edtwrd ) )* ;
 
 dataType : SIZE TYPE? SIZE? ;
 
 text : TEXT LPAR description RPAR ;
 
 colhdg : COLHDG LPAR description RPAR ;
+
+edtwrd : EDTWRD LPAR description RPAR ;
 
 description : descriptionElement ( PLUS A_SPEC descriptionElement )* ;
 

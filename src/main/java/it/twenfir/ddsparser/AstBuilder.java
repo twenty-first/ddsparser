@@ -13,6 +13,7 @@ import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionElementContext;
+import it.twenfir.ddsparser.DdsParser.EdtwrdContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
@@ -20,6 +21,7 @@ import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
 import it.twenfir.ddsparser.ast.Description;
 import it.twenfir.ddsparser.ast.DescriptionElement;
+import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
 import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Key;
@@ -60,19 +62,27 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
-	public AstNode visitText(TextContext ctx) {
-		Location location = AstHelper.location(ctx);
-		Text text = new Text(location);
-		AstHelper.visitChildren(this, ctx, text);
-		return text;
-	}
-
-	@Override
 	public AstNode visitColhdg(ColhdgContext ctx) {
 		Location location = AstHelper.location(ctx);
 		Heading heading = new Heading(location);
 		AstHelper.visitChildren(this, ctx, heading);
 		return heading;
+	}
+
+	@Override
+	public AstNode visitEdtwrd(EdtwrdContext ctx) {
+		Location location = AstHelper.location(ctx);
+		EditWord editWord = new EditWord(location);
+		AstHelper.visitChildren(this, ctx, editWord);
+		return editWord;
+	}
+
+	@Override
+	public AstNode visitText(TextContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Text text = new Text(location);
+		AstHelper.visitChildren(this, ctx, text);
+		return text;
 	}
 
 	@Override

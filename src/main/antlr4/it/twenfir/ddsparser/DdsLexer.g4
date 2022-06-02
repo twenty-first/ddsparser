@@ -1,6 +1,6 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, COLHDG, DESC_START, DESCRIPTION, QUOTE, TEXT }
+tokens { A_SPEC, COLHDG, DESC_START, DESCRIPTION, EDTWRD, QUOTE, TEXT }
 
 ST_PREFIX : PREFIX_F -> pushMode(Spec), channel(HIDDEN);
 
@@ -25,6 +25,7 @@ SIZE        : [0-9]+;
 TYPE        : [ALPSTZ];
 TY_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 TY_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
+TY_EDTWRD   : EDTWRD_F -> type(EDTWRD), mode(Text);
 DESCEND     : 'DESCEND';
 TY_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
@@ -34,6 +35,7 @@ FN_SPACE    : ' '+ -> channel(HIDDEN);
 UNIQUE      : UNIQUE_F ;
 FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 FN_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
+FN_EDTWRD   : EDTWRD_F -> type(EDTWRD), mode(Text);
 FN_QUOTE    : QUOTE_F -> type(QUOTE), mode(Desc);
 FN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
@@ -41,6 +43,7 @@ mode Text;
 
 TE_TEXT        : TEXT_F -> type(TEXT);
 TE_COLHDG      : COLHDG_F -> type(COLHDG);
+TE_EDTWRD      : EDTWRD_F -> type(EDTWRD);
 LPAR           : '(';
 RPAR           : ')';
 TE_SPACE       : ' ' -> channel(HIDDEN);
@@ -73,8 +76,9 @@ fragment ANY_F         : ~[\r\n] ;
 fragment EOL_F         : '\r'? '\n' ;
 fragment PREFIX_F      : ANY_F ANY_F ANY_F ANY_F ANY_F ;
 fragment A_SPEC_F      : 'A' ;
-fragment TEXT_F        : 'TEXT' ;
 fragment COLHDG_F      : 'COLHDG' ;
+fragment EDTWRD_F      : 'EDTWRD' ;
+fragment TEXT_F        : 'TEXT' ;
 fragment UNIQUE_F      : 'UNIQUE' ;
 fragment DESCRIPTION_F : ((~[\r\n'])|('\'\''))+ ;
 //fragment DESC_START_F  : ((~[\r\n'+-])|('\'\'')|([+-]~[\r\n]))+[+-] EOL_F ;

@@ -7,6 +7,7 @@ public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visit(Dds dds);
     ValueT visit(Description description);
     ValueT visit(DescriptionElement descriptionElement);
+    ValueT visit(EditWord field);
     ValueT visit(Field field);
     ValueT visit(Heading heading);
     ValueT visit(Key key);
