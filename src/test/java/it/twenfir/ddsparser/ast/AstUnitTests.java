@@ -99,4 +99,15 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		assertEquals("STRING FIELD", ast.getFields().next().getText().getDescription().getDescription());
 	}
+
+	@Test
+	public void multipleDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING ' +\n" + 
+				"     A                                           'FIELD')";
+
+		Dds ast = helper.ast(src);
+		assertEquals("STRING FIELD", ast.getFields().next().getText().getDescription().getDescription());
+	}
 }

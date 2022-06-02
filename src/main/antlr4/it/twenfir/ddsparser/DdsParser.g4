@@ -19,6 +19,8 @@ text : TEXT LPAR description RPAR ;
 
 colhdg : COLHDG LPAR description RPAR ;
 
-description : QUOTE ( DESC_START A_SPEC )* DESCRIPTION QUOTE ;
+description : descriptionElement ( PLUS A_SPEC descriptionElement )* ;
+
+descriptionElement : QUOTE ( DESC_START A_SPEC )* DESCRIPTION QUOTE ;
 
 key : KEY IDENTIFIER DESCEND?;

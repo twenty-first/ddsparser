@@ -12,12 +12,14 @@ import it.twenfir.ddsparser.DdsParser.ColhdgContext;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionContext;
+import it.twenfir.ddsparser.DdsParser.DescriptionElementContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
 import it.twenfir.ddsparser.ast.Description;
+import it.twenfir.ddsparser.ast.DescriptionElement;
 import it.twenfir.ddsparser.ast.Field;
 import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Key;
@@ -76,6 +78,14 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public AstNode visitDescription(DescriptionContext ctx) {
 		Location location = AstHelper.location(ctx);
+		Description description = new Description(location);
+		AstHelper.visitChildren(this, ctx, description);
+		return description;
+	}
+
+	@Override
+	public AstNode visitDescriptionElement(DescriptionElementContext ctx) {
+		Location location = AstHelper.location(ctx);
 		StringBuilder sb = new StringBuilder();
 		for ( TerminalNode ds : ctx.DESC_START() ) {
 			Matcher m = endDescRe.matcher(ds.getText());
@@ -88,9 +98,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 			sb.append(s);
 		}
 		sb.append(ctx.DESCRIPTION().getText());
-		Description description = new Description(location, sb.toString());
-		AstHelper.visitChildren(this, ctx, description);
-		return description;
+		DescriptionElement descriptionElement = new DescriptionElement(location, sb.toString());
+		AstHelper.visitChildren(this, ctx, descriptionElement);
+		return descriptionElement;
 	}
 
 	@Override

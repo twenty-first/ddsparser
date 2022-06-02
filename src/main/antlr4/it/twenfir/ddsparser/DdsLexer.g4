@@ -1,6 +1,6 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, COLHDG, DESC_START, DESCRIPTION, TEXT }
+tokens { A_SPEC, COLHDG, DESC_START, DESCRIPTION, QUOTE, TEXT }
 
 ST_PREFIX : PREFIX_F -> pushMode(Spec), channel(HIDDEN);
 
@@ -34,18 +34,23 @@ FN_SPACE    : ' '+ -> channel(HIDDEN);
 UNIQUE      : UNIQUE_F ;
 FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 FN_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
+FN_QUOTE    : QUOTE_F -> type(QUOTE), mode(Desc);
 FN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Text;
 
-LPAR           : '(';
-RPAR           : ')';
-QUOTE          : '\'';
-TE_DESC_START  : DESC_START_F -> type(DESC_START), pushMode(DescPrf);
-TE_DESCRIPTION : DESCRIPTION_F -> type(DESCRIPTION);
 TE_TEXT        : TEXT_F -> type(TEXT);
 TE_COLHDG      : COLHDG_F -> type(COLHDG);
+LPAR           : '(';
+RPAR           : ')';
+TE_SPACE       : ' ' -> channel(HIDDEN);
+PLUS           : '+' -> mode(DescCont);
+TE_QUOTE       : QUOTE_F -> type(QUOTE), mode(Desc);
 TE_EOL         : EOL_F+ -> channel(HIDDEN), popMode;
+
+mode DescCont;
+
+DC_EOL   : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode DescPrf;
 
@@ -58,8 +63,9 @@ DS_SPACE   : ' '+ -> channel(HIDDEN), mode(Desc);
 
 mode Desc;
 
-DC_DESC_START  : DESC_START_F -> type(DESC_START), mode(DescPrf);
-DC_DESCRIPTION : DESCRIPTION_F -> type(DESCRIPTION), popMode;
+DE_DESC_START  : DESC_START_F -> type(DESC_START), mode(DescPrf);
+DE_DESCRIPTION : DESCRIPTION_F -> type(DESCRIPTION);
+DE_QUOTE       : QUOTE_F -> type(QUOTE), mode(Text);
 
 // Common fragments
 
@@ -73,3 +79,4 @@ fragment UNIQUE_F      : 'UNIQUE' ;
 fragment DESCRIPTION_F : ((~[\r\n'])|('\'\''))+ ;
 //fragment DESC_START_F  : ((~[\r\n'+-])|('\'\'')|([+-]~[\r\n]))+[+-] EOL_F ;
 fragment DESC_START_F  : (~[\r\n'+-])+ [+-] EOL_F;
+fragment QUOTE_F       : '\'' ;

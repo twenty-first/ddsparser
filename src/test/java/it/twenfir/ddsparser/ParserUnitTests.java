@@ -17,6 +17,15 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void minimalTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void simpleTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 
@@ -72,6 +81,26 @@ public class ParserUnitTests extends TestBase {
 				"     A          R TESTDDS\n" + 
 				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
 				"     A          K STRING                    DESCEND";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void splitDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING +\n" + 
+				"     A                                           FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void multipleDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING ' +\n" + 
+				"     A                                           'FIELD')";
 
 		helper.parse(src);
 	}
