@@ -34,9 +34,10 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Dds visitDds(DdsContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String recordFormat = ctx.IDENTIFIER().getText();
+		String record = ctx.record.getText();
+		String format = ctx.format != null ? ctx.format.getText() : null;
 		boolean unique = ctx.UNIQUE() != null;
-		Dds dds = new Dds(location, recordFormat, unique);
+		Dds dds = new Dds(location, record, format, unique);
 		AstHelper.visitChildren(this, ctx, dds);
 		return dds;
 	}

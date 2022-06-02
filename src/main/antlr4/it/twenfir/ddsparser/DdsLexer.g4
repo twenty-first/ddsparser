@@ -1,12 +1,12 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, COLHDG, DESC_START, DESCRIPTION, EDTWRD, QUOTE, TEXT }
+tokens { COLHDG, DESC_START, DESCRIPTION, EDTWRD, IDENTIFIER, LPAR, QUOTE, RPAR, TEXT }
 
 ST_PREFIX : PREFIX_F -> pushMode(Spec), channel(HIDDEN);
 
 mode Spec;
 
-SP_A_SPEC   : A_SPEC_F -> type(A_SPEC), mode(Def);
+SP_A_SPEC   : A_SPEC_F -> channel(HIDDEN), mode(Def);
 COMMENT     : ANY_F '*' ANY_F* -> channel(HIDDEN);
 SP_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
@@ -16,18 +16,22 @@ EMPTY_DEF   : '                                      ' -> channel(HIDDEN), mode(
 D_SPACE     : ' ' -> channel(HIDDEN);
 RECORD      : 'R' ;
 KEY         : 'K' ;
-IDENTIFIER  : [A-Z0-9$]+ -> mode(Type);
+IDENTIFIER  : IDENTIFIER_F -> type(IDENTIFIER), mode(Type);
 
 mode Type;
 
-TY_SPACE    : ' '+ -> channel(HIDDEN);
-SIZE        : [0-9]+;
-TYPE        : [ALPSTZ];
-TY_TEXT     : TEXT_F -> type(TEXT), mode(Text);
-TY_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
-TY_EDTWRD   : EDTWRD_F -> type(EDTWRD), mode(Text);
-DESCEND     : 'DESCEND';
-TY_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
+TY_SPACE        : ' '+ -> channel(HIDDEN);
+SIZE            : [0-9]+;
+TYPE            : [ALPSTZ];
+TY_TEXT         : TEXT_F -> type(TEXT), mode(Text);
+TY_COLHDG       : COLHDG_F -> type(COLHDG), mode(Text);
+TY_EDTWRD       : EDTWRD_F -> type(EDTWRD), mode(Text);
+DESCEND         : 'DESCEND';
+FORMAT          : 'FORMAT';
+TY_LPAR         : LPAR_F -> type(LPAR);
+TY_RPAR         : RPAR_F -> type(RPAR);
+TY_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
+TY_EOL          : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Func ;
 
@@ -61,7 +65,7 @@ DP_PREFIX  : PREFIX_F -> channel(HIDDEN), mode(DescSpec);
 
 mode DescSpec;
 
-DS_A_SPEC  : A_SPEC_F -> type(A_SPEC);
+DS_A_SPEC  : A_SPEC_F -> channel(HIDDEN);
 DS_SPACE   : ' '+ -> channel(HIDDEN), mode(Desc);
 
 mode Desc;
@@ -72,14 +76,17 @@ DE_QUOTE       : QUOTE_F -> type(QUOTE), mode(Text);
 
 // Common fragments
 
+fragment LPAR_F        : '(';
+fragment RPAR_F        : ')';
 fragment ANY_F         : ~[\r\n] ;
 fragment EOL_F         : '\r'? '\n' ;
 fragment PREFIX_F      : ANY_F ANY_F ANY_F ANY_F ANY_F ;
-fragment A_SPEC_F      : 'A' ;
+fragment A_SPEC_F      : 'A'|' ' ;
 fragment COLHDG_F      : 'COLHDG' ;
 fragment EDTWRD_F      : 'EDTWRD' ;
 fragment TEXT_F        : 'TEXT' ;
 fragment UNIQUE_F      : 'UNIQUE' ;
+fragment IDENTIFIER_F  : [A-Z$][A-Z0-9$]* ;
 fragment DESCRIPTION_F : ((~[\r\n'])|('\'\''))+ ;
 //fragment DESC_START_F  : ((~[\r\n'+-])|('\'\'')|([+-]~[\r\n]))+[+-] EOL_F ;
 fragment DESC_START_F  : (~[\r\n'+-])+ [+-] EOL_F;

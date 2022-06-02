@@ -5,24 +5,24 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   ( A_SPEC UNIQUE )?
-        A_SPEC RECORD IDENTIFIER
-        ( A_SPEC field )+ 
-        ( A_SPEC key )* 
+dds :   UNIQUE?
+        RECORD ( record = IDENTIFIER ) ( FORMAT LPAR ( format = IDENTIFIER ) RPAR )?
+        field+ 
+        key* 
         EOF ;
 
-field : IDENTIFIER dataType ( A_SPEC? ( text | colhdg | edtwrd ) )* ;
+field : IDENTIFIER dataType ( text | colhdg | edtwrd )* ;
 
 dataType : SIZE TYPE? SIZE? ;
 
-text : TEXT LPAR description RPAR ;
+text : TEXT description ;
 
-colhdg : COLHDG LPAR description RPAR ;
+colhdg : COLHDG description ;
 
-edtwrd : EDTWRD LPAR description RPAR ;
+edtwrd : EDTWRD description ;
 
-description : descriptionElement ( PLUS A_SPEC descriptionElement )* ;
+description : LPAR descriptionElement ( PLUS descriptionElement )* RPAR ;
 
-descriptionElement : QUOTE ( DESC_START A_SPEC )* DESCRIPTION QUOTE ;
+descriptionElement : QUOTE DESC_START* DESCRIPTION QUOTE ;
 
 key : KEY IDENTIFIER DESCEND?;

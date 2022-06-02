@@ -36,6 +36,25 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void formatTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS                   FORMAT(EXTFMT)\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void omittedATest() throws ParseException {
+		String src = 
+				"                R TESTDDS\n" + 
+				"                  STRING        10          TEXT('STRING FIELD')\n" + 
+				"                  ZONED          8S 0       TEXT('ZONED FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void symbolTest() throws ParseException {
 		String src = 
 				"     A          R TEST$\n" + 

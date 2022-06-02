@@ -31,12 +31,22 @@ public class AstUnitTests extends TestBase {
 
 		Dds ast = helper.ast(src);
 		assertNotNull(ast);
-		assertEquals("TESTDDS", ast.getRecordFormat());
+		assertEquals("TESTDDS", ast.getRecord());
 		assertNotNull(ast);
 		assertNotNull(ast.getFields().next());
 		Field f = ast.getFields().next();
 		assertEquals(new Integer(10), f.getDataType().getSize());
 		assertFalse(ast.getKeys().hasNext());
+	}
+
+	@Test
+	public void formatTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS                   FORMAT(EXTFMT)\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')";
+
+		Dds ast = helper.ast(src);
+		assertEquals("EXTFMT", ast.getFormat());
 	}
 
 	@Test
