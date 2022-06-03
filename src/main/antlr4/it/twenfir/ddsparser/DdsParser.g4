@@ -5,15 +5,15 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   UNIQUE?
-        RECORD ( record = IDENTIFIER )
+dds :   ( UNIQUE | REF LPAR ref = IDENTIFIER RPAR )?
+        R_SPEC ( record = IDENTIFIER )
         ( FORMAT LPAR ( format = IDENTIFIER ) RPAR
         | field+ 
           key*
         ) 
         EOF ;
 
-field : IDENTIFIER dataType ( text | colhdg | edtwrd )* ;
+field : IDENTIFIER ( dataType | R_SPEC ) ( text | colhdg | edtwrd | reffld | values )* ;
 
 dataType : SIZE TYPE? SIZE? ;
 
@@ -22,6 +22,10 @@ text : TEXT description ;
 colhdg : COLHDG description ;
 
 edtwrd : EDTWRD description ;
+
+reffld : REFFLD LPAR IDENTIFIER RPAR ;
+
+values : VALUES LPAR ( QUOTE VALUE QUOTE )+ RPAR ;
 
 description : LPAR descriptionElement ( PLUS? descriptionElement )* RPAR ;
 

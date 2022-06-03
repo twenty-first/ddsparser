@@ -119,4 +119,26 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		assertEquals("STRING FIELD", ast.getFields().next().getText().getDescription().getDescription());
 	}
+
+	@Test
+	public void valuesTest() throws ParseException {
+		String src = 
+				"                R TESTDDS\n" + 
+				"                  ANSWER         1          VALUES('Y' 'N')";
+
+		Dds ast = helper.ast(src);
+		ast.getFields().next().getValues().getValues().forEach((v) -> { assertTrue(v.equals("Y") || v.equals("N")); });
+	}
+
+	@Test
+	public void refsTest() throws ParseException {
+		String src = 
+				"                                            REF(REFERENCE)\n" + 
+				"                R TESTDDS\n" + 
+				"                  REFERRAL       R          REFFLD(REFERRED)";
+
+		Dds ast = helper.ast(src);
+		assertEquals("REFERENCE", ast.getReference());
+		assertEquals("REFERRED", ast.getFields().next().getRefField().getName());
+	}
 }

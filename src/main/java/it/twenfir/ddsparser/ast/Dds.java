@@ -11,12 +11,14 @@ public class Dds extends AstNode {
 
 	private String record;
 	private String format;
+	private String reference;
 	private boolean unique;
 	
-	public Dds(Location location, String record, String format, boolean unique) {
+	public Dds(Location location, String record, String format, String reference, boolean unique) {
 		super(location);
 		this.record = record;
 		this.format = format;
+		this.reference = reference;
 		this.unique = unique;
 	}
 
@@ -26,6 +28,10 @@ public class Dds extends AstNode {
 	
 	public String getFormat() {
 		return format;
+	}
+
+	public String getReference() {
+		return reference;
 	}
 
 	public boolean isUnique() {

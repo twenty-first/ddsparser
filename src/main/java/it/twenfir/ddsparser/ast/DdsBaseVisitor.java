@@ -45,7 +45,17 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+    public ValueT visit(RefField node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public ValueT visit(Text node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public ValueT visit(Values node) {
         return visitChildren(node);
     }
 

@@ -124,6 +124,25 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void valuesTest() throws ParseException {
+		String src = 
+				"                R TESTDDS\n" + 
+				"                  ANSWER         1          VALUES('Y' 'N')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void refsTest() throws ParseException {
+		String src = 
+				"                                            REF(REFERENCE)\n" + 
+				"                R TESTDDS\n" + 
+				"                  REFERRAL       R          REFFLD(REFERRED)";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void errorTest() {
 		String src = 
 				"     A          R BADDDS\n" + 

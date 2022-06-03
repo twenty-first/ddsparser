@@ -1,5 +1,7 @@
 package it.twenfir.ddsparser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +18,9 @@ import it.twenfir.ddsparser.DdsParser.DescriptionElementContext;
 import it.twenfir.ddsparser.DdsParser.EdtwrdContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.DdsParser.ReffldContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
+import it.twenfir.ddsparser.DdsParser.ValuesContext;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
 import it.twenfir.ddsparser.ast.Description;
@@ -25,7 +29,9 @@ import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
 import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Key;
+import it.twenfir.ddsparser.ast.RefField;
 import it.twenfir.ddsparser.ast.Text;
+import it.twenfir.ddsparser.ast.Values;
 
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
@@ -36,8 +42,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		Location location = AstHelper.location(ctx);
 		String record = ctx.record.getText();
 		String format = ctx.format != null ? ctx.format.getText() : null;
+		String reference = ctx.ref != null ? ctx.ref.getText() : null;
 		boolean unique = ctx.UNIQUE() != null;
-		Dds dds = new Dds(location, record, format, unique);
+		Dds dds = new Dds(location, record, format, reference, unique);
 		AstHelper.visitChildren(this, ctx, dds);
 		return dds;
 	}
@@ -112,6 +119,26 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		DescriptionElement descriptionElement = new DescriptionElement(location, sb.toString());
 		AstHelper.visitChildren(this, ctx, descriptionElement);
 		return descriptionElement;
+	}
+
+	@Override
+	public AstNode visitValues(ValuesContext ctx) {
+		Location location = AstHelper.location(ctx);
+		List<String> valueList = new ArrayList<>();
+		ctx.VALUE().forEach((v) -> { valueList.add(v.getText()); });
+		Values values = new Values(location, valueList);
+		AstHelper.visitChildren(this, ctx, values);
+		return values;
+	}
+
+	
+	@Override
+	public AstNode visitReffld(ReffldContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String name = ctx.IDENTIFIER().getText();
+		RefField refField = new RefField(location, name);
+		AstHelper.visitChildren(this, ctx, refField);
+		return refField;
 	}
 
 	@Override

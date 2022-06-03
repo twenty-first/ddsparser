@@ -17,6 +17,10 @@ public class Field extends AstNode {
 		return name;
 	}
 
+	public DataType getDataType() {
+		return getChild(DataType.class);
+	}
+
 	public Text getText() {
 		return getChild(Text.class);
 	}
@@ -25,8 +29,12 @@ public class Field extends AstNode {
 		return getChild(Heading.class);
 	}
 	
-	public DataType getDataType() {
-		return getChild(DataType.class);
+	public Values getValues() {
+		return getChild(Values.class);
+	}
+	
+	public RefField getRefField() {
+		return getChild(RefField.class);
 	}
 	
 	public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
