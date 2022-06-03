@@ -6,9 +6,11 @@ options
 }
 
 dds :   UNIQUE?
-        RECORD ( record = IDENTIFIER ) ( FORMAT LPAR ( format = IDENTIFIER ) RPAR )?
-        field+ 
-        key* 
+        RECORD ( record = IDENTIFIER )
+        ( ( FORMAT LPAR ( format = IDENTIFIER ) RPAR )
+        | ( field+ 
+            key* )
+        ) 
         EOF ;
 
 field : IDENTIFIER dataType ( text | colhdg | edtwrd )* ;
@@ -21,7 +23,7 @@ colhdg : COLHDG description ;
 
 edtwrd : EDTWRD description ;
 
-description : LPAR descriptionElement ( PLUS descriptionElement )* RPAR ;
+description : LPAR descriptionElement ( PLUS? descriptionElement )* RPAR ;
 
 descriptionElement : QUOTE DESC_START* DESCRIPTION QUOTE ;
 

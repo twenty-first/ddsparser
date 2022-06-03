@@ -38,8 +38,7 @@ public class ParserUnitTests extends TestBase {
 	@Test
 	public void formatTest() throws ParseException {
 		String src = 
-				"     A          R TESTDDS                   FORMAT(EXTFMT)\n" + 
-				"     A            STRING        10          TEXT('STRING FIELD')";
+				"     A          R TESTDDS                   FORMAT(EXTFMT)";
 
 		helper.parse(src);
 	}
