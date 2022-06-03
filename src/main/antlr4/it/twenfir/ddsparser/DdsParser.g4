@@ -7,9 +7,9 @@ options
 
 dds :   UNIQUE?
         RECORD ( record = IDENTIFIER )
-        ( ( FORMAT LPAR ( format = IDENTIFIER ) RPAR )
-        | ( field+ 
-            key* )
+        ( FORMAT LPAR ( format = IDENTIFIER ) RPAR
+        | field+ 
+          key*
         ) 
         EOF ;
 
