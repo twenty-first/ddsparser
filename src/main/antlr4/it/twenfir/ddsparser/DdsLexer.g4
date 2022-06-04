@@ -1,12 +1,14 @@
 lexer grammar DdsLexer;
 
-tokens { COLHDG, DESC_START, DESCRIPTION, EDTWRD, IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, TEXT, VALUES }
+tokens {    A_SPEC, COLHDG, DESC_START, DESCRIPTION, EDTWRD, IDENTIFIER, LPAR,
+            QUOTE, R_SPEC, REFFLD, RPAR, TEXT, VALUES }
 
 ST_PREFIX : PREFIX_F -> pushMode(Spec), channel(HIDDEN);
 
 mode Spec;
 
-SP_A_SPEC   : A_SPEC_F -> channel(HIDDEN), mode(Def);
+SP_A_SPEC   : A_SPEC_F -> type(A_SPEC), mode(Def);
+SP_SPACE    : ' ' -> channel(HIDDEN), mode(Def);
 COMMENT     : ANY_F '*' ANY_F* -> channel(HIDDEN);
 SP_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
@@ -85,7 +87,7 @@ DP_PREFIX  : PREFIX_F -> channel(HIDDEN), mode(DescSpec);
 
 mode DescSpec;
 
-DS_A_SPEC  : A_SPEC_F -> channel(HIDDEN);
+DS_A_SPEC  : A_SPEC_F -> type(A_SPEC);
 DS_SPACE   : ' '+ -> channel(HIDDEN), mode(Desc);
 
 mode Desc;
@@ -112,7 +114,7 @@ fragment RPAR_F        : ')';
 fragment ANY_F         : ~[\r\n] ;
 fragment EOL_F         : '\r'? '\n' ;
 fragment PREFIX_F      : ANY_F ANY_F ANY_F ANY_F ANY_F ;
-fragment A_SPEC_F      : 'A'|' ' ;
+fragment A_SPEC_F      : 'A' ;
 fragment R_SPEC_F      : 'R' ;
 fragment COLHDG_F      : 'COLHDG' ;
 fragment EDTWRD_F      : 'EDTWRD' ;
