@@ -1,6 +1,6 @@
 lexer grammar DdsLexer;
 
-tokens {    A_SPEC, COLHDG, DESC_START, DESCRIPTION, EDTWRD, IDENTIFIER, LPAR,
+tokens {    A_SPEC, ALWNULL, COLHDG, CCSID, DESC_START, DESCRIPTION, EDTWRD, IDENTIFIER, LPAR,
             QUOTE, R_SPEC, REFFLD, RPAR, TEXT, VALUES }
 
 ST_PREFIX : PREFIX_F -> pushMode(Spec), channel(HIDDEN);
@@ -26,10 +26,12 @@ TY_SPACE        : ' '+ -> channel(HIDDEN);
 SIZE            : [0-9]+;
 TY_R_SPEC       : R_SPEC_F -> type(R_SPEC) ;
 TYPE            : [ALPSTZ];
-TY_TEXT         : TEXT_F -> type(TEXT), mode(Text);
+TY_ALWNULL      : ALWNULL_F -> type(ALWNULL);
 TY_COLHDG       : COLHDG_F -> type(COLHDG), mode(Text);
+TY_CCSID        : CCSID_F -> type(CCSID), mode(Ccsid);
 TY_EDTWRD       : EDTWRD_F -> type(EDTWRD), mode(Text);
 TY_REFFLD       : REFFLD_F -> type(REFFLD), pushMode(Reffld);
+TY_TEXT         : TEXT_F -> type(TEXT), mode(Text);
 TY_VALUES       : VALUES_F -> type(VALUES), mode(Values);
 DESCEND         : 'DESCEND';
 FORMAT          : 'FORMAT';
@@ -49,10 +51,12 @@ mode Func ;
 FN_SPACE    : ' '+ -> channel(HIDDEN);
 UNIQUE      : UNIQUE_F ;
 REF         : REF_F -> pushMode(Ref);
-FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
+FN_ALWNULL  : ALWNULL_F -> type(ALWNULL);
 FN_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
+FN_CCSID    : CCSID_F -> type(CCSID), mode(Ccsid);
 FN_EDTWRD   : EDTWRD_F -> type(EDTWRD), mode(Text);
 FN_REFFLD   : REFFLD_F -> type(REFFLD), pushMode(Reffld);
+FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 FN_VALUES   : VALUES_F -> type(VALUES), mode(Values);
 FN_QUOTE    : QUOTE_F -> type(QUOTE), mode(Desc);
 FN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
@@ -65,10 +69,12 @@ RE_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
 
 mode Text;
 
-TE_TEXT        : TEXT_F -> type(TEXT);
+TE_ALWNULL     : ALWNULL_F -> type(ALWNULL);
 TE_COLHDG      : COLHDG_F -> type(COLHDG);
+TE_CCSID       : CCSID_F -> type(CCSID);
 TE_EDTWRD      : EDTWRD_F -> type(EDTWRD);
 TE_REFFLD      : REFFLD_F -> type(REFFLD), pushMode(Reffld);
+TE_TEXT        : TEXT_F -> type(TEXT);
 TE_VALUES      : VALUES_F -> type(VALUES), mode(Values);
 TE_LPAR        : LPAR_F -> type(LPAR);
 TE_RPAR        : RPAR_F -> type(RPAR);
@@ -107,6 +113,12 @@ mode Value;
 VALUE       : [A-Z0-9 ]+;
 VL_QUOTE    : QUOTE_F -> type(QUOTE), popMode;
 
+mode Ccsid;
+
+CC_LPAR     : LPAR_F -> type(LPAR);
+CC_RPAR     : RPAR_F -> type(RPAR), mode(Text);
+NUMBER      : [0-9]+;
+
 // Common fragments
 
 fragment LPAR_F        : '(';
@@ -116,7 +128,9 @@ fragment EOL_F         : '\r'? '\n' ;
 fragment PREFIX_F      : ANY_F ANY_F ANY_F ANY_F ANY_F ;
 fragment A_SPEC_F      : 'A' ;
 fragment R_SPEC_F      : 'R' ;
+fragment ALWNULL_F     : 'ALWNULL' ;
 fragment COLHDG_F      : 'COLHDG' ;
+fragment CCSID_F       : 'CCSID' ;
 fragment EDTWRD_F      : 'EDTWRD' ;
 fragment REF_F         : 'REF' ;
 fragment REFFLD_F      : 'REFFLD' ;

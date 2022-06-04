@@ -6,14 +6,23 @@ options
 }
 
 dds :   ( A_SPEC? ( UNIQUE | REF LPAR ref = IDENTIFIER RPAR ) )?
-        A_SPEC? R_SPEC ( record = IDENTIFIER )
+        A_SPEC? R_SPEC ( record = IDENTIFIER ) text?
         ( A_SPEC? FORMAT LPAR ( format = IDENTIFIER ) RPAR
         | field+ 
           key*
         ) 
         EOF ;
 
-field : A_SPEC? IDENTIFIER ( dataType | R_SPEC ) ( text | colhdg | edtwrd | reffld | values )* ;
+field : A_SPEC? IDENTIFIER
+        ( dataType | R_SPEC )
+        ( A_SPEC? ALWNULL
+        | colhdg
+        | A_SPEC? CCSID LPAR NUMBER RPAR
+        | edtwrd
+        | reffld
+        | text
+        | values
+        )* ;
 
 dataType : SIZE TYPE? SIZE? ;
 

@@ -141,4 +141,26 @@ public class AstUnitTests extends TestBase {
 		assertEquals("REFERENCE", ast.getReference());
 		assertEquals("REFERRED", ast.getFields().next().getRefField().getName());
 	}
+
+	@Test
+	public void recordTextTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A                                      TEXT('RECORD TEXT')\n" + 
+				"     A            STRING        10";
+
+		Dds ast = helper.ast(src);
+		assertEquals("RECORD TEXT", ast.getText().getDescription().getDescription());
+	}
+
+	@Test
+	public void textCcsidTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A                                      CCSID(12345)";
+
+		Dds ast = helper.ast(src);
+		assertEquals("12345", ast.getFields().next().getCcsid());
+	}
 }

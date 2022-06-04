@@ -53,7 +53,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Field visitField(FieldContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String name = ctx.IDENTIFIER().getText();
-		Field field = new Field(location, name);
+		String ccsid = ctx.NUMBER().size() > 0 ? ctx.NUMBER(0).getText() : null;
+		boolean allowNull = ctx.ALWNULL() != null;
+		Field field = new Field(location, name, ccsid, allowNull);
 		AstHelper.visitChildren(this, ctx, field);
 		return field;
 	}

@@ -7,14 +7,26 @@ import it.twenfir.antlr.ast.Location;
 public class Field extends AstNode {
 
 	private String name;
+	private String ccsid;
+	private boolean allowNull;
 	
-	public Field(Location location, String name) {
+	public Field(Location location, String name, String ccsid, boolean allowNull) {
 		super(location);
 		this.name = name;
+		this.ccsid = ccsid;
+		this.allowNull = allowNull;
 	}
 	
     public String getName() {
 		return name;
+	}
+
+	public String getCcsid() {
+		return ccsid;
+	}
+
+	public boolean isAllowNull() {
+		return allowNull;
 	}
 
 	public DataType getDataType() {

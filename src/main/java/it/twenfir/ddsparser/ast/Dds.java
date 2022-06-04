@@ -38,6 +38,10 @@ public class Dds extends AstNode {
 		return unique;
 	}
 	
+	public Text getText() {
+		return getChild(Text.class);
+	}
+	
 	public Iterator<Field> getFields() {
 		return getChildren(Field.class);
 	}

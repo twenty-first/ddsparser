@@ -143,11 +143,31 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void recordTextTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A                                      TEXT('RECORD TEXT')\n" + 
+				"     A            STRING        10";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void errorTest() {
 		String src = 
 				"     A          R BADDDS\n" + 
 				"     A            STRING        ";
 		
 		assertThrows(ParseException.class, () -> helper.parse(src));
+	}
+
+	@Test
+	public void textCcsidTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A                                      CCSID(12345)";
+
+		helper.parse(src);
 	}
 }
