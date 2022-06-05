@@ -3,6 +3,7 @@ package it.twenfir.ddsparser.ast;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
@@ -37,6 +38,21 @@ public class AstUnitTests extends TestBase {
 		Field f = ast.getFields().next();
 		assertEquals(new Integer(10), f.getDataType().getSize());
 		assertFalse(ast.getKeys().hasNext());
+	}
+
+	@Test
+	public void dateFieldTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A            DATE            Z         TEXT('DATE FIELD')";
+
+		Dds ast = helper.ast(src);
+		Iterator<Field> iter = ast.getFields();
+		iter.next();
+		DataType dt = iter.next().getDataType();
+		assertEquals("Z", dt.getType());
+		assertNull(dt.getSize());
 	}
 
 	@Test

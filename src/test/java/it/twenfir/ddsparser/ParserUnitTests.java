@@ -36,6 +36,16 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void dateFieldTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A            DATE            Z         TEXT('DATE FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void formatTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS                   FORMAT(EXTFMT)";

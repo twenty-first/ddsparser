@@ -26,7 +26,7 @@ field : A_SPEC* IDENTIFIER
         | values
         )* ;
 
-dataType : SIZE TYPE? SIZE? ;
+dataType : ( SIZE | SIZE? TYPE ) SIZE? ;
 
 text : A_SPEC* TEXT description ;
 

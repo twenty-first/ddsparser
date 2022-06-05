@@ -1,9 +1,10 @@
 lexer grammar DdsLexer;
 
-tokens {    A_SPEC, ALWNULL, COLHDG, CCSID, DESC_START, DESCRIPTION, EDTCDE, EDTWRD, IDENTIFIER, LPAR,
-            QUOTE, R_SPEC, REFFLD, RPAR, TEXT, VALUES }
+tokens {    A_SPEC, ALWNULL, COLHDG, CCSID, DESC_START, DESCRIPTION, EDTCDE, EDTWRD,
+            IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, TEXT, VALUES }
 
-ST_PREFIX : PREFIX_F -> pushMode(Spec), channel(HIDDEN);
+PREFIX : PREFIX_F -> channel(HIDDEN), pushMode(Spec);
+ST_EOL : EOL_F+ -> channel(HIDDEN);
 
 mode Spec;
 
@@ -98,7 +99,7 @@ mode Edtcde;
 
 EC_LPAR     : LPAR_F -> type(LPAR);
 EC_RPAR     : RPAR_F -> type(RPAR), mode(Text);
-EDITCODE    : [K];
+EDITCODE    : [KZ];
 
 mode DescCont;
 
@@ -149,7 +150,7 @@ fragment REFFLD_F      : 'REFFLD' ;
 fragment TEXT_F        : 'TEXT' ;
 fragment VALUES_F      : 'VALUES' ;
 fragment UNIQUE_F      : 'UNIQUE' ;
-fragment IDENTIFIER_F  : [A-Z$][A-Z0-9$]* ;
+fragment IDENTIFIER_F  : [A-Z$][A-Z0-9$_]* ;
 fragment DESCRIPTION_F : ((~[\r\n'])|('\'\''))+ ;
 //fragment DESC_START_F  : ((~[\r\n'+-])|('\'\'')|([+-]~[\r\n]))+[+-] EOL_F ;
 fragment DESC_START_F  : (~[\r\n'+-])+ [+-] EOL_F;

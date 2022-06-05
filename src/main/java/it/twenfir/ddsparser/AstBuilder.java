@@ -65,8 +65,8 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public DataType visitDataType(DataTypeContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String type = ctx.TYPE() != null ? ctx.TYPE().getText() : null;
-		Integer size = Integer.parseInt(ctx.SIZE(0).getText());
-		Integer precision = ctx.SIZE(1) != null ? Integer.parseInt(ctx.SIZE(1).getText())  : null;
+		Integer size = ctx.SIZE(0) != null ? Integer.parseInt(ctx.SIZE(0).getText()) : null;
+		Integer precision = ctx.SIZE(1) != null ? Integer.parseInt(ctx.SIZE(1).getText()) : null;
 		DataType dataType = new DataType(location, type, size, precision);
 		AstHelper.visitChildren(this, ctx, dataType);
 		return dataType;
