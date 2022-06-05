@@ -135,11 +135,14 @@ public class AstUnitTests extends TestBase {
 		String src = 
 				"                                            REF(REFERENCE)\n" + 
 				"                R TESTDDS\n" + 
-				"                  REFERRAL       R          REFFLD(REFERRED)";
+				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
+				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
 
 		Dds ast = helper.ast(src);
 		assertEquals("REFERENCE", ast.getReference());
-		assertEquals("REFERRED", ast.getFields().next().getRefField().getName());
+		Iterator<Field> iter = ast.getFields();
+		assertEquals("REFERRED", iter.next().getRefField().getName());
+		assertEquals("REFFILE", iter.next().getRefField().getFile());
 	}
 
 	@Test
@@ -154,7 +157,7 @@ public class AstUnitTests extends TestBase {
 	}
 
 	@Test
-	public void textCcsidTest() throws ParseException {
+	public void ccsidTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 
 				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
@@ -162,5 +165,16 @@ public class AstUnitTests extends TestBase {
 
 		Dds ast = helper.ast(src);
 		assertEquals("12345", ast.getFields().next().getCcsid());
+	}
+
+	@Test
+	public void editCodeTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A                                      EDTCDE(K)";
+
+		Dds ast = helper.ast(src);
+		assertEquals("K", ast.getFields().next().getEditCode());
 	}
 }

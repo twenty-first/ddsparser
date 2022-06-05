@@ -137,7 +137,8 @@ public class ParserUnitTests extends TestBase {
 		String src = 
 				"                                            REF(REFERENCE)\n" + 
 				"                R TESTDDS\n" + 
-				"                  REFERRAL       R          REFFLD(REFERRED)";
+				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
+				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
 
 		helper.parse(src);
 	}
@@ -162,11 +163,21 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
-	public void textCcsidTest() throws ParseException {
+	public void ccsidTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 
 				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
 				"     A                                      CCSID(12345)";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void editCodeTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A                                      EDTCDE(K)";
 
 		helper.parse(src);
 	}

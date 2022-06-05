@@ -54,8 +54,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		Location location = AstHelper.location(ctx);
 		String name = ctx.IDENTIFIER().getText();
 		String ccsid = ctx.NUMBER().size() > 0 ? ctx.NUMBER(0).getText() : null;
+		String editCode = ctx.EDITCODE().size() > 0 ? ctx.EDITCODE(0).getText() : null;
 		boolean allowNull = ctx.ALWNULL() != null;
-		Field field = new Field(location, name, ccsid, allowNull);
+		Field field = new Field(location, name, ccsid, editCode, allowNull);
 		AstHelper.visitChildren(this, ctx, field);
 		return field;
 	}
@@ -133,12 +134,12 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		return values;
 	}
 
-	
 	@Override
 	public AstNode visitReffld(ReffldContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String name = ctx.IDENTIFIER().getText();
-		RefField refField = new RefField(location, name);
+		String name = ctx.ref_field.getText();
+		String file = ctx.ref_file != null ? ctx.ref_file.getText() : null;
+		RefField refField = new RefField(location, name, file);
 		AstHelper.visitChildren(this, ctx, refField);
 		return refField;
 	}

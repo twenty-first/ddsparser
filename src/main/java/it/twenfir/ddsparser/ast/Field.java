@@ -8,12 +8,14 @@ public class Field extends AstNode {
 
 	private String name;
 	private String ccsid;
+	private String editCode;
 	private boolean allowNull;
 	
-	public Field(Location location, String name, String ccsid, boolean allowNull) {
+	public Field(Location location, String name, String ccsid, String editCode, boolean allowNull) {
 		super(location);
 		this.name = name;
 		this.ccsid = ccsid;
+		this.editCode = editCode;
 		this.allowNull = allowNull;
 	}
 	
@@ -23,6 +25,10 @@ public class Field extends AstNode {
 
 	public String getCcsid() {
 		return ccsid;
+	}
+
+	public String getEditCode() {
+		return editCode;
 	}
 
 	public boolean isAllowNull() {
