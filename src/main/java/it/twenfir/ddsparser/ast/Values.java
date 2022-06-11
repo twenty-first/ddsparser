@@ -19,8 +19,13 @@ public class Values extends AstNode {
 		return values;
 	}
 
-	public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
-    	return visitor.visit(this);
+    public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
+		if ( visitor instanceof DdsVisitor ) {
+			return ((DdsVisitor<? extends ValueT>) visitor).visitValues(this);
+    	}
+    	else {
+    		return visitor.visit(this);
+    	}
     }
 
 }

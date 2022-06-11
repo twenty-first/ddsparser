@@ -24,7 +24,12 @@ public class Key extends AstNode {
 	}
 	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
-    	return visitor.visit(this);
+		if ( visitor instanceof DdsVisitor ) {
+			return ((DdsVisitor<? extends ValueT>) visitor).visitKey(this);
+    	}
+    	else {
+    		return visitor.visit(this);
+    	}
     }
 
 }

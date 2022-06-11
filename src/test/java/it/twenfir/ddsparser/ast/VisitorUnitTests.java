@@ -3,11 +3,22 @@ package it.twenfir.ddsparser.ast;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class VisitorUnitTests {
+import it.twenfir.antlr.exception.ParseException;
+import it.twenfir.ddsparser.TestBase;
+
+public class VisitorUnitTests extends TestBase {
+    
+    private static Logger log = LoggerFactory.getLogger(VisitorUnitTests.class);
+    
+    public VisitorUnitTests() {
+        super(log);
+    }
     
     @Test
-    public void test() {
+    public void simpleTest() {
         DdsBaseVisitor<Integer> visitor = new DdsBaseVisitor<Integer>() {
 
             @Override
@@ -32,4 +43,34 @@ public class VisitorUnitTests {
         int i = visitor.visit(d);
         assertEquals(4, i);
     }
-}
+
+	@Test
+	public void reffldTest() throws ParseException {
+		String src = 
+				"                                            REF(REFERENCE)\n" + 
+				"                R TESTDDS\n" + 
+				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
+				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
+
+		Dds dds = helper.ast(src);
+    	DdsVisitor<? extends Integer> visitor = new DdsBaseVisitor<Integer>() {
+
+            @Override
+            public Integer aggregate(Integer accumulator, Integer value) {
+                return accumulator + value;
+            }
+
+            @Override
+            public Integer defaultValue() {
+                return 0;
+            }
+
+			@Override
+			public Integer visitRefField(RefField node) {
+				return visitChildren(node) + 1;
+			}
+
+    	};
+    	int i = visitor.visitDds(dds);
+    	assertEquals(2, i);
+	}}

@@ -5,57 +5,57 @@ import it.twenfir.antlr.ast.BaseAstVisitor;
 public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements DdsVisitor<ValueT> {
 
     @Override
-    public ValueT visit(DataType node) {
+    public ValueT visitDataType(DataType node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Dds node) {
+    public ValueT visitDds(Dds node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Description node) {
+    public ValueT visitDescription(Description node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(DescriptionElement node) {
+    public ValueT visitDescriptionElement(DescriptionElement node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(EditWord node) {
+    public ValueT visitEditWord(EditWord node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Field node) {
+    public ValueT visitField(Field node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Heading node) {
+    public ValueT visitHeading(Heading node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Key node) {
+    public ValueT visitKey(Key node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(RefField node) {
+    public ValueT visitRefField(RefField node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Text node) {
+    public ValueT visitText(Text node) {
         return visitChildren(node);
     }
 
     @Override
-    public ValueT visit(Values node) {
+    public ValueT visitValues(Values node) {
         return visitChildren(node);
     }
 

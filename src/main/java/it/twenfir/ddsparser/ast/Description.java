@@ -28,7 +28,12 @@ public class Description extends AstNode {
 	}
 	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
-    	return visitor.visit(this);
+		if ( visitor instanceof DdsVisitor ) {
+			return ((DdsVisitor<? extends ValueT>) visitor).visitDescription(this);
+    	}
+    	else {
+    		return visitor.visit(this);
+    	}
     }
 
 }

@@ -29,8 +29,13 @@ public class DataType extends AstNode {
 		return precision;
 	}
 
-	public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
-    	return visitor.visit(this);
+    public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
+		if ( visitor instanceof DdsVisitor ) {
+			return ((DdsVisitor<? extends ValueT>) visitor).visitDataType(this);
+    	}
+    	else {
+    		return visitor.visit(this);
+    	}
     }
 
 }

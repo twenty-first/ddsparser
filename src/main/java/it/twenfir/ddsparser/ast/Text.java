@@ -15,8 +15,13 @@ public class Text extends AstNode {
 
 	}
 
-	public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
-    	return visitor.visit(this);
+    public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
+		if ( visitor instanceof DdsVisitor ) {
+			return ((DdsVisitor<? extends ValueT>) visitor).visitText(this);
+    	}
+    	else {
+    		return visitor.visit(this);
+    	}
     }
 
 }

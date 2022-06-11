@@ -14,8 +14,13 @@ public class Heading extends AstNode {
 		return getChild(Description.class);
 	}
 	
-	public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
-    	return visitor.visit(this);
+    public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
+		if ( visitor instanceof DdsVisitor ) {
+			return ((DdsVisitor<? extends ValueT>) visitor).visitHeading(this);
+    	}
+    	else {
+    		return visitor.visit(this);
+    	}
     }
 
 }
