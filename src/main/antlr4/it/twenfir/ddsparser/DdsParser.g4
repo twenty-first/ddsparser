@@ -17,11 +17,11 @@ dds :   ( A_SPEC* ( UNIQUE | REF LPAR ref = IDENTIFIER RPAR ) )?
 field : A_SPEC* IDENTIFIER
         ( dataType | R_SPEC )
         ( A_SPEC* ALWNULL
-        | colhdg
-        | A_SPEC* CCSID LPAR NUMBER RPAR
-        | A_SPEC* EDTCDE LPAR EDITCODE RPAR
-        | edtwrd
-        | reffld
+        | ccsid
+        | editCode
+        | editWord
+        | heading
+        | refField
         | text
         | values
         )* ;
@@ -30,11 +30,15 @@ dataType : ( SIZE | SIZE? TYPE ) SIZE? ;
 
 text : A_SPEC* TEXT description ;
 
-colhdg : A_SPEC* COLHDG description ;
+ccsid : A_SPEC* CCSID LPAR NUMBER RPAR ;
 
-edtwrd : A_SPEC* EDTWRD description ;
+heading : A_SPEC* COLHDG description ;
 
-reffld : A_SPEC* REFFLD LPAR ref_field = IDENTIFIER ( ref_file = IDENTIFIER )? RPAR ;
+editCode : A_SPEC* EDTCDE LPAR EDITCODE RPAR ;
+
+editWord : A_SPEC* EDTWRD description ;
+
+refField : A_SPEC* REFFLD LPAR ref_field = IDENTIFIER ( ref_file = IDENTIFIER )? RPAR ;
 
 values : A_SPEC* VALUES LPAR ( QUOTE VALUE QUOTE )+ RPAR ;
 

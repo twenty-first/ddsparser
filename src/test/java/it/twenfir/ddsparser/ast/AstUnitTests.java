@@ -180,7 +180,7 @@ public class AstUnitTests extends TestBase {
 				"     A                                      CCSID(12345)";
 
 		Dds ast = helper.ast(src);
-		assertEquals("12345", ast.getFields().next().getCcsid());
+		assertEquals("12345", ast.getFields().next().getCcsid().getCcsid());
 	}
 
 	@Test
@@ -191,6 +191,6 @@ public class AstUnitTests extends TestBase {
 				"     A                                      EDTCDE(K)";
 
 		Dds ast = helper.ast(src);
-		assertEquals("K", ast.getFields().next().getEditCode());
+		assertEquals("K", ast.getFields().next().getEditCode().getEditCode());
 	}
 }

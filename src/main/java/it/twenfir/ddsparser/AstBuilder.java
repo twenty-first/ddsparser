@@ -10,21 +10,25 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import it.twenfir.antlr.ast.AstHelper;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.Location;
-import it.twenfir.ddsparser.DdsParser.ColhdgContext;
+import it.twenfir.ddsparser.DdsParser.CcsidContext;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionElementContext;
-import it.twenfir.ddsparser.DdsParser.EdtwrdContext;
+import it.twenfir.ddsparser.DdsParser.EditCodeContext;
+import it.twenfir.ddsparser.DdsParser.EditWordContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
+import it.twenfir.ddsparser.DdsParser.HeadingContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
-import it.twenfir.ddsparser.DdsParser.ReffldContext;
+import it.twenfir.ddsparser.DdsParser.RefFieldContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.DdsParser.ValuesContext;
+import it.twenfir.ddsparser.ast.Ccsid;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
 import it.twenfir.ddsparser.ast.Description;
 import it.twenfir.ddsparser.ast.DescriptionElement;
+import it.twenfir.ddsparser.ast.EditCode;
 import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
 import it.twenfir.ddsparser.ast.Heading;
@@ -36,29 +40,14 @@ import it.twenfir.ddsparser.ast.Values;
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
 	private Pattern endDescRe = Pattern.compile("\\+|-");
-	
-	@Override
-	public Dds visitDds(DdsContext ctx) {
-		Location location = AstHelper.location(ctx);
-		String record = ctx.record.getText();
-		String format = ctx.format != null ? ctx.format.getText() : null;
-		String reference = ctx.ref != null ? ctx.ref.getText() : null;
-		boolean unique = ctx.UNIQUE() != null;
-		Dds dds = new Dds(location, record, format, reference, unique);
-		AstHelper.visitChildren(this, ctx, dds);
-		return dds;
-	}
 
 	@Override
-	public Field visitField(FieldContext ctx) {
+	public AstNode visitCcsid(CcsidContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String name = ctx.IDENTIFIER().getText();
-		String ccsid = ctx.NUMBER().size() > 0 ? ctx.NUMBER(0).getText() : null;
-		String editCode = ctx.EDITCODE().size() > 0 ? ctx.EDITCODE(0).getText() : null;
-		boolean allowNull = ctx.ALWNULL() != null;
-		Field field = new Field(location, name, ccsid, editCode, allowNull);
-		AstHelper.visitChildren(this, ctx, field);
-		return field;
+		String ccsid = ctx.NUMBER().getText();
+		Ccsid node = new Ccsid(location, ccsid);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
 	}
 
 	@Override
@@ -67,41 +56,29 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		String type = ctx.TYPE() != null ? ctx.TYPE().getText() : null;
 		Integer size = ctx.SIZE(0) != null ? Integer.parseInt(ctx.SIZE(0).getText()) : null;
 		Integer precision = ctx.SIZE(1) != null ? Integer.parseInt(ctx.SIZE(1).getText()) : null;
-		DataType dataType = new DataType(location, type, size, precision);
-		AstHelper.visitChildren(this, ctx, dataType);
-		return dataType;
+		DataType node = new DataType(location, type, size, precision);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
 	}
-
+	
 	@Override
-	public AstNode visitColhdg(ColhdgContext ctx) {
+	public Dds visitDds(DdsContext ctx) {
 		Location location = AstHelper.location(ctx);
-		Heading heading = new Heading(location);
-		AstHelper.visitChildren(this, ctx, heading);
-		return heading;
-	}
-
-	@Override
-	public AstNode visitEdtwrd(EdtwrdContext ctx) {
-		Location location = AstHelper.location(ctx);
-		EditWord editWord = new EditWord(location);
-		AstHelper.visitChildren(this, ctx, editWord);
-		return editWord;
-	}
-
-	@Override
-	public AstNode visitText(TextContext ctx) {
-		Location location = AstHelper.location(ctx);
-		Text text = new Text(location);
-		AstHelper.visitChildren(this, ctx, text);
-		return text;
+		String record = ctx.record.getText();
+		String format = ctx.format != null ? ctx.format.getText() : null;
+		String reference = ctx.ref != null ? ctx.ref.getText() : null;
+		boolean unique = ctx.UNIQUE() != null;
+		Dds node = new Dds(location, record, format, reference, unique);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
 	}
 
 	@Override
 	public AstNode visitDescription(DescriptionContext ctx) {
 		Location location = AstHelper.location(ctx);
-		Description description = new Description(location);
-		AstHelper.visitChildren(this, ctx, description);
-		return description;
+		Description node = new Description(location);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
 	}
 
 	@Override
@@ -119,29 +96,44 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 			sb.append(s);
 		}
 		sb.append(ctx.DESCRIPTION().getText());
-		DescriptionElement descriptionElement = new DescriptionElement(location, sb.toString());
-		AstHelper.visitChildren(this, ctx, descriptionElement);
-		return descriptionElement;
+		DescriptionElement node = new DescriptionElement(location, sb.toString());
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
 	}
 
 	@Override
-	public AstNode visitValues(ValuesContext ctx) {
+	public AstNode visitEditCode(EditCodeContext ctx) {
 		Location location = AstHelper.location(ctx);
-		List<String> valueList = new ArrayList<>();
-		ctx.VALUE().forEach((v) -> { valueList.add(v.getText()); });
-		Values values = new Values(location, valueList);
-		AstHelper.visitChildren(this, ctx, values);
-		return values;
+		String editCode = ctx.EDITCODE().getText();
+		EditCode node = new EditCode(location, editCode);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
 	}
 
 	@Override
-	public AstNode visitReffld(ReffldContext ctx) {
+	public AstNode visitEditWord(EditWordContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String name = ctx.ref_field.getText();
-		String file = ctx.ref_file != null ? ctx.ref_file.getText() : null;
-		RefField refField = new RefField(location, name, file);
-		AstHelper.visitChildren(this, ctx, refField);
-		return refField;
+		EditWord editWord = new EditWord(location);
+		AstHelper.visitChildren(this, ctx, editWord);
+		return editWord;
+	}
+
+	@Override
+	public Field visitField(FieldContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String name = ctx.IDENTIFIER().getText();
+		boolean allowNull = ctx.ALWNULL() != null;
+		Field field = new Field(location, name, allowNull);
+		AstHelper.visitChildren(this, ctx, field);
+		return field;
+	}
+
+	@Override
+	public AstNode visitHeading(HeadingContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Heading heading = new Heading(location);
+		AstHelper.visitChildren(this, ctx, heading);
+		return heading;
 	}
 
 	@Override
@@ -152,5 +144,33 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		Key key = new Key(location, fieldName, descending);
 		AstHelper.visitChildren(this, ctx, key);
 		return key;
+	}
+
+	@Override
+	public AstNode visitRefField(RefFieldContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String name = ctx.ref_field.getText();
+		String file = ctx.ref_file != null ? ctx.ref_file.getText() : null;
+		RefField refField = new RefField(location, name, file);
+		AstHelper.visitChildren(this, ctx, refField);
+		return refField;
+	}
+
+	@Override
+	public AstNode visitText(TextContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Text text = new Text(location);
+		AstHelper.visitChildren(this, ctx, text);
+		return text;
+	}
+
+	@Override
+	public AstNode visitValues(ValuesContext ctx) {
+		Location location = AstHelper.location(ctx);
+		List<String> valueList = new ArrayList<>();
+		ctx.VALUE().forEach((v) -> { valueList.add(v.getText()); });
+		Values values = new Values(location, valueList);
+		AstHelper.visitChildren(this, ctx, values);
+		return values;
 	}
 }

@@ -7,15 +7,11 @@ import it.twenfir.antlr.ast.Location;
 public class Field extends AstNode {
 
 	private String name;
-	private String ccsid;
-	private String editCode;
 	private boolean allowNull;
 	
-	public Field(Location location, String name, String ccsid, String editCode, boolean allowNull) {
+	public Field(Location location, String name, boolean allowNull) {
 		super(location);
 		this.name = name;
-		this.ccsid = ccsid;
-		this.editCode = editCode;
 		this.allowNull = allowNull;
 	}
 	
@@ -23,36 +19,36 @@ public class Field extends AstNode {
 		return name;
 	}
 
-	public String getCcsid() {
-		return ccsid;
-	}
-
-	public String getEditCode() {
-		return editCode;
-	}
-
 	public boolean isAllowNull() {
 		return allowNull;
+	}
+
+	public Ccsid getCcsid() {
+		return getChild(Ccsid.class);
 	}
 
 	public DataType getDataType() {
 		return getChild(DataType.class);
 	}
 
-	public Text getText() {
-		return getChild(Text.class);
+	public EditCode getEditCode() {
+		return getChild(EditCode.class);
 	}
-
+	
 	public Heading getHeading() {
 		return getChild(Heading.class);
 	}
 	
-	public Values getValues() {
-		return getChild(Values.class);
-	}
-	
 	public RefField getRefField() {
 		return getChild(RefField.class);
+	}
+
+	public Text getText() {
+		return getChild(Text.class);
+	}
+	
+	public Values getValues() {
+		return getChild(Values.class);
 	}
 	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
