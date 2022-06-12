@@ -32,7 +32,6 @@ public class DdsParserDriver extends ParserDriverBase {
 
 	public DdsParserDriver(String ddsSource, String fileName, ANTLRErrorListener listener) {
 		super("dssparser", fileName, false, log);
-//        ANTLRInputStream inputStream = new ANTLRInputStream(ddsSource);
 		CodePointCharStream inputStream = CharStreams.fromString(ddsSource, fileName);
         DdsLexer lexer = new DdsLexer(inputStream);
     	lexer.removeErrorListeners();
