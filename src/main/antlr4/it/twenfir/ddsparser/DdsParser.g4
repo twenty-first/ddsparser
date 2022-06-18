@@ -5,14 +5,17 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   ( A_SPEC* ( UNIQUE | REF LPAR ref = IDENTIFIER RPAR ) )?
+dds :   ( A_SPEC* ( UNIQUE | ref ) )?
         A_SPEC* R_SPEC ( record = IDENTIFIER ) text?
         ( A_SPEC* FORMAT LPAR ( format = IDENTIFIER ) RPAR
         | field+ 
           key*
         )
         A_SPEC* 
-        EOF ;
+        EOF
+        ;
+
+ref : REF LPAR ( ( ref_lib = IDENTIFIER | CONSTANT ) SLASH )? ref_file = IDENTIFIER RPAR ;
 
 field : A_SPEC* IDENTIFIER
         ( dataType | R_SPEC )
@@ -24,7 +27,8 @@ field : A_SPEC* IDENTIFIER
         | refField
         | text
         | values
-        )* ;
+        )*
+        ;
 
 dataType : ( SIZE | SIZE? TYPE ) SIZE? ;
 
@@ -38,7 +42,13 @@ editCode : A_SPEC* EDTCDE LPAR EDITCODE RPAR ;
 
 editWord : A_SPEC* EDTWRD description ;
 
-refField : A_SPEC* REFFLD LPAR ref_field = IDENTIFIER ( ref_file = IDENTIFIER )? RPAR ;
+refField : A_SPEC* REFFLD LPAR 
+        ref_field = IDENTIFIER 
+        ( ( ( ref_lib = IDENTIFIER | con_lib = CONSTANT ) SLASH )?
+          ( ref_file = IDENTIFIER | con_file = CONSTANT )
+        )?
+        RPAR
+        ;
 
 values : A_SPEC* VALUES LPAR ( QUOTE VALUE QUOTE )+ RPAR ;
 

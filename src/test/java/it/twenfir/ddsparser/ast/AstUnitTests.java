@@ -166,7 +166,7 @@ public class AstUnitTests extends TestBase {
 				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
 
 		Dds ast = helper.ast(src);
-		assertEquals("REFERENCE", ast.getReference());
+		assertEquals("REFERENCE", ast.getRef().getReference());
 		Iterator<Field> iter = ast.getFields();
 		assertEquals("REFERRED", iter.next().getRefField().getName());
 		assertEquals("REFFILE", iter.next().getRefField().getFile());

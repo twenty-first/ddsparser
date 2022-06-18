@@ -1,10 +1,18 @@
 lexer grammar DdsLexer;
 
-tokens {    A_SPEC, ALWNULL, COLHDG, CCSID, DESC_START, DESCRIPTION, EDTCDE,
-            EDTWRD, IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, TEXT, VALUES }
+tokens { A_SPEC, ALWNULL, CCSID, COLHDG, CONSTANT, DESC_START, DESCRIPTION, EDTCDE,
+         EDTWRD, IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, SLASH, TEXT, VALUES }
 
-PREFIX : PREFIX_F -> channel(HIDDEN), pushMode(Spec);
-ST_EOL : EOL_F+ -> channel(HIDDEN);
+PREFIX      : PREFIX_F -> channel(HIDDEN), pushMode(Spec);
+PART_PREF   : ( ANY_F
+              | ( ANY_F ANY_F )
+              | ( ANY_F ANY_F ANY_F )
+              | ( ANY_F ANY_F ANY_F ANY_F ) 
+              ) 
+              EOL_F -> channel(HIDDEN)
+              ;
+              
+ST_EOL      : EOL_F+ -> channel(HIDDEN);
 
 mode Spec;
 
@@ -17,9 +25,9 @@ mode Def;
 
 EMPTY_DEF   : '                                      ' -> channel(HIDDEN), mode(Func);
 D_SPACE     : ' ' -> channel(HIDDEN);
-D_R_SPEC      : R_SPEC_F -> type(R_SPEC) ;
+D_R_SPEC    : R_SPEC_F -> type(R_SPEC) ;
 KEY         : 'K' ;
-IDENTIFIER  : IDENTIFIER_F -> type(IDENTIFIER), mode(Type);
+D_NAME      : NAME_F -> type(IDENTIFIER), mode(Type);
 D_EOL       : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Type;
@@ -48,7 +56,9 @@ mode Reffld;
 RF_LPAR         : LPAR_F -> type(LPAR);
 RF_RPAR         : RPAR_F -> type(RPAR), popMode;
 RF_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
+RF_CONSTANT     : CONSTANT_F -> type(CONSTANT);
 RF_SPACE        : ' '+ -> channel(HIDDEN);
+RF_SLASH        : SLASH_F -> type(SLASH);
 
 mode Func ;
 
@@ -71,6 +81,8 @@ mode Ref;
 RE_LPAR         : LPAR_F -> type(LPAR);
 RE_RPAR         : RPAR_F -> type(RPAR), popMode;
 RE_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
+RE_CONSTANT     : CONSTANT_F -> type(CONSTANT);
+RE_SLASH        : SLASH_F -> type(SLASH);
 
 mode Text;
 
@@ -143,8 +155,9 @@ VL_QUOTE    : QUOTE_F -> type(QUOTE), popMode;
 
 // Common fragments
 
-fragment LPAR_F             : '(';
-fragment RPAR_F             : ')';
+fragment LPAR_F             : '(' ;
+fragment RPAR_F             : ')' ;
+fragment SLASH_F            : '/' ;
 fragment ANY_F              : ~[\r\n] ;
 fragment EOL_F              : '\r'? '\n' ;
 fragment PREFIX_F           : ANY_F ANY_F ANY_F ANY_F ANY_F ;
@@ -160,7 +173,22 @@ fragment REFFLD_F           : 'REFFLD' ;
 fragment TEXT_F             : 'TEXT' ;
 fragment VALUES_F           : 'VALUES' ;
 fragment UNIQUE_F           : 'UNIQUE' ;
-fragment IDENTIFIER_F       : [A-Z$][A-Z0-9$_]* ;
+fragment IDS_F              : [A-Z$] ;
+fragment IDC_F              : [A-Z0-9$_] ;
+fragment NAME_F             : ( IDS_F
+                              | ( IDS_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F )
+                              | ( IDS_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F IDC_F )
+                              )
+                              ;                            
+fragment IDENTIFIER_F       : IDS_F IDC_F* ;
+fragment CONSTANT_F         : '*'[A-Z][A-Z0-9_]* ;
 fragment DESCRIPTION_F      : ((~[\r\n'])|('\'\''))+ ;
 fragment DESC_START_F       : (('\'\'')|([+-]~[\r\n])|(~[\r\n'+-]))+ ;
 fragment DESC_START_PLUS_F  : DESC_START_F '+' EOL_F;

@@ -154,6 +154,17 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void refLibTest() throws ParseException {
+		String src = 
+				"                                            REF(*LIBL/REFERENCE)\n" + 
+				"                R TESTDDS\n" + 
+				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
+				"                  REFFIELD       R          REFFLD(REFFIELD *SRC)";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void recordTextTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 

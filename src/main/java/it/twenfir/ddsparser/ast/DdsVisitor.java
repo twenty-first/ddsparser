@@ -13,6 +13,7 @@ public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitField(Field node);
     ValueT visitHeading(Heading node);
     ValueT visitKey(Key node);
+    ValueT visitRef(Ref node);
     ValueT visitRefField(RefField node);
     ValueT visitText(Text node);
     ValueT visitValues(Values node);
