@@ -115,11 +115,22 @@ public class AstUnitTests extends TestBase {
 	}
 
 	@Test
-	public void splitDescriptionTest() throws ParseException {
+	public void splitPlusDescriptionTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 
 				"     A            STRING        10          TEXT('STRING +\n" +
 				"     A                                           FIELD')";
+
+		Dds ast = helper.ast(src);
+		assertEquals("STRING FIELD", ast.getFields().next().getText().getDescription().getDescription());
+	}
+
+	@Test
+	public void splitMinusDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING-\n" +
+				"     A                                       FIELD')";
 
 		Dds ast = helper.ast(src);
 		assertEquals("STRING FIELD", ast.getFields().next().getText().getDescription().getDescription());

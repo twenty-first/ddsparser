@@ -191,4 +191,14 @@ public class ParserUnitTests extends TestBase {
 
 		helper.parse(src);
 	}
+
+	@Test
+	public void multiLineTextTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('A field''s text - split -\n" + 
+				"     A                                      with quotes and hyphens')";
+
+		helper.parse(src);
+	}
 }
