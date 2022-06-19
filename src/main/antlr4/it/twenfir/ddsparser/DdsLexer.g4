@@ -1,6 +1,6 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, ALWNULL, CCSID, COLHDG, CONSTANT, DESC_START, DESCRIPTION, EDTCDE,
+tokens { A_SPEC, ALWNULL, CCSID, COLHDG, CONSTANT, DESC_START, DESCRIPTION, DFT, EDTCDE,
          EDTWRD, IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, SLASH, TEXT, VALUES }
 
 PREFIX      : PREFIX_F -> channel(HIDDEN), pushMode(Spec);
@@ -35,7 +35,7 @@ mode Type;
 TY_SPACE        : ' '+ -> channel(HIDDEN);
 SIZE            : [0-9]+;
 TY_R_SPEC       : R_SPEC_F -> type(R_SPEC) ;
-TYPE            : [ALPSTZ];
+TYPE            : [ABLPSTZ];
 TY_ALWNULL      : ALWNULL_F -> type(ALWNULL);
 TY_COLHDG       : COLHDG_F -> type(COLHDG), mode(Text);
 TY_CCSID        : CCSID_F -> type(CCSID), mode(Ccsid);
@@ -43,12 +43,10 @@ TY_EDTCDE       : EDTCDE_F -> type(EDTCDE), mode(Edtcde);
 TY_EDTWRD       : EDTWRD_F -> type(EDTWRD), mode(Text);
 TY_REFFLD       : REFFLD_F -> type(REFFLD), pushMode(Reffld);
 TY_TEXT         : TEXT_F -> type(TEXT), mode(Text);
+TY_DFT          : DFT_F -> type(DFT), mode(Text);
 TY_VALUES       : VALUES_F -> type(VALUES), mode(Values);
 DESCEND         : 'DESCEND';
-FORMAT          : 'FORMAT';
-TY_LPAR         : LPAR_F -> type(LPAR);
-TY_RPAR         : RPAR_F -> type(RPAR);
-TY_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
+FORMAT          : 'FORMAT' -> mode(Format);
 TY_EOL          : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Reffld;
@@ -59,6 +57,12 @@ RF_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
 RF_CONSTANT     : CONSTANT_F -> type(CONSTANT);
 RF_SPACE        : ' '+ -> channel(HIDDEN);
 RF_SLASH        : SLASH_F -> type(SLASH);
+
+mode Format;
+
+FM_LPAR         : LPAR_F -> type(LPAR);
+FM_RPAR         : RPAR_F -> type(RPAR), mode(Text);
+FM_IDENTIFIER   : IDENTIFIER_F -> type(IDENTIFIER);
 
 mode Func ;
 
@@ -72,6 +76,7 @@ FN_EDTCDE   : EDTCDE_F -> type(EDTCDE), mode(Edtcde);
 FN_EDTWRD   : EDTWRD_F -> type(EDTWRD), mode(Text);
 FN_REFFLD   : REFFLD_F -> type(REFFLD), pushMode(Reffld);
 FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
+FN_DFT      : DFT_F -> type(DFT), mode(Text);
 FN_VALUES   : VALUES_F -> type(VALUES), mode(Values);
 FN_QUOTE    : QUOTE_F -> type(QUOTE), mode(Desc);
 FN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
@@ -93,10 +98,12 @@ TE_EDTCDE      : EDTCDE_F -> type(EDTCDE), mode(Edtcde);
 TE_EDTWRD      : EDTWRD_F -> type(EDTWRD);
 TE_REFFLD      : REFFLD_F -> type(REFFLD), pushMode(Reffld);
 TE_TEXT        : TEXT_F -> type(TEXT);
+TE_DFT         : DFT_F -> type(DFT);
 TE_VALUES      : VALUES_F -> type(VALUES), mode(Values);
 TE_LPAR        : LPAR_F -> type(LPAR);
 TE_RPAR        : RPAR_F -> type(RPAR);
 TE_SPACE       : ' ' -> channel(HIDDEN);
+MINUS          : '-' -> mode(DescCont);
 PLUS           : '+' -> mode(DescCont);
 TE_QUOTE       : QUOTE_F -> type(QUOTE), mode(Desc);
 TE_EOL         : EOL_F+ -> channel(HIDDEN), popMode;
@@ -166,6 +173,7 @@ fragment R_SPEC_F           : 'R' ;
 fragment ALWNULL_F          : 'ALWNULL' ;
 fragment COLHDG_F           : 'COLHDG' ;
 fragment CCSID_F            : 'CCSID' ;
+fragment DFT_F              : 'DFT' ;
 fragment EDTCDE_F           : 'EDTCDE' ;
 fragment EDTWRD_F           : 'EDTWRD' ;
 fragment REF_F              : 'REF' ;

@@ -20,6 +20,11 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+    public ValueT visitDefault(Default node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public ValueT visitDescription(Description node) {
         return visitChildren(node);
     }

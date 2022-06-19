@@ -21,6 +21,7 @@ field : A_SPEC* IDENTIFIER
         ( dataType | R_SPEC )
         ( A_SPEC* ALWNULL
         | ccsid
+        | dft
         | editCode
         | editWord
         | heading
@@ -38,6 +39,8 @@ ccsid : A_SPEC* CCSID LPAR NUMBER RPAR ;
 
 heading : A_SPEC* COLHDG description ;
 
+dft : A_SPEC* DFT description ;
+
 editCode : A_SPEC* EDTCDE LPAR EDITCODE RPAR ;
 
 editWord : A_SPEC* EDTWRD description ;
@@ -52,7 +55,7 @@ refField : A_SPEC* REFFLD LPAR
 
 values : A_SPEC* VALUES LPAR ( QUOTE VALUE QUOTE )+ RPAR ;
 
-description : LPAR descriptionElement ( PLUS? A_SPEC* descriptionElement )* RPAR ;
+description : LPAR descriptionElement ( ( MINUS | PLUS )? A_SPEC* descriptionElement )* RPAR ;
 
 descriptionElement : QUOTE ( DESC_START A_SPEC* )* DESCRIPTION QUOTE ;
 

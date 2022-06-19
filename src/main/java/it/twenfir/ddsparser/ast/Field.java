@@ -31,6 +31,10 @@ public class Field extends AstNode {
 		return getChild(DataType.class);
 	}
 
+	public Default getDefault() {
+		return getChild(Default.class);
+	}
+
 	public EditCode getEditCode() {
 		return getChild(EditCode.class);
 	}

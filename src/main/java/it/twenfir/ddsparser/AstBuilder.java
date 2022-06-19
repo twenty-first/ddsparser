@@ -15,6 +15,7 @@ import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionElementContext;
+import it.twenfir.ddsparser.DdsParser.DftContext;
 import it.twenfir.ddsparser.DdsParser.EditCodeContext;
 import it.twenfir.ddsparser.DdsParser.EditWordContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
@@ -27,6 +28,7 @@ import it.twenfir.ddsparser.DdsParser.ValuesContext;
 import it.twenfir.ddsparser.ast.Ccsid;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
+import it.twenfir.ddsparser.ast.Default;
 import it.twenfir.ddsparser.ast.Description;
 import it.twenfir.ddsparser.ast.DescriptionElement;
 import it.twenfir.ddsparser.ast.EditCode;
@@ -75,7 +77,15 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
-	public AstNode visitDescription(DescriptionContext ctx) {
+	public Default visitDft(DftContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Default node = new Default(location);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Description visitDescription(DescriptionContext ctx) {
 		Location location = AstHelper.location(ctx);
 		Description node = new Description(location);
 		AstHelper.visitChildren(this, ctx, node);

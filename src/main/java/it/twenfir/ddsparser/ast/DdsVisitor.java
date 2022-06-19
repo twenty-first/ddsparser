@@ -6,6 +6,7 @@ public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitCcsid(Ccsid node);
     ValueT visitDataType(DataType node);
     ValueT visitDds(Dds node);
+    ValueT visitDefault(Default node);
     ValueT visitDescription(Description node);
     ValueT visitDescriptionElement(DescriptionElement node);
     ValueT visitEditCode(EditCode node);
