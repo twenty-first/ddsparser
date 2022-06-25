@@ -1,6 +1,6 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, ALWNULL, CCSID, COLHDG, CONSTANT, DESC_START, DESCRIPTION, DFT, EDTCDE,
+tokens { A_SPEC, ALIAS, ALWNULL, CCSID, COLHDG, CONSTANT, DESC_START, DESCRIPTION, DFT, EDTCDE,
          EDTWRD, IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, SLASH, TEXT, VALUES }
 
 PREFIX      : PREFIX_F -> channel(HIDDEN), pushMode(Spec);
@@ -18,7 +18,7 @@ mode Spec;
 
 SP_A_SPEC   : A_SPEC_F -> type(A_SPEC), mode(Def);
 SP_SPACE    : ' ' -> channel(HIDDEN), mode(Def);
-COMMENT     : ANY_F '*' ANY_F* -> channel(HIDDEN);
+COMMENT     : ANY_F? '*' ANY_F* -> channel(HIDDEN);
 SP_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Def;
@@ -36,6 +36,7 @@ TY_SPACE        : ' '+ -> channel(HIDDEN);
 SIZE            : [0-9]+;
 TY_R_SPEC       : R_SPEC_F -> type(R_SPEC) ;
 TYPE            : [ABLPSTZ];
+TY_ALIAS        : ALIAS_F -> type(ALIAS), mode(Ident);
 TY_ALWNULL      : ALWNULL_F -> type(ALWNULL);
 TY_COLHDG       : COLHDG_F -> type(COLHDG), mode(Text);
 TY_CCSID        : CCSID_F -> type(CCSID), mode(Ccsid);
@@ -46,7 +47,7 @@ TY_TEXT         : TEXT_F -> type(TEXT), mode(Text);
 TY_DFT          : DFT_F -> type(DFT), mode(Text);
 TY_VALUES       : VALUES_F -> type(VALUES), mode(Values);
 DESCEND         : 'DESCEND';
-FORMAT          : 'FORMAT' -> mode(Format);
+FORMAT          : 'FORMAT' -> mode(Ident);
 TY_EOL          : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Reffld;
@@ -58,7 +59,7 @@ RF_CONSTANT     : CONSTANT_F -> type(CONSTANT);
 RF_SPACE        : ' '+ -> channel(HIDDEN);
 RF_SLASH        : SLASH_F -> type(SLASH);
 
-mode Format;
+mode Ident;
 
 FM_LPAR         : LPAR_F -> type(LPAR);
 FM_RPAR         : RPAR_F -> type(RPAR), mode(Text);
@@ -69,6 +70,7 @@ mode Func ;
 FN_SPACE    : ' '+ -> channel(HIDDEN);
 UNIQUE      : UNIQUE_F ;
 REF         : REF_F -> pushMode(Ref);
+FN_ALIAS    : ALIAS_F -> type(ALIAS), mode(Ident);
 FN_ALWNULL  : ALWNULL_F -> type(ALWNULL);
 FN_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
 FN_CCSID    : CCSID_F -> type(CCSID), mode(Ccsid);
@@ -91,6 +93,7 @@ RE_SLASH        : SLASH_F -> type(SLASH);
 
 mode Text;
 
+TE_ALIAS       : ALIAS_F -> type(ALIAS), mode(Ident);
 TE_ALWNULL     : ALWNULL_F -> type(ALWNULL);
 TE_COLHDG      : COLHDG_F -> type(COLHDG);
 TE_CCSID       : CCSID_F -> type(CCSID), mode(Ccsid);
@@ -170,6 +173,7 @@ fragment EOL_F              : '\r'? '\n' ;
 fragment PREFIX_F           : ANY_F ANY_F ANY_F ANY_F ANY_F ;
 fragment A_SPEC_F           : 'A' ;
 fragment R_SPEC_F           : 'R' ;
+fragment ALIAS_F            : 'ALIAS' ;
 fragment ALWNULL_F          : 'ALWNULL' ;
 fragment COLHDG_F           : 'COLHDG' ;
 fragment CCSID_F            : 'CCSID' ;
@@ -181,8 +185,8 @@ fragment REFFLD_F           : 'REFFLD' ;
 fragment TEXT_F             : 'TEXT' ;
 fragment VALUES_F           : 'VALUES' ;
 fragment UNIQUE_F           : 'UNIQUE' ;
-fragment IDS_F              : [A-Z$] ;
-fragment IDC_F              : [A-Z0-9$_] ;
+fragment IDS_F              : [A-Z$\u00a3\u00a7] ;
+fragment IDC_F              : [A-Z0-9$_\u00a3\u00a7] ;
 fragment NAME_F             : ( IDS_F
                               | ( IDS_F IDC_F )
                               | ( IDS_F IDC_F IDC_F )

@@ -23,6 +23,10 @@ public class Field extends AstNode {
 		return allowNull;
 	}
 
+	public Alias getAlias() {
+		return getChild(Alias.class);
+	}
+
 	public Ccsid getCcsid() {
 		return getChild(Ccsid.class);
 	}

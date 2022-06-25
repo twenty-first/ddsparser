@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import it.twenfir.antlr.ast.AstHelper;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.Location;
+import it.twenfir.ddsparser.DdsParser.AliasContext;
 import it.twenfir.ddsparser.DdsParser.CcsidContext;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
@@ -25,6 +26,7 @@ import it.twenfir.ddsparser.DdsParser.RefContext;
 import it.twenfir.ddsparser.DdsParser.RefFieldContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.DdsParser.ValuesContext;
+import it.twenfir.ddsparser.ast.Alias;
 import it.twenfir.ddsparser.ast.Ccsid;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
@@ -44,6 +46,15 @@ import it.twenfir.ddsparser.ast.Values;
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
 	private Pattern endDescRe = Pattern.compile("\\+|-");
+
+	@Override
+	public Alias visitAlias(AliasContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String alias = ctx.IDENTIFIER().getText();
+		Alias node = new Alias(location, alias);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
 
 	@Override
 	public Ccsid visitCcsid(CcsidContext ctx) {
@@ -106,7 +117,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 					ds.getText().substring(0, i - 1) : ds.getText().substring(0, i);
 			sb.append(s);
 		}
-		sb.append(ctx.DESCRIPTION().getText());
+		if ( ctx.DESCRIPTION() != null ) {
+			sb.append(ctx.DESCRIPTION().getText());
+		}
 		DescriptionElement node = new DescriptionElement(location, sb.toString());
 		AstHelper.visitChildren(this, ctx, node);
 		return node;

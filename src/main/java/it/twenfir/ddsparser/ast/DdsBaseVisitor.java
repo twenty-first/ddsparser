@@ -5,6 +5,11 @@ import it.twenfir.antlr.ast.BaseAstVisitor;
 public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements DdsVisitor<ValueT> {
 
     @Override
+    public ValueT visitAlias(Alias node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public ValueT visitCcsid(Ccsid node) {
         return visitChildren(node);
     }
