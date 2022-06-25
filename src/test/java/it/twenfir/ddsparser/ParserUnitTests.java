@@ -124,6 +124,34 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void minusPlusEndingSplitDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING -+\n" + 
+				"     A                                           FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void plusEndingDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING +')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void minusPlusEndingDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING -+')";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void multipleDescriptionTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 

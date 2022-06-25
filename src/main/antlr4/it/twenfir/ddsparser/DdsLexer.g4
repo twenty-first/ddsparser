@@ -121,7 +121,7 @@ mode Edtcde;
 
 EC_LPAR     : LPAR_F -> type(LPAR);
 EC_RPAR     : RPAR_F -> type(RPAR), mode(Text);
-EDITCODE    : [KZ];
+EDITCODE    : [KZ3];
 
 mode DescCont;
 
@@ -147,10 +147,10 @@ DSP_SPACE   : ' '+ -> channel(HIDDEN), mode(Desc);
 
 mode Desc;
 
-DE_DESC_START_MINUS : DESC_START_MINUS_F -> type(DESC_START), mode(DescPrfMinus);
-DE_DESC_START_PLUS  : DESC_START_PLUS_F -> type(DESC_START), mode(DescPrfPlus);
-DE_DESCRIPTION : DESCRIPTION_F -> type(DESCRIPTION);
-DE_QUOTE       : QUOTE_F -> type(QUOTE), mode(Text);
+DE_DESC_START_MINUS : DESC_START_F '-' EOL_F -> type(DESC_START), mode(DescPrfMinus);
+DE_DESC_START_PLUS  : DESC_START_F '+' EOL_F -> type(DESC_START), mode(DescPrfPlus);
+DE_DESCRIPTION      : DESC_START_F [+-]? -> type(DESCRIPTION);
+DE_QUOTE            : QUOTE_F -> type(QUOTE), mode(Text);
 
 mode Values;
 
@@ -201,8 +201,11 @@ fragment NAME_F             : ( IDS_F
                               ;                            
 fragment IDENTIFIER_F       : IDS_F IDC_F* ;
 fragment CONSTANT_F         : '*'[A-Z][A-Z0-9_]* ;
-fragment DESCRIPTION_F      : ((~[\r\n'])|('\'\''))+ ;
-fragment DESC_START_F       : (('\'\'')|([+-]~[\r\n])|(~[\r\n'+-]))+ ;
-fragment DESC_START_PLUS_F  : DESC_START_F '+' EOL_F;
-fragment DESC_START_MINUS_F : DESC_START_F '-' EOL_F;
+//fragment DESC_START_F       : (([+-]~[\r\n'+-])|(~[\r\n'+-])|('\'\''))+ ;
+fragment DESC_START_F       : ((~[\r\n'])|('\'\''))+ ;
+//fragment DESC_START_PLUS_F  : DESC_START_F '+' EOL_F;
+//fragment DESC_START_MINUS_F : DESC_START_F '-' EOL_F;
+//fragment DESCRIPTION_F      : ((~[\r\n'])|('\'\''))+ ;
+//fragment DESCRIPTION_F      : DESC_START_F [+-]?;
+
 fragment QUOTE_F            : '\'' ;
