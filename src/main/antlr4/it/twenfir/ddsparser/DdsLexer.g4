@@ -1,7 +1,8 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, ALIAS, ALWNULL, CCSID, COLHDG, CONSTANT, DESC_START, DESCRIPTION, DFT, EDTCDE,
-         EDTWRD, IDENTIFIER, LPAR, QUOTE, R_SPEC, REFFLD, RPAR, SLASH, TEXT, VALUES }
+tokens { A_SPEC, ALIAS, ALTSEQ, ALWNULL, CCSID, COLHDG, CONSTANT,
+         DESC_START, DESCRIPTION, DFT, EDTCDE, EDTWRD, IDENTIFIER, LPAR, 
+         PFILE, QUOTE, R_SPEC, REFFLD, RPAR, SLASH, TEXT, VALUES }
 
 PREFIX      : PREFIX_F -> channel(HIDDEN), pushMode(Spec);
 PART_PREF   : ( ANY_F
@@ -37,11 +38,13 @@ SIZE            : [0-9]+;
 TY_R_SPEC       : R_SPEC_F -> type(R_SPEC) ;
 TYPE            : [ABLPSTZ];
 TY_ALIAS        : ALIAS_F -> type(ALIAS), mode(Ident);
+TY_ALTSEQ       : ALTSEQ_F -> type(ALTSEQ), mode(Ident);
 TY_ALWNULL      : ALWNULL_F -> type(ALWNULL);
 TY_COLHDG       : COLHDG_F -> type(COLHDG), mode(Text);
 TY_CCSID        : CCSID_F -> type(CCSID), mode(Ccsid);
 TY_EDTCDE       : EDTCDE_F -> type(EDTCDE), mode(Edtcde);
 TY_EDTWRD       : EDTWRD_F -> type(EDTWRD), mode(Text);
+TY_PFILE        : PFILE_F -> type(PFILE), mode(Ident);
 TY_REFFLD       : REFFLD_F -> type(REFFLD), pushMode(Reffld);
 TY_TEXT         : TEXT_F -> type(TEXT), mode(Text);
 TY_DFT          : DFT_F -> type(DFT), mode(Text);
@@ -71,11 +74,13 @@ FN_SPACE    : ' '+ -> channel(HIDDEN);
 UNIQUE      : UNIQUE_F ;
 REF         : REF_F -> pushMode(Ref);
 FN_ALIAS    : ALIAS_F -> type(ALIAS), mode(Ident);
+FN_ALTSEQ   : ALTSEQ_F -> type(ALTSEQ), mode(Ident);
 FN_ALWNULL  : ALWNULL_F -> type(ALWNULL);
 FN_COLHDG   : COLHDG_F -> type(COLHDG), mode(Text);
 FN_CCSID    : CCSID_F -> type(CCSID), mode(Ccsid);
 FN_EDTCDE   : EDTCDE_F -> type(EDTCDE), mode(Edtcde);
 FN_EDTWRD   : EDTWRD_F -> type(EDTWRD), mode(Text);
+FN_PFILE    : PFILE_F -> type(PFILE), mode(Ident);
 FN_REFFLD   : REFFLD_F -> type(REFFLD), pushMode(Reffld);
 FN_TEXT     : TEXT_F -> type(TEXT), mode(Text);
 FN_DFT      : DFT_F -> type(DFT), mode(Text);
@@ -94,11 +99,13 @@ RE_SLASH        : SLASH_F -> type(SLASH);
 mode Text;
 
 TE_ALIAS       : ALIAS_F -> type(ALIAS), mode(Ident);
+TE_ALTSEQ      : ALTSEQ_F -> type(ALTSEQ), mode(Ident);
 TE_ALWNULL     : ALWNULL_F -> type(ALWNULL);
 TE_COLHDG      : COLHDG_F -> type(COLHDG);
 TE_CCSID       : CCSID_F -> type(CCSID), mode(Ccsid);
 TE_EDTCDE      : EDTCDE_F -> type(EDTCDE), mode(Edtcde);
 TE_EDTWRD      : EDTWRD_F -> type(EDTWRD);
+TE_PFILE       : PFILE_F -> type(PFILE), mode(Ident);
 TE_REFFLD      : REFFLD_F -> type(REFFLD), pushMode(Reffld);
 TE_TEXT        : TEXT_F -> type(TEXT);
 TE_DFT         : DFT_F -> type(DFT);
@@ -174,12 +181,14 @@ fragment PREFIX_F           : ANY_F ANY_F ANY_F ANY_F ANY_F ;
 fragment A_SPEC_F           : 'A' ;
 fragment R_SPEC_F           : 'R' ;
 fragment ALIAS_F            : 'ALIAS' ;
+fragment ALTSEQ_F           : 'ALTSEQ' ;
 fragment ALWNULL_F          : 'ALWNULL' ;
 fragment COLHDG_F           : 'COLHDG' ;
 fragment CCSID_F            : 'CCSID' ;
 fragment DFT_F              : 'DFT' ;
 fragment EDTCDE_F           : 'EDTCDE' ;
 fragment EDTWRD_F           : 'EDTWRD' ;
+fragment PFILE_F            : 'PFILE' ;
 fragment REF_F              : 'REF' ;
 fragment REFFLD_F           : 'REFFLD' ;
 fragment TEXT_F             : 'TEXT' ;

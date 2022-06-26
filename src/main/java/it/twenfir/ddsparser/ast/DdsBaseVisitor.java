@@ -10,6 +10,11 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+    public ValueT visitAltseq(Altseq node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public ValueT visitCcsid(Ccsid node) {
         return visitChildren(node);
     }
@@ -61,6 +66,11 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
 
     @Override
     public ValueT visitKey(Key node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public ValueT visitPfile(Pfile node) {
         return visitChildren(node);
     }
 

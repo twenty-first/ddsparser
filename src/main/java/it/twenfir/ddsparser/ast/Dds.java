@@ -32,6 +32,18 @@ public class Dds extends AstNode {
 		return unique;
 	}
 	
+	public Altseq getAltseq() {
+		return getChild(Altseq.class);
+	}
+	
+	public Pfile getPfile() {
+		return getChild(Pfile.class);
+	}
+
+	public boolean isLogical() {
+		return getPfile() != null;
+	}
+	
 	public Ref getRef() {
 		return getChild(Ref.class);
 	}

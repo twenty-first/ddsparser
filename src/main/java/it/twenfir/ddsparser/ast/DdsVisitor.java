@@ -4,6 +4,7 @@ import it.twenfir.antlr.ast.AstVisitor;
 
 public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitAlias(Alias node);
+    ValueT visitAltseq(Altseq node);
     ValueT visitCcsid(Ccsid node);
     ValueT visitDataType(DataType node);
     ValueT visitDds(Dds node);
@@ -15,6 +16,7 @@ public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitField(Field node);
     ValueT visitHeading(Heading node);
     ValueT visitKey(Key node);
+    ValueT visitPfile(Pfile node);
     ValueT visitRef(Ref node);
     ValueT visitRefField(RefField node);
     ValueT visitText(Text node);

@@ -11,6 +11,7 @@ import it.twenfir.antlr.ast.AstHelper;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.Location;
 import it.twenfir.ddsparser.DdsParser.AliasContext;
+import it.twenfir.ddsparser.DdsParser.AltseqContext;
 import it.twenfir.ddsparser.DdsParser.CcsidContext;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
@@ -22,11 +23,13 @@ import it.twenfir.ddsparser.DdsParser.EditWordContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.HeadingContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.DdsParser.PfileContext;
 import it.twenfir.ddsparser.DdsParser.RefContext;
 import it.twenfir.ddsparser.DdsParser.RefFieldContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.DdsParser.ValuesContext;
 import it.twenfir.ddsparser.ast.Alias;
+import it.twenfir.ddsparser.ast.Altseq;
 import it.twenfir.ddsparser.ast.Ccsid;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
@@ -38,6 +41,7 @@ import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
 import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Key;
+import it.twenfir.ddsparser.ast.Pfile;
 import it.twenfir.ddsparser.ast.Ref;
 import it.twenfir.ddsparser.ast.RefField;
 import it.twenfir.ddsparser.ast.Text;
@@ -52,6 +56,15 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		Location location = AstHelper.location(ctx);
 		String alias = ctx.IDENTIFIER().getText();
 		Alias node = new Alias(location, alias);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Altseq visitAltseq(AltseqContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String altseq = ctx.IDENTIFIER().getText();
+		Altseq node = new Altseq(location, altseq);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -166,6 +179,15 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		String fieldName = ctx.IDENTIFIER().getText();
 		boolean descending = ctx.DESCEND() != null;
 		Key node = new Key(location, fieldName, descending);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Pfile visitPfile(PfileContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String pfile = ctx.IDENTIFIER().getText();
+		Pfile node = new Pfile(location, pfile);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
