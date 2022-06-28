@@ -20,6 +20,11 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+    public ValueT visitComp(Comp node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public ValueT visitDataType(DataType node) {
         return visitChildren(node);
     }
@@ -60,12 +65,22 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+    public ValueT visitFormat(Format node) {
+        return visitChildren(node);
+    }
+
+    @Override
     public ValueT visitHeading(Heading node) {
         return visitChildren(node);
     }
 
     @Override
     public ValueT visitKey(Key node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public ValueT visitOmit(Omit node) {
         return visitChildren(node);
     }
 
@@ -81,6 +96,16 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
 
     @Override
     public ValueT visitRefField(RefField node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public ValueT visitSelect(Select node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public ValueT visitSst(Sst node) {
         return visitChildren(node);
     }
 

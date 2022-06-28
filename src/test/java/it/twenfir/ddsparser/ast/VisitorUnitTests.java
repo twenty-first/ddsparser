@@ -37,7 +37,7 @@ public class VisitorUnitTests extends TestBase {
         DataType t = new DataType(null, null, null, null);
         Field f = new Field(null, null, false);
         f.addChild(t);
-        Dds d = new Dds(null, null, null, false);
+        Dds d = new Dds(null, null, false);
         d.addChild(f);
         d.addChild(k);
         int i = visitor.visit(d);

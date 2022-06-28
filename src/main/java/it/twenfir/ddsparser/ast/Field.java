@@ -51,6 +51,10 @@ public class Field extends AstNode {
 		return getChild(RefField.class);
 	}
 
+	public Sst getSst() {
+		return getChild(Sst.class);
+	}
+
 	public Text getText() {
 		return getChild(Text.class);
 	}

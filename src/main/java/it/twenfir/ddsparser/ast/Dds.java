@@ -10,13 +10,11 @@ import it.twenfir.antlr.ast.Location;
 public class Dds extends AstNode {
 
 	private String record;
-	private String format;
 	private boolean unique;
 	
-	public Dds(Location location, String record, String format, boolean unique) {
+	public Dds(Location location, String record, boolean unique) {
 		super(location);
 		this.record = record;
-		this.format = format;
 		this.unique = unique;
 	}
 
@@ -24,8 +22,8 @@ public class Dds extends AstNode {
 		return record;
 	}
 	
-	public String getFormat() {
-		return format;
+	public Format getFormat() {
+		return getChild(Format.class);
 	}
 
 	public boolean isUnique() {
@@ -58,6 +56,10 @@ public class Dds extends AstNode {
 	
 	public Iterator<Key> getKeys() {
 		return getChildren(Key.class);
+	}
+	
+	public Iterator<Omit> getOmits() {
+		return getChildren(Omit.class);
 	}
 	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {

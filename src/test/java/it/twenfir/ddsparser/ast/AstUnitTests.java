@@ -61,7 +61,7 @@ public class AstUnitTests extends TestBase {
 				"     A          R TESTDDS                   FORMAT(EXTFMT)";
 
 		Dds ast = helper.ast(src);
-		assertEquals("EXTFMT", ast.getFormat());
+		assertEquals("EXTFMT", ast.getFormat().getFormat());
 	}
 
 	@Test

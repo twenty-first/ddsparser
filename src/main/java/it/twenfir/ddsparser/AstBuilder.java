@@ -13,6 +13,7 @@ import it.twenfir.antlr.ast.Location;
 import it.twenfir.ddsparser.DdsParser.AliasContext;
 import it.twenfir.ddsparser.DdsParser.AltseqContext;
 import it.twenfir.ddsparser.DdsParser.CcsidContext;
+import it.twenfir.ddsparser.DdsParser.CompContext;
 import it.twenfir.ddsparser.DdsParser.DataTypeContext;
 import it.twenfir.ddsparser.DdsParser.DdsContext;
 import it.twenfir.ddsparser.DdsParser.DescriptionContext;
@@ -21,16 +22,21 @@ import it.twenfir.ddsparser.DdsParser.DftContext;
 import it.twenfir.ddsparser.DdsParser.EditCodeContext;
 import it.twenfir.ddsparser.DdsParser.EditWordContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
+import it.twenfir.ddsparser.DdsParser.FormatContext;
 import it.twenfir.ddsparser.DdsParser.HeadingContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.DdsParser.OmitContext;
 import it.twenfir.ddsparser.DdsParser.PfileContext;
 import it.twenfir.ddsparser.DdsParser.RefContext;
 import it.twenfir.ddsparser.DdsParser.RefFieldContext;
+import it.twenfir.ddsparser.DdsParser.SelectContext;
+import it.twenfir.ddsparser.DdsParser.SstContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.DdsParser.ValuesContext;
 import it.twenfir.ddsparser.ast.Alias;
 import it.twenfir.ddsparser.ast.Altseq;
 import it.twenfir.ddsparser.ast.Ccsid;
+import it.twenfir.ddsparser.ast.Comp;
 import it.twenfir.ddsparser.ast.DataType;
 import it.twenfir.ddsparser.ast.Dds;
 import it.twenfir.ddsparser.ast.Default;
@@ -39,11 +45,15 @@ import it.twenfir.ddsparser.ast.DescriptionElement;
 import it.twenfir.ddsparser.ast.EditCode;
 import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
+import it.twenfir.ddsparser.ast.Format;
 import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Key;
+import it.twenfir.ddsparser.ast.Omit;
 import it.twenfir.ddsparser.ast.Pfile;
 import it.twenfir.ddsparser.ast.Ref;
 import it.twenfir.ddsparser.ast.RefField;
+import it.twenfir.ddsparser.ast.Select;
+import it.twenfir.ddsparser.ast.Sst;
 import it.twenfir.ddsparser.ast.Text;
 import it.twenfir.ddsparser.ast.Values;
 
@@ -65,6 +75,16 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		Location location = AstHelper.location(ctx);
 		String altseq = ctx.IDENTIFIER().getText();
 		Altseq node = new Altseq(location, altseq);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Comp visitComp(CompContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String relOp = ctx.REL_OP().getText();
+		String value = ctx.VALUE() != null ? ctx.VALUE().getText() : ctx.NUMBER().getText();
+		Comp node = new Comp(location, relOp, value);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -93,9 +113,8 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Dds visitDds(DdsContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String record = ctx.record.getText();
-		String format = ctx.format != null ? ctx.format.getText() : null;
 		boolean unique = ctx.UNIQUE() != null;
-		Dds node = new Dds(location, record, format, unique);
+		Dds node = new Dds(location, record, unique);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -166,6 +185,15 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
+	public Format visitFormat(FormatContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String format = ctx.IDENTIFIER().getText();
+		Format node = new Format(location, format);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
 	public Heading visitHeading(HeadingContext ctx) {
 		Location location = AstHelper.location(ctx);
 		Heading node = new Heading(location);
@@ -179,6 +207,15 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		String fieldName = ctx.IDENTIFIER().getText();
 		boolean descending = ctx.DESCEND() != null;
 		Key node = new Key(location, fieldName, descending);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Omit visitOmit(OmitContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String fieldName = ctx.IDENTIFIER().getText();
+		Omit node = new Omit(location, fieldName);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -227,6 +264,26 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 			file = ctx.con_file.getText();
 		}
 		RefField node = new RefField(location, name, library, file);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Select visitSelect(SelectContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String fieldName = ctx.IDENTIFIER().getText();
+		Select node = new Select(location, fieldName);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Sst visitSst(SstContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String field = ctx.IDENTIFIER().getText();
+		Integer from = Integer.decode(ctx.NUMBER(0).getText());
+		Integer length = ctx.NUMBER().size() > 1 ? Integer.decode(ctx.NUMBER(1).getText()) : null;
+		Sst node = new Sst(location, field, from, length);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
