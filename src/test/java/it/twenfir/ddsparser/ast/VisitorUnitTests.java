@@ -49,8 +49,8 @@ public class VisitorUnitTests extends TestBase {
 		String src = 
 				"                                            REF(REFERENCE)\n" + 
 				"                R TESTDDS\n" + 
-				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
-				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
+				"                  REFERRAL  R               REFFLD(REFERRED)\n" +
+				"                  REFFIELD  R               REFFLD(REFFIELD REFFILE)";
 
 		Dds dds = helper.ast(src);
     	DdsVisitor<? extends Integer> visitor = new DdsBaseVisitor<Integer>() {

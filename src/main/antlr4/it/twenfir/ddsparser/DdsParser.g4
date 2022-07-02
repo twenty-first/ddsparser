@@ -6,7 +6,7 @@ options
 }
 
 dds :   ( A_SPEC* ( UNIQUE | ref | altseq ) )*
-        A_SPEC* R_SPEC ( record = IDENTIFIER )
+        A_SPEC* RECORD ( record = IDENTIFIER )
         ( format
         | pfile
         | text
@@ -27,7 +27,7 @@ format : A_SPEC* FORMAT LPAR ( IDENTIFIER ) RPAR ;
 ref : REF LPAR ( ( ref_lib = IDENTIFIER | CONSTANT ) SLASH )? ref_file = IDENTIFIER RPAR ;
 
 field : A_SPEC* IDENTIFIER
-        ( dataType | R_SPEC )
+        ( dataType | REFERENCE )
         ( A_SPEC* ALWNULL
         | alias
         | ccsid
@@ -43,7 +43,7 @@ field : A_SPEC* IDENTIFIER
         )*
         ;
 
-dataType : ( SIZE | SIZE? TYPE ) SIZE? ;
+dataType : ( NUMBER | NUMBER? TYPE ) NUMBER? ;
 
 text : A_SPEC* TEXT description ;
 
@@ -71,11 +71,11 @@ refField : A_SPEC* REFFLD LPAR
 
 sst : A_SPEC* SST LPAR IDENTIFIER NUMBER NUMBER? RPAR ;
 
-values : A_SPEC* VALUES LPAR ( QUOTE VALUE QUOTE )+ RPAR ;
+values : A_SPEC* VALUES LPAR ( QUOTE STRING QUOTE )+ RPAR ;
 
 description : LPAR descriptionElement ( ( MINUS | PLUS )? A_SPEC* descriptionElement )* RPAR ;
 
-descriptionElement : QUOTE ( DESC_START A_SPEC* )* DESCRIPTION? QUOTE ;
+descriptionElement : QUOTE ( STRING_START A_SPEC* )* STRING? QUOTE ;
 
 key :   A_SPEC* KEY IDENTIFIER 
         ( A_SPEC* 
@@ -88,5 +88,5 @@ omit : A_SPEC* OMIT IDENTIFIER comp? ;
 
 select : A_SPEC* SELECT IDENTIFIER comp? ;
 
-comp : COMP LPAR REL_OP ( QUOTE VALUE QUOTE | NUMBER ) RPAR ;
+comp : COMP LPAR REL_OP ( QUOTE STRING QUOTE | NUMBER ) RPAR ;
 
