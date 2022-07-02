@@ -162,8 +162,8 @@ public class AstUnitTests extends TestBase {
 		String src = 
 				"                                            REF(REFERENCE)\n" + 
 				"                R TESTDDS\n" + 
-				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
-				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
+				"                  REFERRAL  R               REFFLD(REFERRED)\n" +
+				"                  REFFIELD  R               REFFLD(REFFIELD REFFILE)";
 
 		Dds ast = helper.ast(src);
 		assertEquals("REFERENCE", ast.getRef().getReference());

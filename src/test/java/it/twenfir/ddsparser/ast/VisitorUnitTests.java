@@ -35,9 +35,9 @@ public class VisitorUnitTests extends TestBase {
 
         Key k = new Key(null, null, false);
         DataType t = new DataType(null, null, null, null);
-        Field f = new Field(null, null, false);
+        Field f = new Field(null, null, null, false);
         f.addChild(t);
-        Dds d = new Dds(null, null, false);
+        Dds d = new Dds(null, null, false, false);
         d.addChild(f);
         d.addChild(k);
         int i = visitor.visit(d);
@@ -49,8 +49,8 @@ public class VisitorUnitTests extends TestBase {
 		String src = 
 				"                                            REF(REFERENCE)\n" + 
 				"                R TESTDDS\n" + 
-				"                  REFERRAL       R          REFFLD(REFERRED)\n" +
-				"                  REFFIELD       R          REFFLD(REFFIELD REFFILE)";
+				"                  REFERRAL  R               REFFLD(REFERRED)\n" +
+				"                  REFFIELD  R               REFFLD(REFFIELD REFFILE)";
 
 		Dds dds = helper.ast(src);
     	DdsVisitor<? extends Integer> visitor = new DdsBaseVisitor<Integer>() {

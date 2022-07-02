@@ -75,6 +75,26 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+	public ValueT visitJfile(Jfile node) {
+        return visitChildren(node);
+	}
+
+	@Override
+	public ValueT visitJfld(Jfld node) {
+        return visitChildren(node);
+	}
+
+	@Override
+	public ValueT visitJoin(Join node) {
+        return visitChildren(node);
+	}
+
+	@Override
+	public ValueT visitJref(Jref node) {
+        return visitChildren(node);
+	}
+
+	@Override
     public ValueT visitKey(Key node) {
         return visitChildren(node);
     }

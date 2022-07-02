@@ -5,12 +5,14 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   ( A_SPEC* ( UNIQUE | ref | altseq ) )*
-        A_SPEC* R_SPEC ( record = IDENTIFIER )
+dds :   ( A_SPEC* ( JDFTVAL | UNIQUE | ref | altseq ) )*
+        A_SPEC* RECORD ( record = IDENTIFIER )
         ( format
+        | jfile
         | pfile
         | text
         )*
+        join?
         ( field 
         | key
         | omit
@@ -24,17 +26,30 @@ altseq : ALTSEQ LPAR IDENTIFIER RPAR ;
 
 format : A_SPEC* FORMAT LPAR ( IDENTIFIER ) RPAR ;
 
+jfile : A_SPEC* JFILE LPAR IDENTIFIER+ RPAR ;
+
+join : A_SPEC* JOIN_DEF JOIN LPAR IDENTIFIER IDENTIFIER RPAR jfld* ;
+
+jfld: A_SPEC* JFLD LPAR IDENTIFIER IDENTIFIER RPAR ;
+
+pfile : A_SPEC* PFILE LPAR IDENTIFIER RPAR ;
+
 ref : REF LPAR ( ( ref_lib = IDENTIFIER | CONSTANT ) SLASH )? ref_file = IDENTIFIER RPAR ;
 
+text : A_SPEC* TEXT description ;
+
 field : A_SPEC* IDENTIFIER
-        ( dataType | R_SPEC )
+        ( dataType | REFERENCE )?
+        USAGE?
         ( A_SPEC* ALWNULL
         | alias
         | ccsid
+        | comp
         | dft
         | editCode
         | editWord
         | heading
+        | jref
         | pfile
         | refField
         | sst
@@ -43,23 +58,21 @@ field : A_SPEC* IDENTIFIER
         )*
         ;
 
-dataType : ( SIZE | SIZE? TYPE ) SIZE? ;
-
-text : A_SPEC* TEXT description ;
-
 alias : A_SPEC* ALIAS LPAR IDENTIFIER RPAR ;
 
 ccsid : A_SPEC* CCSID LPAR NUMBER RPAR ;
 
-heading : A_SPEC* COLHDG description ;
-
 dft : A_SPEC* DFT description ;
+
+dataType : ( NUMBER | NUMBER? TYPE ) NUMBER? ;
 
 editCode : A_SPEC* EDTCDE LPAR EDITCODE RPAR ;
 
 editWord : A_SPEC* EDTWRD description ;
 
-pfile : A_SPEC* PFILE LPAR IDENTIFIER RPAR ;
+heading : A_SPEC* COLHDG description ;
+
+jref: A_SPEC* JREF LPAR NUMBER RPAR ;
 
 refField : A_SPEC* REFFLD LPAR 
         ref_field = IDENTIFIER 
@@ -71,11 +84,11 @@ refField : A_SPEC* REFFLD LPAR
 
 sst : A_SPEC* SST LPAR IDENTIFIER NUMBER NUMBER? RPAR ;
 
-values : A_SPEC* VALUES LPAR ( QUOTE VALUE QUOTE )+ RPAR ;
+values : A_SPEC* VALUES LPAR ( QUOTE STRING QUOTE )+ RPAR ;
 
 description : LPAR descriptionElement ( ( MINUS | PLUS )? A_SPEC* descriptionElement )* RPAR ;
 
-descriptionElement : QUOTE ( DESC_START A_SPEC* )* DESCRIPTION? QUOTE ;
+descriptionElement : QUOTE ( STRING_START A_SPEC* )* STRING? QUOTE ;
 
 key :   A_SPEC* KEY IDENTIFIER 
         ( A_SPEC* 
@@ -84,9 +97,9 @@ key :   A_SPEC* KEY IDENTIFIER
           )
         )* ;
 
-omit : A_SPEC* OMIT IDENTIFIER comp? ;
+omit : A_SPEC* OMIT ( IDENTIFIER comp? | ALL );
 
-select : A_SPEC* SELECT IDENTIFIER comp? ;
+select : A_SPEC* SELECT ( IDENTIFIER comp? | ALL );
 
-comp : COMP LPAR REL_OP ( QUOTE VALUE QUOTE | NUMBER ) RPAR ;
+comp : COMP LPAR REL_OP ( QUOTE STRING QUOTE | NUMBER ) RPAR ;
 

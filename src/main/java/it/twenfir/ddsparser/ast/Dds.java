@@ -10,11 +10,13 @@ import it.twenfir.antlr.ast.Location;
 public class Dds extends AstNode {
 
 	private String record;
+	private boolean fileJoin;
 	private boolean unique;
 	
-	public Dds(Location location, String record, boolean unique) {
+	public Dds(Location location, String record, boolean fileJoin, boolean unique) {
 		super(location);
 		this.record = record;
+		this.fileJoin = fileJoin;
 		this.unique = unique;
 	}
 
@@ -26,12 +28,24 @@ public class Dds extends AstNode {
 		return getChild(Format.class);
 	}
 
+	public boolean isFileJoin() {
+		return fileJoin;
+	}
+
 	public boolean isUnique() {
 		return unique;
 	}
 	
 	public Altseq getAltseq() {
 		return getChild(Altseq.class);
+	}
+	
+	public Jfile getJfile() {
+		return getChild(Jfile.class);
+	}
+	
+	public Join getJoin() {
+		return getChild(Join.class);
 	}
 	
 	public Pfile getPfile() {

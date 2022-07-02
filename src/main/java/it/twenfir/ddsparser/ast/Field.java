@@ -1,5 +1,7 @@
 package it.twenfir.ddsparser.ast;
 
+import java.util.Iterator;
+
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.Location;
@@ -7,9 +9,10 @@ import it.twenfir.antlr.ast.Location;
 public class Field extends AstNode {
 
 	private String name;
+	private String usage;
 	private boolean allowNull;
 	
-	public Field(Location location, String name, boolean allowNull) {
+	public Field(Location location, String name, String usage, boolean allowNull) {
 		super(location);
 		this.name = name;
 		this.allowNull = allowNull;
@@ -19,6 +22,10 @@ public class Field extends AstNode {
 		return name;
 	}
 
+    public String getUsage() {
+    	return usage;
+    }
+    
 	public boolean isAllowNull() {
 		return allowNull;
 	}
@@ -45,6 +52,10 @@ public class Field extends AstNode {
 	
 	public Heading getHeading() {
 		return getChild(Heading.class);
+	}
+	
+	public Iterator<Jref> getJrefs() {
+		return getChildren(Jref.class);
 	}
 	
 	public RefField getRefField() {

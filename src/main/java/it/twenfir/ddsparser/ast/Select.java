@@ -7,14 +7,20 @@ import it.twenfir.antlr.ast.Location;
 public class Select extends AstNode {
 
 	private String fieldName;
+	private boolean all;
 	
-	public Select(Location location, String fieldName) {
+	public Select(Location location, String fieldName, boolean all) {
 		super(location);
 		this.fieldName = fieldName;
+		this.all = all;
 	}
 
 	public String getFieldName() {
 		return fieldName;
+	}
+	
+	public boolean isAll() {
+		return all;
 	}
 	
 	public Comp getComp() {

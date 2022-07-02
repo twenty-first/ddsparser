@@ -24,6 +24,10 @@ import it.twenfir.ddsparser.DdsParser.EditWordContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.FormatContext;
 import it.twenfir.ddsparser.DdsParser.HeadingContext;
+import it.twenfir.ddsparser.DdsParser.JfileContext;
+import it.twenfir.ddsparser.DdsParser.JfldContext;
+import it.twenfir.ddsparser.DdsParser.JoinContext;
+import it.twenfir.ddsparser.DdsParser.JrefContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
 import it.twenfir.ddsparser.DdsParser.OmitContext;
 import it.twenfir.ddsparser.DdsParser.PfileContext;
@@ -47,6 +51,10 @@ import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
 import it.twenfir.ddsparser.ast.Format;
 import it.twenfir.ddsparser.ast.Heading;
+import it.twenfir.ddsparser.ast.Jfile;
+import it.twenfir.ddsparser.ast.Jfld;
+import it.twenfir.ddsparser.ast.Join;
+import it.twenfir.ddsparser.ast.Jref;
 import it.twenfir.ddsparser.ast.Key;
 import it.twenfir.ddsparser.ast.Omit;
 import it.twenfir.ddsparser.ast.Pfile;
@@ -83,7 +91,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Comp visitComp(CompContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String relOp = ctx.REL_OP().getText();
-		String value = ctx.VALUE() != null ? ctx.VALUE().getText() : ctx.NUMBER().getText();
+		String value = ctx.STRING() != null ? ctx.STRING().getText() : ctx.NUMBER().getText();
 		Comp node = new Comp(location, relOp, value);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
@@ -102,8 +110,8 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public DataType visitDataType(DataTypeContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String type = ctx.TYPE() != null ? ctx.TYPE().getText() : null;
-		Integer size = ctx.SIZE(0) != null ? Integer.parseInt(ctx.SIZE(0).getText()) : null;
-		Integer precision = ctx.SIZE(1) != null ? Integer.parseInt(ctx.SIZE(1).getText()) : null;
+		Integer size = ctx.NUMBER(0) != null ? Integer.parseInt(ctx.NUMBER(0).getText()) : null;
+		Integer precision = ctx.NUMBER(1) != null ? Integer.parseInt(ctx.NUMBER(1).getText()) : null;
 		DataType node = new DataType(location, type, size, precision);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
@@ -113,8 +121,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Dds visitDds(DdsContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String record = ctx.record.getText();
+		boolean fileJoin = ctx.JDFTVAL() != null;
 		boolean unique = ctx.UNIQUE() != null;
-		Dds node = new Dds(location, record, unique);
+		Dds node = new Dds(location, record, fileJoin, unique);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -139,7 +148,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public DescriptionElement visitDescriptionElement(DescriptionElementContext ctx) {
 		Location location = AstHelper.location(ctx);
 		StringBuilder sb = new StringBuilder();
-		for ( TerminalNode ds : ctx.DESC_START() ) {
+		for ( TerminalNode ds : ctx.STRING_START() ) {
 			Matcher m = endDescRe.matcher(ds.getText());
 			int i = -1;
 			while ( m.find() ) {
@@ -149,8 +158,8 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 					ds.getText().substring(0, i - 1) : ds.getText().substring(0, i);
 			sb.append(s);
 		}
-		if ( ctx.DESCRIPTION() != null ) {
-			sb.append(ctx.DESCRIPTION().getText());
+		if ( ctx.STRING() != null ) {
+			sb.append(ctx.STRING().getText());
 		}
 		DescriptionElement node = new DescriptionElement(location, sb.toString());
 		AstHelper.visitChildren(this, ctx, node);
@@ -178,8 +187,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Field visitField(FieldContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String name = ctx.IDENTIFIER().getText();
+		String usage = ctx.USAGE() != null ? ctx.USAGE().getText() : null;
 		boolean allowNull = ctx.ALWNULL() != null;
-		Field node = new Field(location, name, allowNull);
+		Field node = new Field(location, name, usage, allowNull);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -202,6 +212,45 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
+	public Jfile visitJfile(JfileContext ctx) {
+		Location location = AstHelper.location(ctx);
+		ArrayList<String> files = new ArrayList<String>();
+		ctx.IDENTIFIER().forEach((f) -> files.add(f.getText()));
+		Jfile node = new Jfile(location, files);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Jfld visitJfld(JfldContext ctx) {
+		Location location = AstHelper.location(ctx);
+		ArrayList<String> fields = new ArrayList<String>();
+		ctx.IDENTIFIER().forEach((f) -> fields.add(f.getText()));
+		Jfld node = new Jfld(location, fields);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Join visitJoin(JoinContext ctx) {
+		Location location = AstHelper.location(ctx);
+		ArrayList<String> files = new ArrayList<String>();
+		ctx.IDENTIFIER().forEach((f) -> files.add(f.getText()));
+		Join node = new Join(location, files);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
+	public Jref visitJref(JrefContext ctx) {
+		Location location = AstHelper.location(ctx);
+		int index = Integer.parseInt(ctx.NUMBER().getText());
+		Jref node = new Jref(location, index);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
 	public Key visitKey(KeyContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String fieldName = ctx.IDENTIFIER().getText();
@@ -214,8 +263,12 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Omit visitOmit(OmitContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String fieldName = ctx.IDENTIFIER().getText();
-		Omit node = new Omit(location, fieldName);
+		boolean all = ctx.ALL() != null;
+		String fieldName = null;
+		if ( ! all ) {
+			fieldName = ctx.IDENTIFIER().getText();
+		}
+		Omit node = new Omit(location, fieldName, all);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -271,8 +324,12 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Select visitSelect(SelectContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String fieldName = ctx.IDENTIFIER().getText();
-		Select node = new Select(location, fieldName);
+		boolean all = ctx.ALL() != null;
+		String fieldName = null;
+		if ( ! all ) {
+			fieldName = ctx.IDENTIFIER().getText();
+		}
+		Select node = new Select(location, fieldName, all);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -300,7 +357,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Values visitValues(ValuesContext ctx) {
 		Location location = AstHelper.location(ctx);
 		List<String> valueList = new ArrayList<>();
-		ctx.VALUE().forEach((v) -> { valueList.add(v.getText()); });
+		ctx.STRING().forEach((v) -> { valueList.add(v.getText()); });
 		Values node = new Values(location, valueList);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
