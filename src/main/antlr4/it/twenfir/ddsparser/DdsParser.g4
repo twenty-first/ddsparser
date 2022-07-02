@@ -39,24 +39,23 @@ ref : REF LPAR ( ( ref_lib = IDENTIFIER | CONSTANT ) SLASH )? ref_file = IDENTIF
 text : A_SPEC* TEXT description ;
 
 field : A_SPEC* IDENTIFIER
-        ( ( dataType | REFERENCE )?
-          USAGE?
-          ( A_SPEC* ALWNULL
-          | alias
-          | ccsid
-          | comp
-          | dft
-          | editCode
-          | editWord
-          | heading
-          | jref
-          | pfile
-          | refField
-          | sst
-          | text
-          | values
-          )*
-        )?
+        ( dataType | REFERENCE )?
+        USAGE?
+        ( A_SPEC* ALWNULL
+        | alias
+        | ccsid
+        | comp
+        | dft
+        | editCode
+        | editWord
+        | heading
+        | jref
+        | pfile
+        | refField
+        | sst
+        | text
+        | values
+        )*
         ;
 
 alias : A_SPEC* ALIAS LPAR IDENTIFIER RPAR ;
