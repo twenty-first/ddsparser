@@ -83,7 +83,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Comp visitComp(CompContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String relOp = ctx.REL_OP().getText();
-		String value = ctx.VALUE() != null ? ctx.VALUE().getText() : ctx.NUMBER().getText();
+		String value = ctx.STRING() != null ? ctx.STRING().getText() : ctx.NUMBER().getText();
 		Comp node = new Comp(location, relOp, value);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
@@ -102,8 +102,8 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public DataType visitDataType(DataTypeContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String type = ctx.TYPE() != null ? ctx.TYPE().getText() : null;
-		Integer size = ctx.SIZE(0) != null ? Integer.parseInt(ctx.SIZE(0).getText()) : null;
-		Integer precision = ctx.SIZE(1) != null ? Integer.parseInt(ctx.SIZE(1).getText()) : null;
+		Integer size = ctx.NUMBER(0) != null ? Integer.parseInt(ctx.NUMBER(0).getText()) : null;
+		Integer precision = ctx.NUMBER(1) != null ? Integer.parseInt(ctx.NUMBER(1).getText()) : null;
 		DataType node = new DataType(location, type, size, precision);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
@@ -139,7 +139,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public DescriptionElement visitDescriptionElement(DescriptionElementContext ctx) {
 		Location location = AstHelper.location(ctx);
 		StringBuilder sb = new StringBuilder();
-		for ( TerminalNode ds : ctx.DESC_START() ) {
+		for ( TerminalNode ds : ctx.STRING_START() ) {
 			Matcher m = endDescRe.matcher(ds.getText());
 			int i = -1;
 			while ( m.find() ) {
@@ -149,8 +149,8 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 					ds.getText().substring(0, i - 1) : ds.getText().substring(0, i);
 			sb.append(s);
 		}
-		if ( ctx.DESCRIPTION() != null ) {
-			sb.append(ctx.DESCRIPTION().getText());
+		if ( ctx.STRING() != null ) {
+			sb.append(ctx.STRING().getText());
 		}
 		DescriptionElement node = new DescriptionElement(location, sb.toString());
 		AstHelper.visitChildren(this, ctx, node);
@@ -300,7 +300,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Values visitValues(ValuesContext ctx) {
 		Location location = AstHelper.location(ctx);
 		List<String> valueList = new ArrayList<>();
-		ctx.VALUE().forEach((v) -> { valueList.add(v.getText()); });
+		ctx.STRING().forEach((v) -> { valueList.add(v.getText()); });
 		Values node = new Values(location, valueList);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
