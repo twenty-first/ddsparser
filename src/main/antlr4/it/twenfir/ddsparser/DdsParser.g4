@@ -9,7 +9,7 @@ dds :   ( A_SPEC* ( JDFTVAL | UNIQUE | ref | altseq ) )*
         A_SPEC* RECORD ( record = IDENTIFIER )
         ( format
         | jfile
-        | pfile
+        | physicalFile
         | text
         )*
         join?
@@ -32,14 +32,15 @@ join : A_SPEC* JOIN_DEF JOIN LPAR IDENTIFIER IDENTIFIER RPAR jfld* ;
 
 jfld: A_SPEC* JFLD LPAR IDENTIFIER IDENTIFIER RPAR ;
 
-pfile : A_SPEC* PFILE LPAR IDENTIFIER RPAR ;
+physicalFile : A_SPEC* PFILE LPAR fileName+ RPAR ;
 
 ref : REF LPAR ( ( ref_lib = IDENTIFIER | CONSTANT ) SLASH )? ref_file = IDENTIFIER RPAR ;
 
 text : A_SPEC* TEXT description ;
 
 field : A_SPEC* IDENTIFIER
-        ( dataType | REFERENCE )?
+        REFERENCE?
+        dataType?
         USAGE?
         ( A_SPEC* ALWNULL
         | alias
@@ -50,7 +51,7 @@ field : A_SPEC* IDENTIFIER
         | editWord
         | heading
         | jref
-        | pfile
+        | physicalFile
         | refField
         | sst
         | text
@@ -84,7 +85,9 @@ refField : A_SPEC* REFFLD LPAR
 
 sst : A_SPEC* SST LPAR IDENTIFIER NUMBER NUMBER? RPAR ;
 
-values : A_SPEC* VALUES LPAR ( QUOTE STRING QUOTE )+ RPAR ;
+values : A_SPEC* VALUES LPAR value+ RPAR ;
+
+value : QUOTE STRING QUOTE | NUMBER ;
 
 description : LPAR descriptionElement ( ( MINUS | PLUS )? A_SPEC* descriptionElement )* RPAR ;
 
@@ -97,9 +100,10 @@ key :   A_SPEC* KEY IDENTIFIER
           )
         )* ;
 
-omit : A_SPEC* OMIT ( IDENTIFIER comp? | ALL );
+omit : A_SPEC* OMIT ( IDENTIFIER ( comp | values )? | ALL );
 
-select : A_SPEC* SELECT ( IDENTIFIER comp? | ALL );
+select : A_SPEC* SELECT ( IDENTIFIER ( comp | values )? | ALL );
 
 comp : COMP LPAR REL_OP ( QUOTE STRING QUOTE | NUMBER ) RPAR ;
 
+fileName : ( lib = IDENTIFIER SLASH )? name = IDENTIFIER ;

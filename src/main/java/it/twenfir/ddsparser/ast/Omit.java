@@ -27,6 +27,10 @@ public class Omit extends AstNode {
 		return getChild(Comp.class);
 	}
 	
+	public Values getValues() {
+		return getChild(Values.class);
+	}
+	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
 		if ( visitor instanceof DdsVisitor ) {
 			return ((DdsVisitor<? extends ValueT>) visitor).visitOmit(this);

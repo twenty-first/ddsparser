@@ -1,25 +1,24 @@
 package it.twenfir.ddsparser.ast;
 
+import java.util.Iterator;
+
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.Location;
 
-public class Pfile extends AstNode {
+public class PhysicalFile extends AstNode {
 
-	private String pfile;
-
-    public Pfile(Location location, String pfile) {
+    public PhysicalFile(Location location) {
         super(location);
-		this.pfile = pfile;
     }
-
-	public String getPfile() {
-		return pfile;
-	}
 	
+	public Iterator<FileName> getFileNames() {
+		return getChildren(FileName.class);
+	}
+
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
 		if ( visitor instanceof DdsVisitor ) {
-			return ((DdsVisitor<? extends ValueT>) visitor).visitPfile(this);
+			return ((DdsVisitor<? extends ValueT>) visitor).visitPhysicalFile(this);
     	}
     	else {
     		return visitor.visit(this);

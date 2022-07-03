@@ -154,7 +154,11 @@ public class AstUnitTests extends TestBase {
 				"                  ANSWER         1          VALUES('Y' 'N')";
 
 		Dds ast = helper.ast(src);
-		ast.getFields().next().getValues().getValues().forEach((v) -> { assertTrue(v.equals("Y") || v.equals("N")); });
+		Iterator<Value> iter = ast.getFields().next().getValues().getValues();
+		while ( iter.hasNext() ) { 
+			String v = iter.next().getString();
+			assertTrue(v.equals("Y") || v.equals("N"));
+		}
 	}
 
 	@Test

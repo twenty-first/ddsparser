@@ -48,8 +48,8 @@ public class Dds extends AstNode {
 		return getChild(Join.class);
 	}
 	
-	public Pfile getPfile() {
-		return getChild(Pfile.class);
+	public PhysicalFile getPfile() {
+		return getChild(PhysicalFile.class);
 	}
 
 	public boolean isLogical() {

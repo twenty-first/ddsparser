@@ -1,7 +1,6 @@
 package it.twenfir.ddsparser;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +21,7 @@ import it.twenfir.ddsparser.DdsParser.DftContext;
 import it.twenfir.ddsparser.DdsParser.EditCodeContext;
 import it.twenfir.ddsparser.DdsParser.EditWordContext;
 import it.twenfir.ddsparser.DdsParser.FieldContext;
+import it.twenfir.ddsparser.DdsParser.FileNameContext;
 import it.twenfir.ddsparser.DdsParser.FormatContext;
 import it.twenfir.ddsparser.DdsParser.HeadingContext;
 import it.twenfir.ddsparser.DdsParser.JfileContext;
@@ -30,12 +30,13 @@ import it.twenfir.ddsparser.DdsParser.JoinContext;
 import it.twenfir.ddsparser.DdsParser.JrefContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
 import it.twenfir.ddsparser.DdsParser.OmitContext;
-import it.twenfir.ddsparser.DdsParser.PfileContext;
+import it.twenfir.ddsparser.DdsParser.PhysicalFileContext;
 import it.twenfir.ddsparser.DdsParser.RefContext;
 import it.twenfir.ddsparser.DdsParser.RefFieldContext;
 import it.twenfir.ddsparser.DdsParser.SelectContext;
 import it.twenfir.ddsparser.DdsParser.SstContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
+import it.twenfir.ddsparser.DdsParser.ValueContext;
 import it.twenfir.ddsparser.DdsParser.ValuesContext;
 import it.twenfir.ddsparser.ast.Alias;
 import it.twenfir.ddsparser.ast.Altseq;
@@ -49,6 +50,7 @@ import it.twenfir.ddsparser.ast.DescriptionElement;
 import it.twenfir.ddsparser.ast.EditCode;
 import it.twenfir.ddsparser.ast.EditWord;
 import it.twenfir.ddsparser.ast.Field;
+import it.twenfir.ddsparser.ast.FileName;
 import it.twenfir.ddsparser.ast.Format;
 import it.twenfir.ddsparser.ast.Heading;
 import it.twenfir.ddsparser.ast.Jfile;
@@ -57,12 +59,13 @@ import it.twenfir.ddsparser.ast.Join;
 import it.twenfir.ddsparser.ast.Jref;
 import it.twenfir.ddsparser.ast.Key;
 import it.twenfir.ddsparser.ast.Omit;
-import it.twenfir.ddsparser.ast.Pfile;
+import it.twenfir.ddsparser.ast.PhysicalFile;
 import it.twenfir.ddsparser.ast.Ref;
 import it.twenfir.ddsparser.ast.RefField;
 import it.twenfir.ddsparser.ast.Select;
 import it.twenfir.ddsparser.ast.Sst;
 import it.twenfir.ddsparser.ast.Text;
+import it.twenfir.ddsparser.ast.Value;
 import it.twenfir.ddsparser.ast.Values;
 
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
@@ -195,6 +198,16 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
+	public FileName visitFileName(FileNameContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String lib = ctx.lib != null ? ctx.lib.getText() : null;
+		String name = ctx.name != null ? ctx.name.getText() : null;
+		FileName node = new FileName(location, lib, name);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
 	public Format visitFormat(FormatContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String format = ctx.IDENTIFIER().getText();
@@ -274,10 +287,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
-	public Pfile visitPfile(PfileContext ctx) {
+	public PhysicalFile visitPhysicalFile(PhysicalFileContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String pfile = ctx.IDENTIFIER().getText();
-		Pfile node = new Pfile(location, pfile);
+		PhysicalFile node = new PhysicalFile(location);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -354,11 +366,19 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
+	public Value visitValue(ValueContext ctx) {
+		Location location = AstHelper.location(ctx);
+		String string = ctx.STRING() != null ? ctx.STRING().getText() : null;
+		String number = ctx.NUMBER() != null ? ctx.NUMBER().getText() : null;
+		Value node = new Value(location, string, number);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+
+	@Override
 	public Values visitValues(ValuesContext ctx) {
 		Location location = AstHelper.location(ctx);
-		List<String> valueList = new ArrayList<>();
-		ctx.STRING().forEach((v) -> { valueList.add(v.getText()); });
-		Values node = new Values(location, valueList);
+		Values node = new Values(location);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}

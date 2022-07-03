@@ -1,7 +1,5 @@
 package it.twenfir.ddsparser;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -201,15 +199,6 @@ public class ParserUnitTests extends TestBase {
 
 		helper.parse(src);
 	}
-
-//	@Test
-//	public void errorTest() {
-//		String src = 
-//				"     A          R BADDDS\n" + 
-//				"     A            STRING        ";
-//		
-//		assertThrows(ParseException.class, () -> helper.parse(src));
-//	}
 
 	@Test
 	public void ccsidTest() throws ParseException {

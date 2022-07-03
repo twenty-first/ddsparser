@@ -106,7 +106,7 @@ RF_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Length;
 
-LEN5        : [0-9] [0-9] [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
+LEN5        : [0-9+-] [0-9] [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
 LN1_SPACE   : ' ' -> channel(HIDDEN), mode(Len4);
 LN2_SPACE   : '  ' -> channel(HIDDEN), mode(Len3);
 LN3_SPACE   : '   ' -> channel(HIDDEN), mode(Len2);
@@ -116,17 +116,17 @@ LN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Len4;
 
-LEN4        : [0-9] [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
+LEN4        : [0-9+-] [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
 LN4_EOL     : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Len3;
 
-LEN3        : [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
+LEN3        : [0-9+-] [0-9] [0-9] -> type(NUMBER), mode(DataType);
 LN3_EOL     : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Len2;
 
-LEN2        : [0-9] [0-9] -> type(NUMBER), mode(DataType);
+LEN2        : [0-9+-] [0-9] -> type(NUMBER), mode(DataType);
 LN2_EOL     : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Len1;
@@ -273,5 +273,5 @@ fragment IDS_F              : [A-Z$\u00a3\u00a7] ;
 fragment IDC_F              : [A-Z0-9$_\u00a3\u00a7] ;
 fragment IDENTIFIER_F       : IDS_F IDC_F* ;
 fragment CONSTANT_F         : '*'[A-Z][A-Z0-9_]* ;
-fragment NUMBER_F           : [0-9]+;
+fragment NUMBER_F           : [+-]? [0-9]+;
 fragment STRING_START_F       : ((~[\r\n'])|('\'\''))+ ;

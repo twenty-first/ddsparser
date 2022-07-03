@@ -65,6 +65,11 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
+	public ValueT visitFileName(FileName node) {
+        return visitChildren(node);
+	}
+
+	@Override
     public ValueT visitFormat(Format node) {
         return visitChildren(node);
     }
@@ -105,7 +110,7 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
     }
 
     @Override
-    public ValueT visitPfile(Pfile node) {
+    public ValueT visitPhysicalFile(PhysicalFile node) {
         return visitChildren(node);
     }
 
@@ -131,6 +136,11 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
 
     @Override
     public ValueT visitText(Text node) {
+        return visitChildren(node);
+    }
+
+    @Override
+    public ValueT visitValue(Value node) {
         return visitChildren(node);
     }
 
