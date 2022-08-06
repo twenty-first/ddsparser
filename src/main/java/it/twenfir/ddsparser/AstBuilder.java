@@ -191,8 +191,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		Location location = AstHelper.location(ctx);
 		String name = ctx.IDENTIFIER().getText();
 		String usage = ctx.USAGE() != null ? ctx.USAGE().getText() : null;
+		boolean reference = ctx.REFERENCE() != null;
 		boolean allowNull = ctx.ALWNULL() != null;
-		Field node = new Field(location, name, usage, allowNull);
+		Field node = new Field(location, name, usage, reference, allowNull);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
