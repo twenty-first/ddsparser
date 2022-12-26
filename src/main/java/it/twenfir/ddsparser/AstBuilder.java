@@ -115,6 +115,9 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		String type = ctx.TYPE() != null ? ctx.TYPE().getText() : null;
 		Integer size = ctx.NUMBER(0) != null ? Integer.parseInt(ctx.NUMBER(0).getText()) : null;
 		Integer precision = ctx.NUMBER(1) != null ? Integer.parseInt(ctx.NUMBER(1).getText()) : null;
+		if ( precision == null && type != null && type.charAt(0) == 'S' ) {
+			precision = 0;
+		}
 		DataType node = new DataType(location, type, size, precision);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;

@@ -208,4 +208,13 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		assertEquals("K", ast.getFields().next().getEditCode().getEditCode());
 	}
+
+	@Test
+	public void missingPrecisionTest() throws ParseException {
+		String src =
+				"     A          R TESTDDS\n" +
+				"     A            FIELD          8S";
+		Dds ast = helper.ast(src);
+		assertEquals(0, ast.getFields().next().getDataType().getPrecision());
+	}
 }
