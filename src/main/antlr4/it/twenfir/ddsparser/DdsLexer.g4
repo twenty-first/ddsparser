@@ -15,7 +15,7 @@ ST_EOL      : EOL_F+ -> channel(HIDDEN);
 
 mode FormType;
 
-SP_A_SPEC   : 'A' -> type(A_SPEC), mode(Condition);
+SP_A_SPEC   : A_F -> type(A_SPEC), mode(Condition);
 SP_SPACE    : ' ' -> channel(HIDDEN), mode(Condition);
 COMMENT     : ANY_F? '*' ANY_F* -> channel(HIDDEN);
 SP_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
@@ -224,7 +224,7 @@ EP_EOL      : EOL_F+ -> channel(HIDDEN);
 
 mode ExprForm;
 
-EF_A_SPEC   : 'A' -> type(A_SPEC), mode(ExprMiddle);
+EF_A_SPEC   : A_F -> type(A_SPEC), mode(ExprMiddle);
 EF_SPACE    : ' ' -> channel(HIDDEN), mode(ExprMiddle);
 EF_COMMENT	: ANY_F? '*' ANY_F* -> channel(HIDDEN);
 EF_EOL      : EOL_F+ -> channel(HIDDEN), mode(ExprPref);
@@ -252,7 +252,7 @@ SPM_PREFIX  : PREFIX_F -> channel(HIDDEN), mode(StringSpecMinus);
 
 mode StringSpecMinus;
 
-SSM_A_SPEC  : 'A' -> type(A_SPEC);
+SSM_A_SPEC  : A_F -> type(A_SPEC);
 SSM_SPACE   : '                                      ' -> channel(HIDDEN), mode(String);
 
 mode StringPrfPlus;
@@ -261,7 +261,7 @@ SPP_PREFIX  : PREFIX_F -> channel(HIDDEN), mode(StringSpecPlus);
 
 mode StringSpecPlus;
 
-SSP_A_SPEC  : 'A' -> type(A_SPEC);
+SSP_A_SPEC  : A_F -> type(A_SPEC);
 SSP_SPACE   : ' '+ -> channel(HIDDEN), mode(String);
 
 // Common fragments
@@ -269,6 +269,7 @@ SSP_SPACE   : ' '+ -> channel(HIDDEN), mode(String);
 fragment ANY_F              : ~[\r\n] ;
 fragment EOL_F              : '\r'? '\n' ;
 fragment PREFIX_F           : ANY_F ANY_F ANY_F ANY_F ANY_F ;
+fragment A_F                : [Aa] ;
 fragment IDS_F              : [A-Z$\u00a3\u00a7] ;
 fragment IDC_F              : [A-Z0-9$_\u00a3\u00a7] ;
 fragment IDENTIFIER_F       : IDS_F IDC_F* ;

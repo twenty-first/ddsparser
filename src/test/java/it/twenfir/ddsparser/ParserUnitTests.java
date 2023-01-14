@@ -52,6 +52,16 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
+	public void lowerCaseATest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     a            STRING        10          TEXT('STRING FIELD')\n" + 
+				"     A            ZONED          8S 0       TEXT('ZONED FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
 	public void omittedATest() throws ParseException {
 		String src = 
 				"                R TESTDDS\n" + 
