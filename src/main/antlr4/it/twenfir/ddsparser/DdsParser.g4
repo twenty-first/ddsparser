@@ -24,7 +24,7 @@ dds :   ( A_SPEC* ( JDFTVAL | UNIQUE | ref | altseq ) )*
 
 altseq : ALTSEQ LPAR IDENTIFIER RPAR ;
 
-format : A_SPEC* FORMAT LPAR ( IDENTIFIER ) RPAR ;
+format : A_SPEC* FORMAT LPAR ( fileName ) RPAR ;
 
 jfile : A_SPEC* JFILE LPAR IDENTIFIER+ RPAR ;
 

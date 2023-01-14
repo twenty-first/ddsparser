@@ -6,17 +6,14 @@ import it.twenfir.antlr.ast.Location;
 
 public class Format extends AstNode {
 
-	private String format;
-
-    public Format(Location location, String format) {
+    public Format(Location location) {
         super(location);
-		this.format = format;
     }
 
-	public String getFormat() {
-		return format;
+	public FileName getFileName() {
+		return getChild(FileName.class);
 	}
-	
+
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
 		if ( visitor instanceof DdsVisitor ) {
 			return ((DdsVisitor<? extends ValueT>) visitor).visitFormat(this);

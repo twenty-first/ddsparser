@@ -214,8 +214,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Format visitFormat(FormatContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String format = ctx.IDENTIFIER().getText();
-		Format node = new Format(location, format);
+		Format node = new Format(location);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
