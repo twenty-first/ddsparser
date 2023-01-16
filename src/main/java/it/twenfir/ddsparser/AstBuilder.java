@@ -270,7 +270,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Key visitKey(KeyContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String fieldName = ctx.IDENTIFIER().getText();
-		boolean descending = ctx.DESCEND() != null;
+		boolean descending = ! ctx.DESCEND().isEmpty();
 		Key node = new Key(location, fieldName, descending);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;

@@ -106,12 +106,16 @@ public class AstUnitTests extends TestBase {
 	public void textDescendingKeyTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 
-				"     A            STRING        10          TEXT('STRING FIELD')\n" + 
-				"     A          K STRING                    DESCEND";
+				"     A            STRING1       10          TEXT('STRING1 FIELD')\n" + 
+				"     A            STRING2       10          TEXT('STRING2 FIELD')\n" + 
+				"     A          K STRING1                   DESCEND\n" +
+				"     A          K STRING2";
 
 		Dds ast = helper.ast(src);
-		Key k = ast.getKeys().next();
+		Iterator<Key> ki = ast.getKeys(); 
+		Key k = ki.next();
 		assertTrue(k.isDescending());
+		assertFalse(ki.next().isDescending());
 	}
 
 	@Test
