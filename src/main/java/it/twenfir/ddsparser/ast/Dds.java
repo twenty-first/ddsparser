@@ -76,6 +76,10 @@ public class Dds extends AstNode {
 		return getChildren(Omit.class);
 	}
 	
+	public Iterator<Select> getSelects() {
+		return getChildren(Select.class);
+	}
+	
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
 		if ( visitor instanceof DdsVisitor ) {
 			return ((DdsVisitor<? extends ValueT>) visitor).visitDds(this);
