@@ -16,6 +16,7 @@ public class Field extends AstNode {
 	public Field(Location location, String name, String usage, boolean reference, boolean allowNull) {
 		super(location);
 		this.name = name;
+		this.usage = usage;
 		this.reference = reference;
 		this.allowNull = allowNull;
 	}

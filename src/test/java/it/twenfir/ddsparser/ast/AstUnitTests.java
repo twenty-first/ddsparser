@@ -221,4 +221,14 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		assertEquals(0, ast.getFields().next().getDataType().getPrecision());
 	}
+
+	@Test
+	public void sstTest() throws ParseException {
+		String src =
+				"     A          R TESTDDS\n" +
+				"     A            FIELD              I      SST(BASE  1 10)";
+		Dds ast = helper.ast(src);
+		assertEquals("I", ast.getFields().next().getUsage());
+		assertEquals("BASE", ast.getFields().next().getSst().getField());
+	}
 }
