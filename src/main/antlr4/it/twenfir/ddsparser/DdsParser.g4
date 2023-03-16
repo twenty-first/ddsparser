@@ -5,7 +5,7 @@ options
 	tokenVocab = DdsLexer ;
 }
 
-dds :   ( A_SPEC* ( JDFTVAL | UNIQUE | ref | altseq ) )*
+dds :   ( A_SPEC* ( FIFO | JDFTVAL | UNIQUE | ref | altseq ) )*
         A_SPEC* RECORD ( record = IDENTIFIER )
         ( format
         | jfile
