@@ -127,7 +127,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Dds visitDds(DdsContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String record = ctx.record.getText();
-		boolean fileJoin = ctx.JDFTVAL() != null;
+		boolean fileJoin = ctx.JDFTVAL().size() > 0;
 		boolean unique = ctx.UNIQUE() != null;
 		Dds node = new Dds(location, record, fileJoin, unique);
 		AstHelper.visitChildren(this, ctx, node);
