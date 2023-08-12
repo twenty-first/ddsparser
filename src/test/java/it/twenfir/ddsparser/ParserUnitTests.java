@@ -122,11 +122,31 @@ public class ParserUnitTests extends TestBase {
 	}
 
 	@Test
-	public void splitDescriptionTest() throws ParseException {
+	public void plusSplitDescriptionTest() throws ParseException {
 		String src = 
 				"     A          R TESTDDS\n" + 
 				"     A            STRING        10          TEXT('STRING +\n" + 
+				"     A                                      FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void minusSplitDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING -\n" + 
 				"     A                                           FIELD')";
+
+		helper.parse(src);
+	}
+
+	@Test
+	public void emptySplitDescriptionTest() throws ParseException {
+		String src = 
+				"     A          R TESTDDS\n" + 
+				"     A            STRING        10          TEXT('STRING \n" + 
+				"     A                                      FIELD')";
 
 		helper.parse(src);
 	}

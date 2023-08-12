@@ -71,6 +71,7 @@ import it.twenfir.ddsparser.ast.Values;
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
 	private Pattern endDescRe = Pattern.compile("\\+|-");
+	private Pattern eolRe = Pattern.compile("\\r|\\n");
 
 	@Override
 	public Alias visitAlias(AliasContext ctx) {
@@ -160,9 +161,17 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 			while ( m.find() ) {
 				i = m.start();
 			}
-			String s = ds.getText().charAt(i) == '-' && ds.getText().charAt(i-1) == ' ' ?
-					ds.getText().substring(0, i - 1) : ds.getText().substring(0, i);
-			sb.append(s);
+			if ( i != -1 ) {
+				String s = ds.getText().charAt(i) == '-' && ds.getText().charAt(i-1) == ' ' ?
+						ds.getText().substring(0, i - 1) : ds.getText().substring(0, i);
+				sb.append(s);
+			}
+			else {
+				m = eolRe.matcher(ds.getText());
+				m.find();
+				i = m.start();
+				sb.append(ds.getText().substring(0, i));
+			}
 		}
 		if ( ctx.STRING() != null ) {
 			sb.append(ctx.STRING().getText());

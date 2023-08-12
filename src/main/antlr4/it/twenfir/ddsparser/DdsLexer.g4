@@ -244,6 +244,7 @@ mode String;
 
 STRING_START_MINUS : STRING_START_F '-' EOL_F -> type(STRING_START), mode(StringPrfMinus);
 STRING_START_PLUS  : STRING_START_F '+' EOL_F -> type(STRING_START), mode(StringPrfPlus);
+STRING_START_EMPTY : STRING_START_F EOL_F -> type(STRING_START), mode(StringPrfPlus);
 STRING             : STRING_START_F [+-]? -> type(STRING);
 ST_QUOTE           : '\'' -> type(QUOTE), mode(Expression);
 
