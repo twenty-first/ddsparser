@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import it.twenfir.antlr.ast.AstHelper;
@@ -72,6 +74,11 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
 	private Pattern endDescRe = Pattern.compile("\\+|-");
 	private Pattern eolRe = Pattern.compile("\\r|\\n");
+
+	@Override
+	public AstNode visitChildren(RuleNode node) {
+		return AstHelper.visit(this, (ParserRuleContext)node);
+	}
 
 	@Override
 	public Alias visitAlias(AliasContext ctx) {
