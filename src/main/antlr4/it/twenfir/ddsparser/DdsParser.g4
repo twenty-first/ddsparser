@@ -40,6 +40,7 @@ text : A_SPEC* TEXT description ;
 
 field : A_SPEC* IDENTIFIER
         REFERENCE?
+        PLUS?
         dataType?
         USAGE?
         ( A_SPEC* ALWNULL

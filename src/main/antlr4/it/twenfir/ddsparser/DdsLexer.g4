@@ -109,9 +109,13 @@ mode Length;
 LEN5        : [0-9+-] [0-9] [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
 LN1_SPACE   : ' ' -> channel(HIDDEN), mode(Len4);
 LN2_SPACE   : '  ' -> channel(HIDDEN), mode(Len3);
+LN2_PLUS    : '+ ' -> type(PLUS), mode(Len3);
 LN3_SPACE   : '   ' -> channel(HIDDEN), mode(Len2);
+LN3_PLUS    : ( '+  ' | ' + ' ) -> type(PLUS), mode(Len2);
 LN4_SPACE   : '    ' -> channel(HIDDEN), mode(Len1);
+LN4_PLUS    : ( '+   ' | ' +  ' | '  + ' ) -> type(PLUS), mode(Len1);
 LN5_SPACE   : '     ' -> channel(HIDDEN), mode(DataType);
+LN5_PLUS    : ( '+    ' | ' +   ' | '  +  ' | '   + ' ) -> type(PLUS), mode(DataType);
 LN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Len4;

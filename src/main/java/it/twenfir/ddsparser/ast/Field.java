@@ -11,13 +11,15 @@ public class Field extends AstNode {
 	private String name;
 	private String usage;
 	private boolean reference;
+	private boolean plus;
 	private boolean allowNull;
 	
-	public Field(Location location, String name, String usage, boolean reference, boolean allowNull) {
+	public Field(Location location, String name, String usage, boolean reference, boolean plus, boolean allowNull) {
 		super(location);
 		this.name = name;
 		this.usage = usage;
 		this.reference = reference;
+		this.plus = plus;
 		this.allowNull = allowNull;
 	}
 	
@@ -33,6 +35,10 @@ public class Field extends AstNode {
     	return reference;
     }
     
+	public boolean isPlus() {
+		return plus;
+	}
+
 	public boolean isAllowNull() {
 		return allowNull;
 	}
