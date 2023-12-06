@@ -190,6 +190,7 @@ SST         : 'SST';
 TEXT        : 'TEXT';
 UNIQUE      : 'UNIQUE';
 VALUES      : 'VALUES';
+VARLEN		: 'VARLEN';
 KW_LPAR     : '(' -> type(LPAR), mode(Expression);
 KW_SPACE    : ' '+ -> channel(HIDDEN);
 KW_EOL      : EOL_F+ -> channel(HIDDEN), popMode;

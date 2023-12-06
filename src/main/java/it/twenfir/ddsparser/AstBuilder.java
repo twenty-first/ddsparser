@@ -40,6 +40,7 @@ import it.twenfir.ddsparser.DdsParser.SstContext;
 import it.twenfir.ddsparser.DdsParser.TextContext;
 import it.twenfir.ddsparser.DdsParser.ValueContext;
 import it.twenfir.ddsparser.DdsParser.ValuesContext;
+import it.twenfir.ddsparser.DdsParser.VarlenContext;
 import it.twenfir.ddsparser.ast.Alias;
 import it.twenfir.ddsparser.ast.Altseq;
 import it.twenfir.ddsparser.ast.Ccsid;
@@ -69,6 +70,7 @@ import it.twenfir.ddsparser.ast.Sst;
 import it.twenfir.ddsparser.ast.Text;
 import it.twenfir.ddsparser.ast.Value;
 import it.twenfir.ddsparser.ast.Values;
+import it.twenfir.ddsparser.ast.Varlen;
 
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
@@ -404,6 +406,15 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Values visitValues(ValuesContext ctx) {
 		Location location = AstHelper.location(ctx);
 		Values node = new Values(location);
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+	
+	@Override
+	public AstNode visitVarlen(VarlenContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Integer size = ctx.NUMBER() != null ? Integer.parseInt(ctx.NUMBER().getText()) : null;
+		Varlen node = new Varlen(location, size);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}

@@ -9,6 +9,8 @@ public class DataType extends AstNode {
 	private String type;
 	private Integer size;
 	private Integer precision;
+	private boolean varsize;
+	private Integer minSize;
 	
 	public DataType(Location location, String type, Integer size, Integer precision) {
 		super(location);
@@ -29,7 +31,23 @@ public class DataType extends AstNode {
 		return precision;
 	}
 
-    public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
+    public boolean isVarsize() {
+		return varsize;
+	}
+
+	public void setVarsize(boolean varsize) {
+		this.varsize = varsize;
+	}
+
+	public Integer getMinSize() {
+		return minSize;
+	}
+
+	public void setMinSize(Integer minSize) {
+		this.minSize = minSize;
+	}
+
+	public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
 		if ( visitor instanceof DdsVisitor ) {
 			return ((DdsVisitor<? extends ValueT>) visitor).visitDataType(this);
     	}

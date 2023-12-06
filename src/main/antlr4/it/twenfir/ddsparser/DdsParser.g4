@@ -57,6 +57,7 @@ field : A_SPEC* IDENTIFIER
         | sst
         | text
         | values
+        | varlen
         )*
         ;
 
@@ -89,6 +90,8 @@ sst : A_SPEC* SST LPAR IDENTIFIER NUMBER NUMBER? RPAR ;
 values : A_SPEC* VALUES LPAR value+ RPAR ;
 
 value : QUOTE STRING QUOTE | NUMBER ;
+
+varlen	: A_SPEC* VARLEN ( LPAR NUMBER RPAR )? ;
 
 description : LPAR descriptionElement ( ( MINUS | PLUS )? A_SPEC* descriptionElement )* RPAR ;
 

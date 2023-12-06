@@ -2,7 +2,7 @@ package it.twenfir.ddsparser.ast;
 
 import it.twenfir.antlr.ast.BaseAstVisitor;
 
-public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements DdsVisitor<ValueT> {
+public class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements DdsVisitor<ValueT> {
 
     @Override
     public ValueT visitAlias(Alias node) {
@@ -149,4 +149,8 @@ public abstract class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> impl
         return visitChildren(node);
     }
 
+    @Override
+    public ValueT visitVarlen(Varlen node) {
+        return visitChildren(node);
+    }
 }

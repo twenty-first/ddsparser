@@ -32,4 +32,5 @@ public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitText(Text node);
     ValueT visitValue(Value node);
     ValueT visitValues(Values node);
+    ValueT visitVarlen(Varlen node);
 }

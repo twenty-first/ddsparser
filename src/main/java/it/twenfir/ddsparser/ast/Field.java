@@ -52,7 +52,15 @@ public class Field extends AstNode {
 	}
 
 	public DataType getDataType() {
-		return getChild(DataType.class);
+		DataType dt = getChild(DataType.class);
+		if ( dt != null ) {
+			Varlen v = getChild(Varlen.class);
+			if ( v != null ) {
+				dt.setVarsize(true);
+				dt.setMinSize(v.getSize());
+			}
+		}
+		return dt;
 	}
 
 	public Default getDefault() {
@@ -87,6 +95,15 @@ public class Field extends AstNode {
 		return getChild(Values.class);
 	}
 	
+	public boolean isVarlen() {
+		return getChild(Varlen.class) != null;		
+	}
+	
+	public Integer getVarlenSize() {
+		Varlen v = getChild(Varlen.class);
+		return v != null ? v.getSize() : null;
+	}
+
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {
 		if ( visitor instanceof DdsVisitor ) {
 			return ((DdsVisitor<? extends ValueT>) visitor).visitField(this);
