@@ -10,7 +10,7 @@
 
     <groupId>it.twenfir</groupId>
     <artifactId>ddsparser</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
 
     <name>ddsparser</name>
     <description>An ANTLR4 parser for IBM's Data Description Specifications</description>
@@ -124,7 +124,7 @@
         <connection>scm:git:git@github.com:twenty-first/ddsparser.git</connection>
         <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
         <url>https://github.com/twenty-first/ddsparser.git</url>
-      <tag>0.0</tag>
+      <tag>v0.0.3</tag>
   </scm>
 
 </project>
