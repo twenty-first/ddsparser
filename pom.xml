@@ -124,7 +124,7 @@
         <connection>scm:git:git@github.com:twenty-first/ddsparser.git</connection>
         <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
         <url>https://github.com/twenty-first/ddsparser.git</url>
-      <tag>HEAD</tag>
+      <tag>0.0</tag>
   </scm>
 
 </project>
