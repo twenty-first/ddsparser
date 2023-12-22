@@ -1,6 +1,5 @@
 package it.twenfir.ddsparser;
 
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -8,6 +7,7 @@ import org.antlr.v4.runtime.TokenStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import it.twenfir.antlr.api.ErrorListener;
 import it.twenfir.antlr.exception.ParseException;
 import it.twenfir.antlr.parser.LoggingTokenSource;
 import it.twenfir.antlr.parser.ParserDriverBase;
@@ -21,6 +21,7 @@ public class DdsParserDriver extends ParserDriverBase {
 	private CommonTokenStream tokenStream;
 	private DdsParser parser;
 	private DdsContext parseTree;
+	private ErrorListener listener;
 	
 	public DdsParserDriver(String ddsSource) {
 		this(ddsSource, "input", null);
@@ -30,23 +31,24 @@ public class DdsParserDriver extends ParserDriverBase {
 		this(ddsSource, fileName, null);
 	}
 
-	public DdsParserDriver(String ddsSource, String fileName, ANTLRErrorListener listener) {
+	public DdsParserDriver(String ddsSource, String fileName, ErrorListener listener) {
 		super("dssparser", fileName, false, log);
+		this.listener = listener != null ? listener : this;
 		CodePointCharStream inputStream = CharStreams.fromString(ddsSource, fileName);
         DdsLexer lexer = new DdsLexer(inputStream);
     	lexer.removeErrorListeners();
-    	lexer.addErrorListener(this);
-    	if ( listener != null ) {
-    		lexer.addErrorListener(listener);
-    	}
+    	lexer.addErrorListener(this.listener);
+//    	if ( listener != null ) {
+//    		lexer.addErrorListener(listener);
+//    	}
         LoggingTokenSource source = new LoggingTokenSource(lexer);
         tokenStream = new CommonTokenStream(source);
         parser = new DdsParser(tokenStream);
     	parser.removeErrorListeners();
-    	parser.addErrorListener(this);
-    	if ( listener != null ) {
-    		parser.addErrorListener(listener);
-    	}
+    	parser.addErrorListener(this.listener);
+//    	if ( listener != null ) {
+//    		parser.addErrorListener(listener);
+//    	}
 	}
 	
     public DdsContext parse() {
@@ -61,7 +63,7 @@ public class DdsParserDriver extends ParserDriverBase {
 
     public Dds makeAst() {
         DdsContext tree = parse();
-        AstBuilder builder = new AstBuilder();
+        AstBuilder builder = new AstBuilder(listener);
 		Dds dds = builder.visitDds(tree);
 		return dds;
     }

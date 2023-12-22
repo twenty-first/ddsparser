@@ -8,9 +8,11 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import it.twenfir.antlr.api.ErrorListener;
 import it.twenfir.antlr.ast.AstHelper;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.Location;
+import it.twenfir.antlr.parser.ErrorListenerBase;
 import it.twenfir.ddsparser.DdsParser.AliasContext;
 import it.twenfir.ddsparser.DdsParser.AltseqContext;
 import it.twenfir.ddsparser.DdsParser.CcsidContext;
@@ -76,7 +78,13 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
 	private Pattern endDescRe = Pattern.compile("\\+|-");
 	private Pattern eolRe = Pattern.compile("\\r|\\n");
+	
+	private ErrorListener listener;
 
+	public AstBuilder(ErrorListener listener) {
+		this.listener = listener != null ? listener : new ErrorListenerBase();
+	}
+	
 	@Override
 	public AstNode visitChildren(RuleNode node) {
 		return AstHelper.visit(this, (ParserRuleContext)node);
