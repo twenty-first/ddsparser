@@ -38,24 +38,18 @@ public class DdsParserDriver extends ParserDriverBase {
         DdsLexer lexer = new DdsLexer(inputStream);
     	lexer.removeErrorListeners();
     	lexer.addErrorListener(this.listener);
-//    	if ( listener != null ) {
-//    		lexer.addErrorListener(listener);
-//    	}
         LoggingTokenSource source = new LoggingTokenSource(lexer);
         tokenStream = new CommonTokenStream(source);
         parser = new DdsParser(tokenStream);
     	parser.removeErrorListeners();
     	parser.addErrorListener(this.listener);
-//    	if ( listener != null ) {
-//    		parser.addErrorListener(listener);
-//    	}
 	}
 	
     public DdsContext parse() {
 		if ( parseTree == null ) {
 			parseTree = parser.dds();
 		}
-		if ( isErrors() ) {
+		if ( listener.isErrors() ) {
 			throw new ParseException("Parse failed");
 		}
 		return parseTree;

@@ -12,7 +12,7 @@ import it.twenfir.antlr.api.ErrorListener;
 import it.twenfir.antlr.ast.AstHelper;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.Location;
-import it.twenfir.antlr.parser.ErrorListenerBase;
+import it.twenfir.antlr.parser.DefaultErrorListener;
 import it.twenfir.ddsparser.DdsParser.AliasContext;
 import it.twenfir.ddsparser.DdsParser.AltseqContext;
 import it.twenfir.ddsparser.DdsParser.CcsidContext;
@@ -82,7 +82,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	private ErrorListener listener;
 
 	public AstBuilder(ErrorListener listener) {
-		this.listener = listener != null ? listener : new ErrorListenerBase();
+		this.listener = listener != null ? listener : new DefaultErrorListener();
 	}
 	
 	@Override
