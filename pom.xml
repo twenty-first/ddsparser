@@ -51,7 +51,11 @@
         <dependency>
             <groupId>it.twenfir</groupId>
             <artifactId>twenfir-antlr</artifactId>
+<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
             <version>0.0.10</version>
+=======
+            <version>0.0.11</version>
+>>>>>>> 18c0f36 Update dependencies
         </dependency>
          <dependency>
             <groupId>org.antlr</groupId>
