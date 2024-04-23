@@ -10,7 +10,7 @@
 
     <groupId>it.twenfir</groupId>
     <artifactId>ddsparser</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
 
     <name>ddsparser</name>
     <description>An ANTLR4 parser for IBM's Data Description Specifications</description>
@@ -129,6 +129,7 @@
         <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
         <url>https://github.com/twenty-first/ddsparser.git</url>
 <<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
+<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
 <<<<<<< HEAD
       <tag>HEAD</tag>
 =======
@@ -137,6 +138,9 @@
 =======
       <tag>0.0</tag>
 >>>>>>> 3beda6c [maven-release-plugin] prepare for next development iteration
+=======
+      <tag>v0.0.4</tag>
+>>>>>>> 745c307 [maven-release-plugin] prepare release v0.0.4
   </scm>
 
 </project>
