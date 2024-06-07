@@ -5,12 +5,12 @@
     <parent>
         <groupId>it.twenfir</groupId>
         <artifactId>twenfir-bom</artifactId>
-        <version>0.1.0</version>    
+        <version>0.0.7</version>    
     </parent>
 
     <groupId>it.twenfir</groupId>
     <artifactId>ddsparser</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.0.5-SNAPSHOT</version>
 
     <name>ddsparser</name>
     <description>An ANTLR4 parser for IBM's Data Description Specifications</description>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>it.twenfir</groupId>
             <artifactId>twenfir-antlr</artifactId>
-            <version>0.1.3</version>
+            <version>0.0.12</version>
         </dependency>
          <dependency>
             <groupId>org.antlr</groupId>
@@ -124,7 +124,7 @@
         <connection>scm:git:git@github.com:twenty-first/ddsparser.git</connection>
         <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
         <url>https://github.com/twenty-first/ddsparser.git</url>
-      <tag>HEAD</tag>
+      <tag>0.0</tag>
   </scm>
 
 </project>
