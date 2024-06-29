@@ -243,7 +243,7 @@ mode Edtcde;
 
 EC_LPAR     : '(' -> type(LPAR);
 EC_RPAR     : ')' -> type(RPAR), mode(Keyword);
-EDITCODE    : [CKNZ3];
+EDITCODE    : [CKMNZ34];
 
 mode String;
 
