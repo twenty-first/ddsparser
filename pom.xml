@@ -51,15 +51,7 @@
         <dependency>
             <groupId>it.twenfir</groupId>
             <artifactId>twenfir-antlr</artifactId>
-<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
-<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
-            <version>0.0.10</version>
-=======
-            <version>0.0.11</version>
->>>>>>> 18c0f36 Update dependencies
-=======
             <version>0.0.12</version>
->>>>>>> ef41ac7 Update twenfir-antlr's version
         </dependency>
          <dependency>
             <groupId>org.antlr</groupId>
@@ -132,23 +124,7 @@
         <connection>scm:git:git@github.com:twenty-first/ddsparser.git</connection>
         <developerConnection>scm:git:git@github.com:twenty-first/ddsparser.git</developerConnection>
         <url>https://github.com/twenty-first/ddsparser.git</url>
-<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
-<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
-<<<<<<< Upstream, based on 8adf8b1f7ada4aeec8e4e09979fb614fa4990ca0
-<<<<<<< HEAD
-      <tag>HEAD</tag>
-=======
-      <tag>v0.0.3</tag>
->>>>>>> ff9d9c6 ([maven-release-plugin] prepare release v0.0.3)
-=======
       <tag>0.0</tag>
->>>>>>> 3beda6c [maven-release-plugin] prepare for next development iteration
-=======
-      <tag>v0.0.4</tag>
->>>>>>> 745c307 [maven-release-plugin] prepare release v0.0.4
-=======
-      <tag>0.0</tag>
->>>>>>> f5b69b2 [maven-release-plugin] prepare for next development iteration
   </scm>
 
 </project>
