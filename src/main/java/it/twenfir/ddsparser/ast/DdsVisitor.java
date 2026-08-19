@@ -1,6 +1,9 @@
 package it.twenfir.ddsparser.ast;
 
 import it.twenfir.antlr.ast.AstVisitor;
+import it.twenfir.ddsparser.ast.value.Identifier;
+import it.twenfir.ddsparser.ast.value.LiteralNumber;
+import it.twenfir.ddsparser.ast.value.LiteralString;
 
 public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitAlias(Alias node);
@@ -18,9 +21,13 @@ public interface DdsVisitor<ValueT> extends AstVisitor<ValueT> {
     ValueT visitFileName(FileName node);
     ValueT visitFormat(Format node);
     ValueT visitHeading(Heading node);
+    ValueT visitIdentifier(Identifier node);
+    ValueT visitLiteralNumber(LiteralNumber node);
+    ValueT visitLiteralString(LiteralString node);
     ValueT visitJfile(Jfile node);
     ValueT visitJfld(Jfld node);
     ValueT visitJoin(Join node);
+    ValueT visitJoinField(JoinFile node);
     ValueT visitJref(Jref node);
     ValueT visitKey(Key node);
     ValueT visitOmit(Omit node);

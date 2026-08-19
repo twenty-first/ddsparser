@@ -171,7 +171,7 @@ public class AstUnitTests extends TestBase {
 		Dds ast = helper.ast(src);
 		Iterator<Value> iter = ast.getFields().next().getValues().getValues();
 		while ( iter.hasNext() ) { 
-			String v = iter.next().getString();
+			String v = iter.next().getString().getValue();
 			assertTrue(v.equals("Y") || v.equals("N"));
 		}
 	}

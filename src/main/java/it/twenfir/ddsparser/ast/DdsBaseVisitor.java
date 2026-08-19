@@ -1,6 +1,9 @@
 package it.twenfir.ddsparser.ast;
 
 import it.twenfir.antlr.ast.BaseAstVisitor;
+import it.twenfir.ddsparser.ast.value.Identifier;
+import it.twenfir.ddsparser.ast.value.LiteralNumber;
+import it.twenfir.ddsparser.ast.value.LiteralString;
 
 public class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements DdsVisitor<ValueT> {
 
@@ -80,6 +83,11 @@ public class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements Dd
     }
 
     @Override
+    public ValueT visitIdentifier(Identifier node) {
+        return visitChildren(node);
+    }
+    
+    @Override
 	public ValueT visitJfile(Jfile node) {
         return visitChildren(node);
 	}
@@ -95,6 +103,11 @@ public class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements Dd
 	}
 
 	@Override
+	public ValueT visitJoinField(JoinFile node) {
+        return visitChildren(node);
+	}
+	
+	@Override
 	public ValueT visitJref(Jref node) {
         return visitChildren(node);
 	}
@@ -104,6 +117,16 @@ public class DdsBaseVisitor<ValueT> extends BaseAstVisitor<ValueT> implements Dd
         return visitChildren(node);
     }
 
+	@Override
+	public ValueT visitLiteralNumber(LiteralNumber node) {
+        return visitChildren(node);
+	}
+
+	@Override
+	public ValueT visitLiteralString(LiteralString node) {
+        return visitChildren(node);
+	}
+	
     @Override
     public ValueT visitOmit(Omit node) {
         return visitChildren(node);
