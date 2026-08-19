@@ -1,23 +1,19 @@
 package it.twenfir.ddsparser.ast;
 
 import java.util.Iterator;
-import java.util.List;
 
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.Location;
 
 public class Join extends AstNode {
-
-	private List<String> files;
 	
-	public Join(Location location, List<String> files) {
+	public Join(Location location) {
 		super(location);
-		this.files = files;
 	}
 
-	public List<String> getFiles() {
-		return files;
+	public Iterator<JoinFile> getFields() {
+		return getChildren(JoinFile.class);
 	}
 	
 	public Iterator<Jfld> getJflds() {

@@ -5,21 +5,25 @@ import java.util.Iterator;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.Location;
+import it.twenfir.parser.ast.CommonField;
 
-public class Field extends AstNode {
+public class Field extends AstNode implements CommonField {
 
 	private String name;
 	private String usage;
 	private boolean reference;
-	private boolean plus;
+	private Relative sizeRelative;
+	private Relative precRelative;
 	private boolean allowNull;
 	
-	public Field(Location location, String name, String usage, boolean reference, boolean plus, boolean allowNull) {
+	public Field(Location location, String name, String usage, boolean reference, Relative sizeRelative, 
+			Relative precRelative, boolean allowNull) {
 		super(location);
 		this.name = name;
 		this.usage = usage;
 		this.reference = reference;
-		this.plus = plus;
+		this.sizeRelative = sizeRelative;
+		this.precRelative = precRelative;
 		this.allowNull = allowNull;
 	}
 	
@@ -34,9 +38,21 @@ public class Field extends AstNode {
     public boolean isReference() {
     	return reference;
     }
-    
-	public boolean isPlus() {
-		return plus;
+
+	public Relative getSizeRelative() {
+		return sizeRelative;
+	}
+
+	public boolean isSizeRelative() {
+		return sizeRelative != null;
+	}
+
+	public Relative getPrecRelative() {
+		return precRelative;
+	}
+
+	public boolean isPrecRelative() {
+		return precRelative != null;
 	}
 
 	public boolean isAllowNull() {

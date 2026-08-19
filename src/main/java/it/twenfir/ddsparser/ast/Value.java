@@ -3,24 +3,21 @@ package it.twenfir.ddsparser.ast;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.Location;
+import it.twenfir.ddsparser.ast.value.LiteralNumber;
+import it.twenfir.ddsparser.ast.value.LiteralString;
 
 public class Value extends AstNode {
-
-	private String string;
-	private String number;
 	
-	public Value(Location location, String string, String number) {
+	public Value(Location location) {
 		super(location);
-		this.string = string;
-		this.number = number;
 	}
 
-	public String getString() {
-		return string;
+	public LiteralString getString() {
+		return getChild(LiteralString.class);
 	}
 
-	public String getNumber() {
-		return number;
+	public LiteralNumber getNumber() {
+		return getChild(LiteralNumber.class);
 	}
 
     public <ValueT> ValueT accept(AstVisitor<? extends ValueT> visitor) {

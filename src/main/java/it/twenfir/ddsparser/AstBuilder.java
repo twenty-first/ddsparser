@@ -28,11 +28,14 @@ import it.twenfir.ddsparser.DdsParser.FieldContext;
 import it.twenfir.ddsparser.DdsParser.FileNameContext;
 import it.twenfir.ddsparser.DdsParser.FormatContext;
 import it.twenfir.ddsparser.DdsParser.HeadingContext;
+import it.twenfir.ddsparser.DdsParser.IdentifierContext;
 import it.twenfir.ddsparser.DdsParser.JfileContext;
 import it.twenfir.ddsparser.DdsParser.JfldContext;
 import it.twenfir.ddsparser.DdsParser.JoinContext;
 import it.twenfir.ddsparser.DdsParser.JrefContext;
 import it.twenfir.ddsparser.DdsParser.KeyContext;
+import it.twenfir.ddsparser.DdsParser.LiteralNumberContext;
+import it.twenfir.ddsparser.DdsParser.LiteralStringContext;
 import it.twenfir.ddsparser.DdsParser.OmitContext;
 import it.twenfir.ddsparser.DdsParser.PhysicalFileContext;
 import it.twenfir.ddsparser.DdsParser.RefContext;
@@ -67,12 +70,16 @@ import it.twenfir.ddsparser.ast.Omit;
 import it.twenfir.ddsparser.ast.PhysicalFile;
 import it.twenfir.ddsparser.ast.Ref;
 import it.twenfir.ddsparser.ast.RefField;
+import it.twenfir.ddsparser.ast.Relative;
 import it.twenfir.ddsparser.ast.Select;
 import it.twenfir.ddsparser.ast.Sst;
 import it.twenfir.ddsparser.ast.Text;
 import it.twenfir.ddsparser.ast.Value;
 import it.twenfir.ddsparser.ast.Values;
 import it.twenfir.ddsparser.ast.Varlen;
+import it.twenfir.ddsparser.ast.value.Identifier;
+import it.twenfir.ddsparser.ast.value.LiteralNumber;
+import it.twenfir.ddsparser.ast.value.LiteralString;
 
 public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 
@@ -112,7 +119,16 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	public Comp visitComp(CompContext ctx) {
 		Location location = AstHelper.location(ctx);
 		String relOp = ctx.REL_OP().getText();
-		String value = ctx.STRING() != null ? ctx.STRING().getText() : ctx.NUMBER().getText();
+		String value = null;
+		if ( ctx.STRING() != null ) {
+			value = ctx.STRING().getText();
+		}
+		else if ( ctx.NUMBER() != null ) {
+			value = ctx.NUMBER().getText();
+		}
+		else {
+			value = ctx.IDENTIFIER().getText();
+		}
 		Comp node = new Comp(location, relOp, value);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
@@ -221,14 +237,32 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		String name = ctx.IDENTIFIER().getText();
 		String usage = ctx.USAGE() != null ? ctx.USAGE().getText() : null;
 		boolean reference = ctx.REFERENCE() != null;
-		boolean plus = ctx.PLUS() != null;
+		Relative sizeRelative = null;
+		if ( ctx.PLUS() != null ) {
+			sizeRelative = Relative.PLUS;
+		}
+		else if ( ctx.MINUS() != null ) {
+			sizeRelative = Relative.MINUS;
+		}
 		if ( ctx.dataType() != null && ctx.dataType().NUMBER().size() > 0 ) {
 			if ( ctx.dataType().NUMBER(0).getText().startsWith("+") ) {
-				plus = true;
+				sizeRelative = Relative.PLUS;
+			}
+			else if ( ctx.dataType().NUMBER(0).getText().startsWith("-") ) {
+				sizeRelative = Relative.MINUS;
+			}
+		}
+		Relative precRelative = null;
+		if ( ctx.dataType() != null && ctx.dataType().NUMBER().size() > 1 ) {
+			if ( ctx.dataType().NUMBER(1).getText().startsWith("+") ) {
+				precRelative = Relative.PLUS;
+			}
+			else if ( ctx.dataType().NUMBER(1).getText().startsWith("-") ) {
+				precRelative = Relative.MINUS;
 			}
 		}
 		boolean allowNull = ctx.ALWNULL() != null;
-		Field node = new Field(location, name, usage, reference, plus, allowNull);
+		Field node = new Field(location, name, usage, reference, sizeRelative, precRelative, allowNull);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -260,6 +294,14 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	}
 
 	@Override
+	public Identifier visitIdentifier(IdentifierContext ctx) {
+		Location location = AstHelper.location(ctx);
+		Identifier node = new Identifier(location, ctx.IDENTIFIER().getText());
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+	
+	@Override
 	public Jfile visitJfile(JfileContext ctx) {
 		Location location = AstHelper.location(ctx);
 		ArrayList<String> files = new ArrayList<String>();
@@ -272,9 +314,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Jfld visitJfld(JfldContext ctx) {
 		Location location = AstHelper.location(ctx);
-		ArrayList<String> fields = new ArrayList<String>();
-		ctx.IDENTIFIER().forEach((f) -> fields.add(f.getText()));
-		Jfld node = new Jfld(location, fields);
+		Jfld node = new Jfld(location);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -282,9 +322,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Join visitJoin(JoinContext ctx) {
 		Location location = AstHelper.location(ctx);
-		ArrayList<String> files = new ArrayList<String>();
-		ctx.IDENTIFIER().forEach((f) -> files.add(f.getText()));
-		Join node = new Join(location, files);
+		Join node = new Join(location);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}
@@ -308,6 +346,22 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 		return node;
 	}
 
+	@Override
+	public LiteralNumber visitLiteralNumber(LiteralNumberContext ctx) {
+		Location location = AstHelper.location(ctx);
+		LiteralNumber node = new LiteralNumber(location, ctx.NUMBER().getText());
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+	
+	@Override
+	public LiteralString visitLiteralString(LiteralStringContext ctx) {
+		Location location = AstHelper.location(ctx);
+		LiteralString node = new LiteralString(location, ctx.STRING().toString());
+		AstHelper.visitChildren(this, ctx, node);
+		return node;
+	}
+	
 	@Override
 	public Omit visitOmit(OmitContext ctx) {
 		Location location = AstHelper.location(ctx);
@@ -403,9 +457,7 @@ public class AstBuilder extends DdsParserBaseVisitor<AstNode> {
 	@Override
 	public Value visitValue(ValueContext ctx) {
 		Location location = AstHelper.location(ctx);
-		String string = ctx.STRING() != null ? ctx.STRING().getText() : null;
-		String number = ctx.NUMBER() != null ? ctx.NUMBER().getText() : null;
-		Value node = new Value(location, string, number);
+		Value node = new Value(location);
 		AstHelper.visitChildren(this, ctx, node);
 		return node;
 	}

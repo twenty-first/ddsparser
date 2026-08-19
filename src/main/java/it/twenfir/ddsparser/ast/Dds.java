@@ -5,9 +5,10 @@ import java.util.Iterator;
 import it.twenfir.antlr.ast.AstNode;
 import it.twenfir.antlr.ast.AstVisitor;
 import it.twenfir.antlr.ast.Location;
+import it.twenfir.parser.ast.CommonDds;
 
 
-public class Dds extends AstNode {
+public class Dds extends AstNode implements CommonDds<Field> {
 
 	private String record;
 	private boolean fileJoin;

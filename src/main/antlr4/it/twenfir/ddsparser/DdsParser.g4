@@ -28,9 +28,13 @@ format : A_SPEC* FORMAT LPAR ( fileName ) RPAR ;
 
 jfile : A_SPEC* JFILE LPAR IDENTIFIER+ RPAR ;
 
-join : A_SPEC* JOIN_DEF JOIN LPAR IDENTIFIER IDENTIFIER RPAR jfld* ;
+join : A_SPEC* JOIN_DEF JOIN LPAR joinFile joinFile RPAR jfld* ;
 
-jfld: A_SPEC* JFLD LPAR IDENTIFIER IDENTIFIER RPAR ;
+joinFile : identifier | literalNumber ;
+
+identifier : IDENTIFIER ;
+
+jfld: A_SPEC* JFLD LPAR identifier identifier RPAR ;
 
 physicalFile : A_SPEC* PFILE LPAR fileName+ RPAR ;
 
@@ -40,7 +44,7 @@ text : A_SPEC* TEXT description ;
 
 field : A_SPEC* IDENTIFIER
         REFERENCE?
-        PLUS?
+        ( PLUS | MINUS )?
         dataType?
         USAGE?
         ( A_SPEC* ALWNULL
@@ -89,7 +93,11 @@ sst : A_SPEC* SST LPAR IDENTIFIER NUMBER NUMBER? RPAR ;
 
 values : A_SPEC* VALUES LPAR value+ RPAR ;
 
-value : QUOTE STRING QUOTE | NUMBER ;
+value : literalString | literalNumber ;
+
+literalString : QUOTE STRING QUOTE ;
+
+literalNumber : NUMBER ;
 
 varlen	: A_SPEC* VARLEN ( LPAR NUMBER RPAR )? ;
 
@@ -108,6 +116,6 @@ omit : A_SPEC* OMIT ( IDENTIFIER ( comp | values )? | ALL );
 
 select : A_SPEC* SELECT ( IDENTIFIER ( comp | values )? | ALL );
 
-comp : COMP LPAR REL_OP ( QUOTE STRING QUOTE | NUMBER ) RPAR ;
+comp : COMP LPAR REL_OP ( QUOTE STRING QUOTE | HEXQUOTE STRING QUOTE | NUMBER | IDENTIFIER ) RPAR ;
 
 fileName : ( lib = IDENTIFIER SLASH )? name = IDENTIFIER ;

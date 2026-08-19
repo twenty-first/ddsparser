@@ -1,6 +1,6 @@
 lexer grammar DdsLexer;
 
-tokens { A_SPEC, CONSTANT, IDENTIFIER, LPAR, MINUS, NUMBER, PLUS, QUOTE, RPAR, SLASH, STRING, STRING_START }
+tokens { A_SPEC, CONSTANT, HEXQUOTE, IDENTIFIER, LPAR, MINUS, NUMBER, PLUS, QUOTE, RPAR, SLASH, STRING, STRING_START }
 
 PREFIX      : PREFIX_F -> channel(HIDDEN), pushMode(FormType);
 PART_PREF   : ( ANY_F
@@ -110,12 +110,16 @@ LEN5        : [0-9+-] [0-9] [0-9] [0-9] [0-9] -> type(NUMBER), mode(DataType);
 LN1_SPACE   : ' ' -> channel(HIDDEN), mode(Len4);
 LN2_SPACE   : '  ' -> channel(HIDDEN), mode(Len3);
 LN2_PLUS    : '+ ' -> type(PLUS), mode(Len3);
+LN2_MINUS   : '- ' -> type(MINUS), mode(Len3);
 LN3_SPACE   : '   ' -> channel(HIDDEN), mode(Len2);
 LN3_PLUS    : ( '+  ' | ' + ' ) -> type(PLUS), mode(Len2);
+LN3_MINUS   : ( '-  ' | ' - ' ) -> type(MINUS), mode(Len2);
 LN4_SPACE   : '    ' -> channel(HIDDEN), mode(Len1);
 LN4_PLUS    : ( '+   ' | ' +  ' | '  + ' ) -> type(PLUS), mode(Len1);
+LN4_MINUS   : ( '-   ' | ' -  ' | '  - ' ) -> type(MINUS), mode(Len1);
 LN5_SPACE   : '     ' -> channel(HIDDEN), mode(DataType);
 LN5_PLUS    : ( '+    ' | ' +   ' | '  +  ' | '   + ' ) -> type(PLUS), mode(DataType);
+LN5_MINUS   : ( '-    ' | ' -   ' | '  -  ' | '   - ' ) -> type(MINUS), mode(DataType);
 LN_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Len4;
@@ -146,7 +150,7 @@ DT_EOL      : EOL_F+ -> channel(HIDDEN), popMode;
 
 mode Precision;
 
-PREC2       : [0-9] [0-9] -> type(NUMBER), mode(Usage);
+PREC2       : [0-9+-] [0-9] -> type(NUMBER), mode(Usage);
 PREC1       : [0-9] -> type(NUMBER), mode(Usage);
 PR_SPACE2   : '  ' -> channel(HIDDEN), mode(Usage);
 PR_SPACE1   : ' ' -> channel(HIDDEN);
@@ -210,6 +214,7 @@ EX_CONSTANT     : CONSTANT_F -> type(CONSTANT);
 EX_SPACE        : ' '+ -> channel(HIDDEN);
 EX_SLASH        : '/' -> type(SLASH);
 EX_NUMBER       : NUMBER_F -> type(NUMBER);
+EX_HEXQUOTE     : 'X\'' -> type(HEXQUOTE), mode(String);
 EX_QUOTE        : '\'' -> type(QUOTE), mode(String);
 EX_PLUS			: '+' -> type(PLUS);
 EX_MINUS		: '-' -> type(MINUS);
@@ -243,7 +248,7 @@ mode Edtcde;
 
 EC_LPAR     : '(' -> type(LPAR);
 EC_RPAR     : ')' -> type(RPAR), mode(Keyword);
-EDITCODE    : [CKMNZ34];
+EDITCODE    : [CJKLMNZ234];
 
 mode String;
 
